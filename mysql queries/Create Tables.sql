@@ -1,50 +1,50 @@
-CREATE DATABASE HPJournal;
+CREATE DATABASE ClearlinkJournal;
 
-USE HPJournal;
+USE ClearlinkJournal;
 
 CREATE Table User
 (
 UserId int PRIMARY KEY AUTO_INCREMENT,
-FirstName varchar(255) NOT NULL,
-LastName varchar(255),
-Username varchar(255) NOT NULL UNIQUE, 
-Password varchar(255) NOT NULL,
-UserType INT NOT NULL,
-CreatedDate DATETIME NOT NULL DEFAULT current_timestamp,
-ModifiedDate DATETIME NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp
+firstName varchar(255) NOT NULL,
+lastName varchar(255),
+username varchar(255) NOT NULL UNIQUE,
+password varchar(255) NOT NULL,
+userType INT NOT NULL,
+createdDate DATETIME NOT NULL DEFAULT current_timestamp,
+modifiedDate DATETIME NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp
 );
 
 CREATE Table Journal
 (
-JournalId int PRIMARY KEY AUTO_INCREMENT,
-JournalName varchar(255) NOT NULL,
-UserId int NOT NULL,
-CreatedDate DATETIME NOT NULL DEFAULT current_timestamp,
-ModifiedDate DATETIME NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
-FOREIGN KEY (UserId) REFERENCES User(UserId)
+journalId int PRIMARY KEY AUTO_INCREMENT,
+journalName varchar(255) NOT NULL,
+userId int NOT NULL,
+createdDate DATETIME NOT NULL DEFAULT current_timestamp,
+modifiedDate DATETIME NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
+FOREIGN KEY (userId) REFERENCES User(userId)
 );
 
 CREATE Table JournalEntry
 (
-JournalEntryId int PRIMARY KEY AUTO_INCREMENT,
-JournalId int NOT NULL,
-MainEntry varchar(1000),
-DesiredOutcome varchar(256),
-ActionItem1 varchar(256),
-ActionItem2 varchar(256),
-ActionItem3 varchar(256),
-Motiviation int NOT NULL,
-Confidence int NOT NULL,
-Visualizaing int NOT NULL,
-ActionOrientation int NOT NULL,
-Decisionmaking int NOT NULL,
-CreatedDate DATETIME NOT NULL DEFAULT current_timestamp,
-ModifiedDate DATETIME NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
-FOREIGN KEY (JournalId) REFERENCES Journal (JournalId)
+journalEntryId int PRIMARY KEY AUTO_INCREMENT,
+journalId int NOT NULL,
+positiveReview varchar(1000),
+goal varchar(1000),
+momentum varchar(1000),
+mentalToughness int NOT NULL,
+willingness int NOT NULL,
+determination int NOT NULL,
+motivation int NOT NULL,
+attitude int NOT NULL,
+personalImpact int NOT NULL,
+createdDate DATETIME NOT NULL DEFAULT current_timestamp,
+modifiedDate DATETIME NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
+FOREIGN KEY (journalId) REFERENCES Journal (journalId)
 );
 
 CREATE Table UserType
 (
-UserTypeId int PRIMARY KEY,
-UserType int NOT NULL
+userTypeId int PRIMARY KEY,
+userType int NOT NULL
 );
+
