@@ -11,6 +11,6 @@ import javax.persistence.Id;
 @Data
 public class UserType {
     @Id
-    private int userTypeId;
-    private String userType;
+    private int user_type_id;
+    private String user_type;
 }

@@ -13,9 +13,9 @@ import java.sql.Timestamp;
 @Data
 public class Journal {
     @Id
-    private int journalId;
-    private String journalName;
-    private int userId;
-    private Timestamp createdDate;
-    private Timestamp modifiedDate;
+    private int journal_id;
+    private String journal_name;
+    private int user_id;
+    private Timestamp created_date;
+    private Timestamp modified_date;
 }

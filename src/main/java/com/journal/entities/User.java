@@ -2,8 +2,7 @@ package com.journal.entities;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 /**
@@ -13,13 +12,14 @@ import java.sql.Timestamp;
 @Data
 public class User {
     @Id
-    private int userId;
-    private String firstName;
-    private String lastName;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int user_id;
+    private String first_name;
+    private String last_name;
     private String username;
     private String password;
-    private int userType;
-    private Timestamp createdDate;
-    private Timestamp modifiedDate;
+    private int user_type;
+    private Timestamp created_date;
+    private Timestamp modified_date;
 
 }

@@ -13,19 +13,19 @@ import java.sql.Timestamp;
 @Data
 public class JournalEntry {
     @Id
-    private int journalEntryId;
-    private int journalId;
-    private String positiveReview;
+    private int journal_entry_id;
+    private int journal_id;
+    private String positive_review;
     private String goal;
     private String momentum;
-    private int mentalToughness;
+    private int mental_toughness;
     private int willingness;
     private int determination;
     private int motivation;
     private int attitude;
-    private int personalImpact;
-    private Timestamp createdDate;
-    private Timestamp modifiedDate;
+    private int personal_impact;
+    private Timestamp created_date;
+    private Timestamp modified_date;
 
 
 }
