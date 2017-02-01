@@ -2,8 +2,7 @@ package com.journal.entities;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 /**
@@ -11,21 +10,40 @@ import java.sql.Timestamp;
  */
 @Entity
 @Data
+@Table(name="journalentry")
 public class JournalEntry {
     @Id
-    private int journal_entry_id;
-    private int journal_id;
-    private String positive_review;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="journal_entry_id")
+    private int journalEntryId;
+
+    @Column(name="journal_id")
+    private int journalId;
+
+    @Column(name="positive_review")
+    private String positiveReview;
+
     private String goal;
+
     private String momentum;
-    private int mental_toughness;
+
+    @Column(name="mental_toughness")
+    private int mentalToughness;
+
     private int willingness;
+
     private int determination;
+
     private int motivation;
+
     private int attitude;
-    private int personal_impact;
-    private Timestamp created_date;
-    private Timestamp modified_date;
 
+    @Column(name="personal_impact")
+    private int personalImpact;
 
+    @Column(name="created_date")
+    private Timestamp createdDate;
+
+    @Column(name="modified_date")
+    private Timestamp modifiedDate;
 }

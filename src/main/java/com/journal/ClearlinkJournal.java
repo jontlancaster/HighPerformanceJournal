@@ -1,7 +1,9 @@
 package com.journal;
 
 import com.journal.entities.Journal;
+import com.journal.entities.JournalEntry;
 import com.journal.entities.UserType;
+import com.journal.repositories.JournalEntryRepository;
 import com.journal.repositories.JournalRepository;
 import com.journal.repositories.UserRepository;
 import com.journal.entities.User;
@@ -25,6 +27,8 @@ public class ClearlinkJournal {
 	private UserTypeRepository userTypeRepository;
 	@Autowired
 	private JournalRepository journalRepository;
+	@Autowired
+	private JournalEntryRepository journalEntryRepository;
 
 	@RequestMapping("/users/{username}")
 	public User user(@PathVariable("username") String username) {
@@ -35,8 +39,10 @@ public class ClearlinkJournal {
 	public UserType userType(@PathVariable("userType") String userType) { return userTypeRepository.findByUserType(userType); }
 
 	@RequestMapping("/journals/{userJournals}")
-	public List<Journal> numberOfJournals(@PathVariable("userJournals") int userId) { return journalRepository.findAllByUserId(userId); }
+	public List<Journal> getUserJournals(@PathVariable("userJournals") int userId) { return journalRepository.findAllByUserId(userId); }
 
+	@RequestMapping("/journalEntries/{entries}")
+	public List<JournalEntry> getJournalEntries(@PathVariable("entries") int journalId) { return journalEntryRepository.findAllByJournalId(journalId); }
 
 	public static void main(String[] args) {
 		SpringApplication.run(ClearlinkJournal.class, args);

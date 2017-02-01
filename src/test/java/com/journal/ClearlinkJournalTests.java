@@ -1,7 +1,9 @@
 package com.journal;
 
 import com.journal.entities.Journal;
+import com.journal.entities.JournalEntry;
 import com.journal.entities.UserType;
+import com.journal.repositories.JournalEntryRepository;
 import com.journal.repositories.JournalRepository;
 import com.journal.repositories.UserRepository;
 import com.journal.entities.User;
@@ -26,6 +28,8 @@ public class ClearlinkJournalTests {
 	private UserTypeRepository userTypeRepository;
 	@Autowired
 	private JournalRepository journalRepository;
+	@Autowired
+	private JournalEntryRepository journalEntryRepository;
 
 	private User user;
 	private UserType userType;
@@ -63,5 +67,17 @@ public class ClearlinkJournalTests {
 	public void testFindAllJournalsByUserId() {
 		List<Journal> journalList = journalRepository.findAllByUserId(1);
 		assertEquals(2, journalList.size());
+	}
+
+	@Test
+	public void testFindJournalEntryByJournalEntryId() {
+		JournalEntry journalEntry = journalEntryRepository.findByJournalEntryId(1);
+		assertEquals(1, journalEntry.getJournalEntryId());
+	}
+
+	@Test
+	public void testFindAllJournalEntriesByJournalId() {
+		List<JournalEntry> entryList = journalEntryRepository.findAllByJournalId(1);
+		assertEquals(2, entryList.size());
 	}
 }
