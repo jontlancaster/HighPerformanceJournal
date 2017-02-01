@@ -1,6 +1,8 @@
 package com.journal;
 
+import com.journal.entities.Journal;
 import com.journal.entities.UserType;
+import com.journal.repositories.JournalRepository;
 import com.journal.repositories.UserRepository;
 import com.journal.entities.User;
 import com.journal.repositories.UserTypeRepository;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @SpringBootApplication
 @RestController
 public class ClearlinkJournal {
@@ -19,6 +23,8 @@ public class ClearlinkJournal {
 	private UserRepository userRepository;
 	@Autowired
 	private UserTypeRepository userTypeRepository;
+	@Autowired
+	private JournalRepository journalRepository;
 
 	@RequestMapping("/users/{username}")
 	public User user(@PathVariable("username") String username) {
@@ -27,6 +33,9 @@ public class ClearlinkJournal {
 
 	@RequestMapping("/userTypes/{userType}")
 	public UserType userType(@PathVariable("userType") String userType) { return userTypeRepository.findByUserType(userType); }
+
+	@RequestMapping("/journals/{userJournals}")
+	public List<Journal> numberOfJournals(@PathVariable("userJournals") int userId) { return journalRepository.findAllByUserId(userId); }
 
 
 	public static void main(String[] args) {
