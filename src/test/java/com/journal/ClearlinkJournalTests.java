@@ -20,19 +20,28 @@ public class ClearlinkJournalTests {
 	@Autowired
 	UserTypeRepository userTypeRepository;
 
+	private User user;
+	private UserType userType;
+
 	@Test
 	public void contextLoads() {
 	}
 
 	@Test
 	public void testFindUserByUsername() {
-		User user = userRepository.findByUsername("jonlan");
+		user = userRepository.findByUsername("jonlan");
+		assertEquals("jonlan", user.getUsername());
+	}
+
+	@Test
+	public void testFindUserById() {
+		user = userRepository.findByUserId(1);
 		assertEquals("jonlan", user.getUsername());
 	}
 
 	@Test
 	public void testFindUserTypeByUserTypeId() {
-		UserType userType = userTypeRepository.findByUserTypeId(1);
+		userType = userTypeRepository.findByUserTypeId(1);
 		assertEquals(1, userType.getUserTypeId());
 	}
 

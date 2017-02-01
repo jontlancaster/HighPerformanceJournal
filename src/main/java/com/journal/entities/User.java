@@ -13,13 +13,26 @@ import java.sql.Timestamp;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int user_id;
-    private String first_name;
-    private String last_name;
+    @Column(name="user_id")
+    private int userId;
+
+    @Column(name="first_name")
+    private String firstName;
+
+    @Column(name="last_name")
+    private String lastName;
+
     private String username;
+
     private String password;
-    private int user_type;
-    private Timestamp created_date;
-    private Timestamp modified_date;
+
+    @Column(name="user_type")
+    private int userType;
+
+    @Column(name="created_date")
+    private Timestamp createdDate;
+
+    @Column(name="modified_date")
+    private Timestamp modifiedDate;
 
 }

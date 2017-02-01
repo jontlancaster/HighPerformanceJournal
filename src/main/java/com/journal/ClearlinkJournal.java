@@ -25,8 +25,9 @@ public class ClearlinkJournal {
 		return userRepository.findByUsername(username);
 	}
 
-	@RequestMapping("/userTypes/{userTypeId}")
-	public UserType userType(@PathVariable("userTypeId") int userTypeId) { return userTypeRepository.findByUserTypeId(userTypeId); }
+	@RequestMapping("/userTypes/{userType}")
+	public UserType userType(@PathVariable("userType") String userType) { return userTypeRepository.findByUserType(userType); }
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(ClearlinkJournal.class, args);
