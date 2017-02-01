@@ -1,7 +1,9 @@
 package com.journal;
 
-import com.journal.dao.UserRepository;
+import com.journal.entities.UserType;
+import com.journal.repositories.UserRepository;
 import com.journal.entities.User;
+import com.journal.repositories.UserTypeRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ public class ClearlinkJournalTests {
 
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	UserTypeRepository userTypeRepository;
 
 	@Test
 	public void contextLoads() {
@@ -26,6 +30,10 @@ public class ClearlinkJournalTests {
 		assertEquals("jonlan", user.getUsername());
 	}
 
-
+	@Test
+	public void testFindUserTypeByUserTypeId() {
+		UserType userType = userTypeRepository.findByUserTypeId(1);
+		assertEquals(1, userType.getUserTypeId());
+	}
 
 }

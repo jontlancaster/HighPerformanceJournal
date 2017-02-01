@@ -45,5 +45,5 @@ FOREIGN KEY (journal_id) REFERENCES journal (journal_id)
 CREATE Table usertype
 (
 user_type_id int PRIMARY KEY,
-user_type int NOT NULL
+user_type varchar(24) NOT NULL
 );

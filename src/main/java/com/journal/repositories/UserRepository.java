@@ -1,4 +1,4 @@
-package com.journal.dao;
+package com.journal.repositories;
 
 import com.journal.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
