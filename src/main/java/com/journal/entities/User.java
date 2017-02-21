@@ -3,6 +3,7 @@ package com.journal.entities;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -11,6 +12,9 @@ import java.sql.Timestamp;
 @Entity
 @Data
 public class User {
+
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="user_id")
@@ -29,10 +33,10 @@ public class User {
     @Column(name="user_type")
     private int userType;
 
-    @Column(name="created_date")
-    private Timestamp createdDate;
+    @Column(name="created_date", updatable = false, insertable = false)
+    private Date createdDate;
 
-    @Column(name="modified_date")
-    private Timestamp modifiedDate;
+    @Column(name="modified_date", updatable = false, insertable = false)
+    private Date modifiedDate;
 
 }

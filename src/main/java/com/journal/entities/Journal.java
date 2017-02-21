@@ -3,6 +3,7 @@ package com.journal.entities;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -23,9 +24,9 @@ public class Journal {
     @Column(name="user_id")
     private int userId;
 
-    @Column(name="created_date")
-    private Timestamp createdDate;
+    @Column(name="created_date", updatable = false, insertable = false)
+    private Date createdDate;
 
-    @Column(name="modified_date")
-    private Timestamp modifiedDate;
+    @Column(name="modified_date", updatable = false, insertable = false)
+    private Date modifiedDate;
 }
