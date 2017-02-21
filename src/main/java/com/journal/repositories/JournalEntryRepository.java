@@ -4,6 +4,7 @@ import com.journal.entities.JournalEntry;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.util.List;
 
 
@@ -15,4 +16,6 @@ public interface JournalEntryRepository extends JpaRepository <JournalEntry, Int
     JournalEntry findByJournalEntryId(int journalEntryId);
 
     List<JournalEntry> findAllByJournalId(int journalId);
+
+    List<JournalEntry> findAllByCreatedDate(Date createdDate);
 }

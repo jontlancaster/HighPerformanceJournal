@@ -8,6 +8,7 @@ import com.journal.repositories.JournalRepository;
 import com.journal.repositories.UserRepository;
 import com.journal.entities.User;
 import com.journal.repositories.UserTypeRepository;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-public class ClearlinkJournalTests {
+public class ClearlinkJournalIntegrationTests {
 
 	@Autowired
 	private UserRepository userRepository;
@@ -43,6 +44,33 @@ public class ClearlinkJournalTests {
 	public void testFindUserByUsername() {
 		user = userRepository.findByUsername("jonlan");
 		assertEquals("jonlan", user.getUsername());
+	}
+
+	@Test
+	public void testFindUserByUsernameThatIsNotInDB() {
+		assertEquals(null, userRepository.findByUsername("steve"));
+	}
+
+	@Test
+	public void testSaveToUpdateExistingUser() {
+		user = userRepository.findByUsername("jonlan");
+		user.setFirstName("Jon");
+		userRepository.save(user);
+		userRepository.findByUsername("jonlan");
+		assertEquals("Jon", user.getFirstName());
+	}
+
+	@Test
+	public void testSaveToCreateNewUser() {
+		user = new User();
+		user.setFirstName("Steve");
+		user.setLastName("Scuba");
+		user.setUsername("steve");
+		user.setPassword("passwd");
+		user.setUserType(1);
+		userRepository.save(user);
+		userRepository.findByUsername("steve");
+		assertEquals("Steve", user.getFirstName());
 	}
 
 	@Test
