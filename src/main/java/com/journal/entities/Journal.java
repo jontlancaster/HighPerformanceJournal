@@ -4,7 +4,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.sql.Timestamp;
 
 /**
  * Created by jonathon lancaster on 1/21/2017.
@@ -21,8 +20,9 @@ public class Journal {
     @Column(name="journal_name")
     private String journalName;
 
-    @Column(name="user_id")
-    private int userId;
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
 
     @Column(name="created_date", updatable = false, insertable = false)
     private Date createdDate;

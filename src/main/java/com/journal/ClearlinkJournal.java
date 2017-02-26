@@ -39,10 +39,10 @@ public class ClearlinkJournal {
 	public UserType userType(@PathVariable("userType") String userType) { return userTypeRepository.findByUserType(userType); }
 
 	@RequestMapping("/journals/{userJournals}")
-	public List<Journal> getUserJournals(@PathVariable("userJournals") int userId) { return journalRepository.findAllByUserId(userId); }
+	public List<Journal> getUserJournals(@PathVariable("userJournals") int userId) { return journalRepository.findByUserUserId(userId); }
 
 	@RequestMapping("/journalEntries/{entries}")
-	public List<JournalEntry> getJournalEntries(@PathVariable("entries") int journalId) { return journalEntryRepository.findAllByJournalId(journalId); }
+	public List<JournalEntry> getJournalEntries(@PathVariable("entries") int journalId) { return journalEntryRepository.findAllByJournal_JournalId(journalId); }
 
 	public static void main(String[] args) {
 		SpringApplication.run(ClearlinkJournal.class, args);

@@ -4,7 +4,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.sql.Timestamp;
 
 /**
  * Created by jonathon lancaster on 1/21/2017.

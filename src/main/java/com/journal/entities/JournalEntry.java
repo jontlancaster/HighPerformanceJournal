@@ -4,7 +4,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.sql.Timestamp;
 
 /**
  * Created by jonathon lancaster on 1/21/2017.
@@ -18,8 +17,9 @@ public class JournalEntry {
     @Column(name="journal_entry_id")
     private int journalEntryId;
 
-    @Column(name="journal_id")
-    private int journalId;
+    @ManyToOne
+    @JoinColumn(name="journal_id")
+    private Journal journal;
 
     @Column(name="positive_review")
     private String positiveReview;

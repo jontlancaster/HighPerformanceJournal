@@ -8,7 +8,6 @@ import com.journal.repositories.JournalRepository;
 import com.journal.repositories.UserRepository;
 import com.journal.entities.User;
 import com.journal.repositories.UserTypeRepository;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +47,7 @@ public class ClearlinkJournalIntegrationTests {
 
 	@Test
 	public void testFindUserByUsernameThatIsNotInDB() {
-		assertEquals(null, userRepository.findByUsername("steve"));
+		assertEquals(null, userRepository.findByUsername("unknown"));
 	}
 
 	@Test
@@ -62,6 +61,11 @@ public class ClearlinkJournalIntegrationTests {
 
 	@Test
 	public void testSaveToCreateNewUser() {
+		if (userRepository.findByUsername("steve") != null) {
+			user = userRepository.findByUsername("steve");
+			userRepository.delete(user);
+			assertEquals(userRepository.findByUsername("steve"), null);
+		}
 		user = new User();
 		user.setFirstName("Steve");
 		user.setLastName("Scuba");
@@ -93,8 +97,14 @@ public class ClearlinkJournalIntegrationTests {
 
 	@Test
 	public void testFindAllJournalsByUserId() {
-		List<Journal> journalList = journalRepository.findAllByUserId(1);
-		assertEquals(2, journalList.size());
+		List<Journal> journals = journalRepository.findByUserUserId(1);
+		assertEquals(2, journals.size());
+	}
+
+	@Test
+	public void testFindJournalsByUsername() {
+		List<Journal> journals = journalRepository.findByUserUsername("jonlan");
+		assertEquals(2, journals.size());
 	}
 
 	@Test
@@ -105,7 +115,7 @@ public class ClearlinkJournalIntegrationTests {
 
 	@Test
 	public void testFindAllJournalEntriesByJournalId() {
-		List<JournalEntry> entryList = journalEntryRepository.findAllByJournalId(1);
+		List<JournalEntry> entryList = journalEntryRepository.findAllByJournal_JournalId(1);
 		assertEquals(2, entryList.size());
 	}
 }
