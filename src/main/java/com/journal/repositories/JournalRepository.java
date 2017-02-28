@@ -17,5 +17,9 @@ public interface JournalRepository extends JpaRepository <Journal, Integer> {
     List<Journal> findByUserUserId(int userId);
 
     List<Journal> findByUserUsername(String username);
+
+    Journal save (Journal journal);
+
+    void delete(Journal journal);
 }
 

@@ -15,7 +15,9 @@ import java.util.List;
 public interface JournalEntryRepository extends JpaRepository <JournalEntry, Integer> {
     JournalEntry findByJournalEntryId(int journalEntryId);
 
-    List<JournalEntry> findAllByJournal_JournalId(int journalId);
+    List<JournalEntry> findByJournalJournalId(int journalId);
 
     List<JournalEntry> findAllByJournalJournalIdAndModifiedDate(int journalId, Date modifiedDate);
+
+    JournalEntry save(JournalEntry entry);
 }

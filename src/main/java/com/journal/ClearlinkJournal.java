@@ -42,7 +42,7 @@ public class ClearlinkJournal {
 	public List<Journal> getUserJournals(@PathVariable("userJournals") int userId) { return journalRepository.findByUserUserId(userId); }
 
 	@RequestMapping("/journalEntries/{entries}")
-	public List<JournalEntry> getJournalEntries(@PathVariable("entries") int journalId) { return journalEntryRepository.findAllByJournal_JournalId(journalId); }
+	public List<JournalEntry> getJournalEntries(@PathVariable("entries") int journalId) { return journalEntryRepository.findByJournalJournalId(journalId); }
 
 	public static void main(String[] args) {
 		SpringApplication.run(ClearlinkJournal.class, args);
