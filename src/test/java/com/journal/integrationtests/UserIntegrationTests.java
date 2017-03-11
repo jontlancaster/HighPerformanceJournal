@@ -4,6 +4,7 @@ import com.journal.entities.User;
 import com.journal.entities.UserType;
 import com.journal.repositories.UserRepository;
 import com.journal.repositories.UserTypeRepository;
+import com.journal.services.UserManagerService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class UserIntegrationTests {
     private UserRepository userRepository;
     @Autowired
     private UserTypeRepository userTypeRepository;
+    @Autowired
+    private UserManagerService userManager;
 
     private User user;
     private UserType userType;
@@ -44,16 +47,16 @@ public class UserIntegrationTests {
     }
 
     @Test
-    public void testSaveToUpdateExistingUser() {
+    public void testUpdateExistingUser() {
         user = userRepository.findByUsername("jonlan");
         user.setFirstName("Jon");
-        userRepository.save(user);
+        userManager.updateUser(user);
         userRepository.findByUsername("jonlan");
         assertEquals("Jon", user.getFirstName());
     }
 
     @Test
-    public void testSaveToCreateNewUser() {
+    public void testCreateNewUser() {
         if (userRepository.findByUsername("steve") != null) {
             user = userRepository.findByUsername("steve");
             userRepository.delete(user);
@@ -65,7 +68,7 @@ public class UserIntegrationTests {
         user.setUsername("steve");
         user.setPassword("passwd");
         user.setUserType(1);
-        userRepository.save(user);
+        userManager.createNewUser(user);
         userRepository.findByUsername("steve");
         assertEquals("Steve", user.getFirstName());
     }

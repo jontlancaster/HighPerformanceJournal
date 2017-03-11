@@ -11,9 +11,6 @@ import java.sql.Date;
 @Entity
 @Data
 public class User {
-
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="user_id")
@@ -31,6 +28,8 @@ public class User {
 
     @Column(name="user_type")
     private int userType;
+
+    private int enabled;
 
     @Column(name="created_date", updatable = false, insertable = false)
     private Date createdDate;

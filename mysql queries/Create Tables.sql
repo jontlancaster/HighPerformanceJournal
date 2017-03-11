@@ -10,6 +10,7 @@ last_name varchar(255),
 username varchar(255) NOT NULL UNIQUE,
 password varchar(255) NOT NULL,
 user_type INT NOT NULL,
+enabled BOOL NOT NULL DEFAULT 1,
 created_date DATETIME NOT NULL DEFAULT current_timestamp,
 modified_date DATETIME NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp
 );
@@ -39,7 +40,7 @@ attitude int NOT NULL,
 personal_impact int NOT NULL,
 created_date DATETIME NOT NULL DEFAULT current_timestamp,
 modified_date DATETIME NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
-FOREIGN KEY (journal_id) REFERENCES journal (journal_id)
+FOREIGN KEY (journal_id) REFERENCES journal (journal_id) ON DELETE CASCADE
 );
 
 CREATE Table usertype
