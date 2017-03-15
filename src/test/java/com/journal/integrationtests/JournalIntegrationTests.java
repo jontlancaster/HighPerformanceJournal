@@ -22,7 +22,6 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest
 public class JournalIntegrationTests {
 
-
 	@Autowired
 	private JournalRepository journalRepository;
 	@Autowired
