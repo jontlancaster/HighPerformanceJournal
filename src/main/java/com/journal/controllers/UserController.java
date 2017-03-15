@@ -35,20 +35,15 @@ public class UserController {
     @RequestMapping("users/find")
     public User findUser(@RequestParam("username") String username) { return userManager.findUser(username); }
 
-    @RequestMapping("/users/{username}")
-    public User user(@PathVariable("username") String username) {
-        return userRepository.findByUsername(username);
-    }
-
     @RequestMapping("users/disable")
     public boolean disableUser(@RequestParam("username") String username) {
-        User user = userRepository.findByUsername(username);
+        User user = userManager.findUser(username);
         return userManager.disableUser(user);
     }
 
     @RequestMapping("users/enable")
     public boolean enableUser(@RequestParam("username") String username) {
-        User user = userRepository.findByUsername(username);
+        User user = userManager.findUser(username);
         return userManager.enableUser(user);
     }
 }
