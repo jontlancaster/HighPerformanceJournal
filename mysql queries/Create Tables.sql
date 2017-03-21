@@ -2,6 +2,12 @@ CREATE DATABASE clearlinkjournal;
 
 USE clearlinkjournal;
 
+CREATE Table usertype
+(
+user_type_id int PRIMARY KEY,
+user_type varchar(24) NOT NULL
+);
+
 CREATE table user
 (
 user_id int PRIMARY KEY AUTO_INCREMENT,
@@ -12,7 +18,8 @@ password varchar(255) NOT NULL,
 user_type INT NOT NULL,
 enabled BOOL NOT NULL DEFAULT 1,
 created_date DATETIME NOT NULL DEFAULT current_timestamp,
-modified_date DATETIME NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp
+modified_date DATETIME NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
+FOREIGN KEY (user_type) REFERENCES usertype (user_type_id)
 );
 
 CREATE table journal
@@ -43,8 +50,4 @@ modified_date DATETIME NOT NULL DEFAULT current_timestamp ON UPDATE current_time
 FOREIGN KEY (journal_id) REFERENCES journal (journal_id) ON DELETE CASCADE
 );
 
-CREATE Table usertype
-(
-user_type_id int PRIMARY KEY,
-user_type varchar(24) NOT NULL
-);
+

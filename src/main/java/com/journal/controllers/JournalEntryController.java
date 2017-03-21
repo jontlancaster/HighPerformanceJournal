@@ -17,7 +17,7 @@ public class JournalEntryController {
     @Autowired
     private JournalEntryRepository journalEntryRepository;
 
-    @RequestMapping("/journalEntries/{entries}")
-    public List<JournalEntry> getJournalEntries(@PathVariable("entries") int journalId) { return journalEntryRepository.findByJournalJournalId(journalId); }
+    @RequestMapping("/journalEntries/{journalId}")
+    public List<JournalEntry> getJournalEntries(@PathVariable("journalId") int journalId) { return journalEntryRepository.findByJournalJournalId(journalId); }
 
 }
