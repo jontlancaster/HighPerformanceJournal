@@ -2,12 +2,8 @@ package com.journal.integrationtests;
 
 import com.journal.entities.Journal;
 import com.journal.entities.JournalEntry;
-import com.journal.entities.UserType;
 import com.journal.repositories.JournalEntryRepository;
 import com.journal.repositories.JournalRepository;
-import com.journal.repositories.UserRepository;
-import com.journal.entities.User;
-import com.journal.repositories.UserTypeRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,37 +2,40 @@ CREATE DATABASE clearlinkjournal;
 
 USE clearlinkjournal;
 
-CREATE Table usertype
-(
-user_type_id int PRIMARY KEY,
-user_type varchar(24) NOT NULL
-);
-
-CREATE table user
+CREATE table users
 (
 user_id int PRIMARY KEY AUTO_INCREMENT,
 first_name varchar(255) NOT NULL,
 last_name varchar(255),
-username varchar(255) NOT NULL UNIQUE,
-password varchar(255) NOT NULL,
-user_type INT NOT NULL,
-enabled BOOL NOT NULL DEFAULT 1,
+username varchar(60) NOT NULL UNIQUE,
+password varchar(60) NOT NULL,
+enabled BOOL NOT NULL DEFAULT true,
 created_date DATETIME NOT NULL DEFAULT current_timestamp,
-modified_date DATETIME NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
-FOREIGN KEY (user_type) REFERENCES usertype (user_type_id)
+modified_date DATETIME NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp
 );
 
-CREATE table journal
+CREATE Table user_roles
+(
+  user_role_id int PRIMARY KEY AUTO_INCREMENT,
+  username varchar(60) NOT NULL,
+  role VARCHAR(60) NOT NULL,
+  UNIQUE KEY uni_username_role (role, username),
+  KEY fk_username_idx (username),
+  CONSTRAINT fk_username FOREIGN KEY (username) REFERENCES users (username) ON DELETE CASCADE
+);
+
+
+CREATE table journals
 (
 journal_id int PRIMARY KEY AUTO_INCREMENT,
 journal_name varchar(255) NOT NULL,
 user_id int NOT NULL,
 created_date DATETIME NOT NULL DEFAULT current_timestamp,
 modified_date DATETIME NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
-FOREIGN KEY (user_id) REFERENCES user(user_id)
+FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
-CREATE Table journalentry
+CREATE Table journal_entries
 (
 journal_entry_id int PRIMARY KEY AUTO_INCREMENT,
 journal_id int NOT NULL,
@@ -47,7 +50,7 @@ attitude int NOT NULL,
 personal_impact int NOT NULL,
 created_date DATETIME NOT NULL DEFAULT current_timestamp,
 modified_date DATETIME NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
-FOREIGN KEY (journal_id) REFERENCES journal (journal_id) ON DELETE CASCADE
+FOREIGN KEY (journal_id) REFERENCES journals (journal_id) ON DELETE CASCADE
 );
 
 

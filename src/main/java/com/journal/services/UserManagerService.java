@@ -58,7 +58,7 @@ public class UserManagerService {
         boolean success = false;
 
         try {
-            user.setEnabled(0);
+            user.setEnabled(false);
             success = updateUser(user);
         } catch (Exception exception) {
             System.out.println("There was an exception disabling the user. " + exception.getMessage());
@@ -70,7 +70,7 @@ public class UserManagerService {
         boolean success = false;
 
         try {
-            user.setEnabled(1);
+            user.setEnabled(true);
             success = updateUser(user);
         } catch (Exception exception) {
             System.out.println("There was an exception enabling the user. " + exception.getMessage());

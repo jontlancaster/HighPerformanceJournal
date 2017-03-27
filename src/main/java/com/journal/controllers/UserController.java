@@ -1,11 +1,12 @@
 package com.journal.controllers;
 
 import com.journal.entities.User;
-import com.journal.repositories.UserRepository;
+import com.journal.entities.UserRole;
 import com.journal.services.UserManagerService;
+import com.journal.services.UserRoleManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,34 +15,41 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class UserController {
-    @Autowired
-    private UserRepository userRepository;
+
     @Autowired
     private UserManagerService userManager;
+    @Autowired
+    private UserRoleManagerService userRoleManager;
 
-    @RequestMapping(value="users/create")
+    @RequestMapping(value="users/create", method = RequestMethod.POST)
     public boolean createUser(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName,
                               @RequestParam("username") String username, @RequestParam("password") String password,
-                              @RequestParam("userType") int userType) {
+                              @RequestParam String userRole) {
+        boolean status = false;
         User user = new User();
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setUsername(username);
         user.setPassword(password);
-        user.setUserType(userType);
-        return userManager.createNewUser(user);
+        UserRole role = new UserRole();
+        role.setUsername(username);
+        role.setRole(userRole);
+        if (userManager.createNewUser(user)) {
+            status = userRoleManager.createUserRoles(role);
+        }
+        return status;
     }
 
-    @RequestMapping("users/find")
+    @RequestMapping(value = "users/find")
     public User findUser(@RequestParam("username") String username) { return userManager.findUser(username); }
 
-    @RequestMapping("users/disable")
+    @RequestMapping(value = "users/disable", method = RequestMethod.POST)
     public boolean disableUser(@RequestParam("username") String username) {
         User user = userManager.findUser(username);
         return userManager.disableUser(user);
     }
 
-    @RequestMapping("users/enable")
+    @RequestMapping(value = "users/enable", method = RequestMethod.POST)
     public boolean enableUser(@RequestParam("username") String username) {
         User user = userManager.findUser(username);
         return userManager.enableUser(user);

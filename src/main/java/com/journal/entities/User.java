@@ -10,6 +10,7 @@ import java.sql.Date;
  */
 @Entity
 @Data
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,10 +27,7 @@ public class User {
 
     private String password;
 
-    @Column(name="user_type")
-    private int userType;
-
-    private int enabled;
+    private boolean enabled;
 
     @Column(name="created_date", updatable = false, insertable = false)
     private Date createdDate;

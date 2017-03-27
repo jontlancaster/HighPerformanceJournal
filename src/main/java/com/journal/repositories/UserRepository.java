@@ -4,6 +4,8 @@ import com.journal.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Objects;
+
 /**
  * Created by jonathon lancaster on 1/30/2017.
  */

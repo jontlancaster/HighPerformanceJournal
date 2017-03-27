@@ -1,9 +1,9 @@
 package com.journal.integrationtests;
 
 import com.journal.entities.User;
-import com.journal.entities.UserType;
+import com.journal.entities.UserRole;
 import com.journal.repositories.UserRepository;
-import com.journal.repositories.UserTypeRepository;
+import com.journal.repositories.UserRoleRepository;
 import com.journal.services.UserManagerService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,12 +23,12 @@ public class UserIntegrationTests {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private UserTypeRepository userTypeRepository;
+    private UserRoleRepository userRoleRepository;
     @Autowired
     private UserManagerService userManager;
 
     private User user;
-    private UserType userType;
+    private UserRole userRole;
 
     @Test
     public void testFindUserByUsername() {
@@ -67,7 +67,6 @@ public class UserIntegrationTests {
         user.setLastName("Scuba");
         user.setUsername("steve");
         user.setPassword("passwd");
-        user.setUserType(1);
         userManager.createNewUser(user);
         userRepository.findByUsername("steve");
         assertEquals("Steve", user.getFirstName());
@@ -81,7 +80,7 @@ public class UserIntegrationTests {
 
     @Test
     public void testFindUserTypeByUserTypeId() {
-        userType = userTypeRepository.findByUserTypeId(1);
-        assertEquals(1, userType.getUserTypeId());
+        userRole = userRoleRepository.findByUserRoleId(1);
+        assertEquals(1, userRole.getUserRoleId());
     }
 }
