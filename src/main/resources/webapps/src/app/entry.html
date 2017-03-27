@@ -1,0 +1,26 @@
+<!--{{diagnostic}}-->
+<div class="col-lg-6" id="content">
+  <h1>Share your thoughts</h1>
+  <form >
+    <div class="form-group">
+      <label for="success">Success</label>
+      <textarea [(ngModel)]="entry.successTxt" name="successTxt" class="form-control" id="success"
+             required rows="12" cols="25">
+      </textarea>
+    </div>
+    <div class="form-group">
+      <label for="focus">Focus</label>
+      <textarea [(ngModel)]="entry.focusTxt" name="focusTxt" class="form-control" id="focus"
+             required rows="12" cols="25">
+      </textarea>
+    </div>
+    <div class="form-group">
+      <label for="momentum">Momentum</label>
+      <textarea [(ngModel)]="entry.momentumTxt" name="momentumTxt" class="form-control" id="momentum"
+             required rows="12" cols="25">
+      </textarea>
+    </div>
+    <button type="submit" class="btn btn-success" (click)="onClick()">Save</button>
+  </form>
+</div>
+

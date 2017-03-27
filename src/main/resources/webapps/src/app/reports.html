@@ -1,0 +1,23 @@
+<html>
+  <div class="col-lg-6" id="content">
+    <h2>You have {{entriesListSize}} journal entries</h2>
+    <div *ngIf="entriesListSize != 0">
+      <ul class="entry-list">
+        <li *ngFor="let entry of entriesList"
+          [class.selectedEntry]="entry === selectedEntry"
+          (click)="onSelectEntry(entry)">
+          <span class="date"></span>{{entry.title}}
+        </li>
+        <li>
+          {{journal.journalId}} Name: {{journal.journalName}}
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="selectedEntry">
+      <h2>{{selectedEntry.title}}</h2>
+      <div>{{selectedEntry.successTxt}}</div>
+      <div>{{selectedEntry.focusTxt}}</div>
+      <div>{{selectedEntry.momentumTxt}}</div>
+    </div>
+  </div>
+</html>
