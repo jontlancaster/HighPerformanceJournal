@@ -1,41 +1,57 @@
 import {Injectable} from '@angular/core';
-import {Http, Headers} from '@angular/http';
-import {Entry} from "../domain/entry";
+import {Http, Headers, Response} from '@angular/http';
+import {JournalEntry} from "../domain/entry";
 
 import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/map'
 import {Journal} from "../domain/journal";
+import {Observable} from "rxjs";
+import {User} from "../domain/user";
 
 @Injectable()
 export class EntryService {
 
   private headers = new Headers({'Content-Type': 'application/json'});
-  private baseUrl = 'http://192.168.0.2:8080/journals/findByJournalId';
+  private baseUrl = 'http://localhost:8080/';
 
-  constructor(private http: Http) {}
+  constructor(private http: Http) {
+  }
 
-  getEntries(journalId: number): Promise<Entry[]> {
+  getEntries(journalId: number): Promise<JournalEntry[]> {
     return Promise.resolve();
   }
 
   getJournal(journalId: number): Promise<Journal> {
-    const url = '${this.baseUrl}/${journalId}';
-
-    return this.http.get(url)
+    return this.http.get(this.baseUrl + "journals/findByJournalId/" + journalId)
       .toPromise()
       .then(response => response.json().data as Journal)
       .catch(this.handleError);
   }
 
-  getEntry(entryId: number): Promise<Entry> {
-    const url = '${this.baseUrl}/${entryId}';
-    return this.http.get('http://192.168.0.2:8080/journals/findByJournalId/'+entryId)
-      .toPromise()
-      .then(response => response.json().data as Entry)
-      .catch(this.handleError);
+  getJournalsForUserId(userId: number): Observable<Journal[]> {
+    return this.http.get(this.baseUrl + "journals/findbyuserid/" + userId)
+      .map((response:Response) => response.json())
+      .catch(this.handleError)
   }
 
-  private handleError(error: any): Promise<any> {
-    console.error("Error occurred", error);
-    return Promise.reject(error.message || error);
+  private handleError(error: any): Observable<any> {
+    console.error("Error occurred on EntryService:::", error);
+    return Observable.throw(error.json().error || 'Server error');
+  }
+
+  saveEntry(entry: JournalEntry): Promise<JournalEntry> {
+    let saveUrl = this.baseUrl + "journalEntries/create";
+    return this.http.post(saveUrl, JSON.stringify(entry), {headers: this.headers})
+      .toPromise()
+      .then((savedEntry:Response) => savedEntry.json())
+      .catch(this.handleError)
+  }
+
+  createUser(user: User): Promise<User> {
+    let createUserUrl = this.baseUrl + "users/createWithDefaultRole";
+    return this.http.post(createUserUrl, JSON.stringify(user), {headers: this.headers})
+      .toPromise()
+      .then(user => user.json().data as User)
+      .catch(this.handleError)
   }
 }

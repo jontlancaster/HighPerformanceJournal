@@ -26,6 +26,10 @@ h6 {
     font-weight: 700;
 }
 
+ul {
+  list-style-type: none;
+}
+
 .topnav {
     font-size: 14px;
     background-color: #00afec;
@@ -71,6 +75,7 @@ h6 {
     text-align: center;
     color: white;
     position: relative;
+
 }
 
 .selected {

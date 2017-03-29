@@ -3,24 +3,24 @@
   <h1>Share your thoughts</h1>
   <form >
     <div class="form-group">
-      <label for="success">Success</label>
-      <textarea [(ngModel)]="entry.successTxt" name="successTxt" class="form-control" id="success"
+      <label for="positiveReview">Positive Review</label>
+      <textarea [(ngModel)]="entry.positiveReview" name="positiveReview" class="form-control" id="positiveReview"
              required rows="12" cols="25">
       </textarea>
     </div>
     <div class="form-group">
-      <label for="focus">Focus</label>
-      <textarea [(ngModel)]="entry.focusTxt" name="focusTxt" class="form-control" id="focus"
+      <label for="goal">Goal</label>
+      <textarea [(ngModel)]="entry.goal" name="goal" class="form-control" id="goal"
              required rows="12" cols="25">
       </textarea>
     </div>
     <div class="form-group">
       <label for="momentum">Momentum</label>
-      <textarea [(ngModel)]="entry.momentumTxt" name="momentumTxt" class="form-control" id="momentum"
+      <textarea [(ngModel)]="entry.momentum" name="momentum" class="form-control" id="momentum"
              required rows="12" cols="25">
       </textarea>
     </div>
-    <button type="submit" class="btn btn-success" (click)="onClick()">Save</button>
+    <button type="submit" class="btn btn-success" (click)="onSave()">Save</button>
   </form>
 </div>
 

@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {User} from './domain/user';
+import {EntryService} from "./services/entry.service";
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,7 @@ export class LoginComponent {
   user: User;
   newUser: boolean;
 
-  constructor() {
+  constructor(private entryService: EntryService) {
     this.user = new User();
     this.newUser = false;
   }
@@ -24,6 +25,7 @@ export class LoginComponent {
   }
 
   createNewUser(): void {
+    let userCreated = this.entryService.createUser(this.user);
     console.log("will create username " + this.user.username);
     this.newUser = false;
   }

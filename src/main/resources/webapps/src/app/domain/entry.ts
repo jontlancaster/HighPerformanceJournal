@@ -1,16 +1,16 @@
-export class Entry {
-  entryId: number;
-  journalId: number;
+export class JournalEntry {
+  journalEntryId: number;
+  journal: number;
   title: string;
-  positiveReviewTxt: string;
-  goalTxt: string;
-  momentumTxt: string;
-  mentalToughnessVal: number;
-  willingnessVal: number;
-  determinationVal: number;
-  motivationVal: number;
-  attitudeVal: number;
-  personalImpactVal: number;
+  positiveReview: string;
+  goal: string;
+  momentum: string;
+  mentalToughness: number;
+  willingness: number;
+  determination: number;
+  motivation: number;
+  attitude: number;
+  personalImpact: number;
   createdDate: string;
   modifiedDate: string;
 }

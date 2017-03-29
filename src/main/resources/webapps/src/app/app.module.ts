@@ -10,11 +10,12 @@ import {EntryComponent} from './entry.component';
 import {ReportsComponent} from './reports.component';
 import {AdminComponent} from './admin.component';
 import {EntryService} from './services/entry.service';
+import {JournalsComponent} from './journals.component';
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginComponent},
-  {path: 'entry', component: EntryComponent},
-  {path: 'reports', component: ReportsComponent},
+  {path: 'entry/:journalId', component: EntryComponent},
+  {path: 'journals', component: JournalsComponent},
   {path: 'admin', component: AdminComponent}
 ];
 
@@ -25,7 +26,8 @@ const appRoutes: Routes = [
     LoginComponent,
     EntryComponent,
     ReportsComponent,
-    AdminComponent
+    AdminComponent,
+    JournalsComponent
   ],
   imports: [
     BrowserModule,
