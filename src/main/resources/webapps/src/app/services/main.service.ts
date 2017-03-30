@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers, Response} from '@angular/http';
-import {JournalEntry} from "../domain/entry";
+import {JournalEntry} from "../domain/journalEntry";
 
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map'
@@ -9,7 +9,7 @@ import {Observable} from "rxjs";
 import {User} from "../domain/user";
 
 @Injectable()
-export class EntryService {
+export class MainService {
 
   private headers = new Headers({'Content-Type': 'application/json'});
   private baseUrl = 'http://localhost:8080/';
@@ -30,20 +30,15 @@ export class EntryService {
 
   getJournalsForUserId(userId: number): Observable<Journal[]> {
     return this.http.get(this.baseUrl + "journals/findbyuserid/" + userId)
-      .map((response:Response) => response.json())
+      .map((response: Response) => response.json())
       .catch(this.handleError)
-  }
-
-  private handleError(error: any): Observable<any> {
-    console.error("Error occurred on EntryService:::", error);
-    return Observable.throw(error.json().error || 'Server error');
   }
 
   saveEntry(entry: JournalEntry): Promise<JournalEntry> {
     let saveUrl = this.baseUrl + "journalEntries/create";
     return this.http.post(saveUrl, JSON.stringify(entry), {headers: this.headers})
       .toPromise()
-      .then((savedEntry:Response) => savedEntry.json())
+      .then((savedEntry: Response) => savedEntry.json())
       .catch(this.handleError)
   }
 
@@ -53,5 +48,17 @@ export class EntryService {
       .toPromise()
       .then(user => user.json().data as User)
       .catch(this.handleError)
+  }
+
+  getJournalEntriesCreatedAfterDate(dateToSearch: Date, journalId: number): Observable<JournalEntry[]> {
+    return this.http.get(this.baseUrl + "journalEntries/findByJournalIdAndCreatedDate/" + journalId + "/"
+      + dateToSearch.toDateString())
+      .map((response: Response) => response.toString())
+      .catch(this.handleError)
+  }
+
+  private handleError(error: any): Observable<any> {
+    console.error("Error occurred on MainService:::", error);
+    return Observable.throw(error.json().error || 'Server error');
   }
 }

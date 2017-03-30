@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Params} from '@angular/router';
 import {Location} from '@angular/common';
 
-import {JournalEntry} from './domain/entry';
-import {EntryService} from "./services/entry.service";
+import {JournalEntry} from './domain/journalEntry';
+import {MainService} from "./services/main.service";
 
 @Component({
   selector: 'app-root',
@@ -14,7 +14,7 @@ export class EntryComponent implements OnInit {
   entry: JournalEntry;
   journalId: number;
 
-  constructor(private entryService: EntryService,
+  constructor(private entryService: MainService,
               private route: ActivatedRoute,
               private location: Location) {
     this.entry = new JournalEntry();

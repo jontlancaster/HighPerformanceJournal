@@ -9,14 +9,16 @@ import {LoginComponent} from './login.component';
 import {EntryComponent} from './entry.component';
 import {ReportsComponent} from './reports.component';
 import {AdminComponent} from './admin.component';
-import {EntryService} from './services/entry.service';
+import {MainService} from './services/main.service';
 import {JournalsComponent} from './journals.component';
+import {JournalEntriesComponent} from './journalEntries.component';
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'entry/:journalId', component: EntryComponent},
   {path: 'journals', component: JournalsComponent},
-  {path: 'admin', component: AdminComponent}
+  {path: 'admin', component: AdminComponent},
+  {path: 'journalEntries/:journalId', component: JournalEntriesComponent}
 ];
 
 
@@ -27,7 +29,8 @@ const appRoutes: Routes = [
     EntryComponent,
     ReportsComponent,
     AdminComponent,
-    JournalsComponent
+    JournalsComponent,
+    JournalEntriesComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +38,7 @@ const appRoutes: Routes = [
     HttpModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [EntryService],
+  providers: [MainService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

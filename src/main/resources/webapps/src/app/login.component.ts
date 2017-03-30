@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {User} from './domain/user';
-import {EntryService} from "./services/entry.service";
+import {MainService} from "./services/main.service";
 
 @Component({
   selector: 'app-root',
@@ -11,7 +11,7 @@ export class LoginComponent {
   user: User;
   newUser: boolean;
 
-  constructor(private entryService: EntryService) {
+  constructor(private entryService: MainService) {
     this.user = new User();
     this.newUser = false;
   }

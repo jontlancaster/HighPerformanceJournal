@@ -2,9 +2,9 @@ import 'rxjs/add/operator/switchMap'
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Params} from '@angular/router';
 
-import {JournalEntry} from './domain/entry';
+import {JournalEntry} from './domain/journalEntry';
 import {Journal} from './domain/journal';
-import {EntryService} from './services/entry.service';
+import {MainService} from './services/main.service';
 import {isNullOrUndefined} from "util";
 import {Observable} from "rxjs";
 
@@ -19,7 +19,7 @@ export class ReportsComponent implements OnInit {
   selectedEntry: JournalEntry;
 
 
-  constructor(private entryService: EntryService,
+  constructor(private entryService: MainService,
               private route: ActivatedRoute) {
   }
 

@@ -1,13 +1,24 @@
 import {Component} from '@angular/core';
+import {User} from "./domain/user";
+import {MainService} from "./services/main.service";
 
 @Component({
   selector: 'app-root',
-  template: `<html>
-                <div id="content">
-                  <h2>Admin Area</h2>
-                </div>
-              </html>
-            `
+  templateUrl: 'admin.html'
 })
 
-export class AdminComponent {}
+export class AdminComponent {
+  private selectedUser: User;
+  private username: string;
+
+  constructor(private entryService: MainService) {
+  }
+
+  editUser(): void {
+
+  }
+
+  viewUserJournals(): void {
+
+  }
+}
