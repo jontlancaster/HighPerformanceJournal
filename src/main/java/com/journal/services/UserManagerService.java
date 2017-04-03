@@ -13,6 +13,9 @@ public class UserManagerService {
 
     @Autowired
     private UserRepository repository;
+    @Autowired
+    private UserRoleManagerService roleService;
+
 
     public User findUser(String username) {
         User user = new User();
@@ -28,19 +31,18 @@ public class UserManagerService {
         return user;
     }
 
-    public boolean createNewUser(User newUser) {
-        boolean success = false;
+    public User createNewUser(User newUser) {
         try {
             if (repository.countByUsername(newUser.getUsername()) != 0) {
                 System.out.println("That username already exists! Please enter a different username.");
             } else {
-                repository.save(newUser);
-                success = true;
+                newUser = repository.save(newUser);
+                roleService.createDefaultRole(newUser.getUsername());
             }
         } catch (Exception exception) {
             System.out.println("There was an exception saving the new user. " + exception.getMessage());
         }
-        return success;
+        return newUser;
     }
 
     public boolean updateUser(User user) {
