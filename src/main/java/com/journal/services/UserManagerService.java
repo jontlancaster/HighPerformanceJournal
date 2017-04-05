@@ -14,7 +14,9 @@ public class UserManagerService {
     @Autowired
     private UserRepository repository;
     @Autowired
-    private UserRoleManagerService roleService;
+    private UserRoleManagerService roleManager;
+    @Autowired
+    private JournalManagerService journalManager;
 
 
     public User findUser(String username) {
@@ -37,7 +39,8 @@ public class UserManagerService {
                 System.out.println("That username already exists! Please enter a different username.");
             } else {
                 newUser = repository.save(newUser);
-                roleService.createDefaultRole(newUser.getUsername());
+                roleManager.createDefaultRole(newUser.getUsername());
+                journalManager.createJournal(newUser);
             }
         } catch (Exception exception) {
             System.out.println("There was an exception saving the new user. " + exception.getMessage());

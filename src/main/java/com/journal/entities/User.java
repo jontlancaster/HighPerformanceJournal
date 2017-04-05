@@ -1,9 +1,12 @@
 package com.journal.entities;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * Created by jonathon lancaster on 1/21/2017.
@@ -29,10 +32,12 @@ public class User {
 
     private boolean enabled;
 
-    @Column(name="created_date", updatable = false, insertable = false)
-    private Date createdDate;
+    @CreationTimestamp
+    @Column(name="created_date")
+    private Timestamp createdDate;
 
-    @Column(name="modified_date", updatable = false, insertable = false)
-    private Date modifiedDate;
+    @UpdateTimestamp
+    @Column(name="modified_date")
+    private Timestamp modifiedDate;
 
 }

@@ -16,7 +16,6 @@ public class UserController {
     @Autowired
     private UserManagerService userManager;
 
-    @CrossOrigin
     @RequestMapping(value="/users/create",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -31,8 +30,8 @@ public class UserController {
         return userManager.createNewUser(user);
     }
 
-    @RequestMapping(value = "/users/find")
-    public User findUser(@RequestBody String username) { return userManager.findUser(username); }
+    @RequestMapping(value = "/users/find", method = RequestMethod.GET)
+    public User findUser(@RequestParam("username") String username) { return userManager.findUser(username); }
 
     @RequestMapping(value = "/users/disable", method = RequestMethod.POST)
     public boolean disableUser(@RequestParam("username") String username) {

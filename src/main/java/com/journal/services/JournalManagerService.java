@@ -1,6 +1,7 @@
 package com.journal.services;
 
 import com.journal.entities.Journal;
+import com.journal.entities.User;
 import com.journal.repositories.JournalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,18 +13,22 @@ import org.springframework.stereotype.Service;
 public class JournalManagerService {
 
     @Autowired
-    JournalRepository repository;
+    private JournalRepository repository;
 
-    public boolean createJournal(Journal newJournal) {
-            boolean success = false;
-
-            try {
-                repository.save(newJournal);
-                success = true;
-            } catch (Exception exception) {
-                System.out.println("There was an exception saving the new user. " + exception.getMessage());
-            }
-            return success;
+    public Journal createJournal(User user) {
+        Journal newJournal = new Journal();
+        newJournal.setJournalName(user.getFirstName() + "\'s Journal");
+        newJournal.setUser(user);
+        try {
+            newJournal = repository.save(newJournal);
+        } catch (Exception exception) {
+            System.out.println("There was an exception saving the new user. " + exception.getMessage());
+        }
+        return newJournal;
     }
+
+//    public Journal getJournalForLoggedInUser() {
+//
+//    }
 
 }

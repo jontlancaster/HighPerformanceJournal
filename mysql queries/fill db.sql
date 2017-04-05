@@ -34,10 +34,7 @@ values ('Jons Journal', 1),
   ('bigs journal', 5),
   ('oscars journal', 6),
   ('thes journal', 7),
-  ('thes journal 2', 7),
-  ('cookies journal', 8),
-  ('cookies journal 2', 8),
-  ('cookies journal 3', 8);
+  ('cookies journal', 8);
 
 insert into journal_entries (journal_id, positive_review, goal, momentum, mental_toughness, willingness, determination, motivation, attitude, personal_impact)
 values (1, 'positive review', 'goal', 'momentum', 1, 1, 1, 1, 1, 1),
