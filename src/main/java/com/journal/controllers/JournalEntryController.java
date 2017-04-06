@@ -17,7 +17,7 @@ public class JournalEntryController {
     @Resource
     private JournalEntryRepository journalEntryRepository;
     @Resource
-    JournalEntryManagerService entryManager;
+    private JournalEntryManagerService entryManager;
 
     @RequestMapping("/journalEntries/{journalId}")
     public List<JournalEntry> getJournalEntries(@PathVariable("journalId") int journalId) { return journalEntryRepository.findByJournalJournalId(journalId); }

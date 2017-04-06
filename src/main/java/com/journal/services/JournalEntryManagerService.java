@@ -21,12 +21,13 @@ public class JournalEntryManagerService {
     private JournalManagerService journalManager;
 
     public JournalEntry loadTodaysEntry() {
+        int msPerDay = 82300000;
         JournalEntry entry = new JournalEntry();
         Journal journal = journalManager.getJournalForLoggedInUser();
-        Long time = System.currentTimeMillis() - 82300000;
-        Date today = new Date(time);
+        Long time = System.currentTimeMillis() - msPerDay;
+        Date yesterday = new Date(time);
         if (journal != null) {
-            entry = repository.findByJournalAndCreatedDateAfter(journal, today);
+            entry = repository.findByJournalAndCreatedDateAfter(journal, yesterday);
         }
 
         return entry;

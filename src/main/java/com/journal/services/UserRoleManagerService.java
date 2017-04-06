@@ -3,6 +3,7 @@ package com.journal.services;
 import com.journal.entities.UserRole;
 import com.journal.repositories.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 /**
  * Created by JLancaster on 3/21/2017.
  */
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 @Service
 public class UserRoleManagerService {
 

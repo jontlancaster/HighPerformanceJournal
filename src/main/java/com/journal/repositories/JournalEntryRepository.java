@@ -19,8 +19,6 @@ public interface JournalEntryRepository extends JpaRepository <JournalEntry, Int
 
     List<JournalEntry> findByJournalJournalId(int journalId);
 
-    List<JournalEntry> findByJournalJournalIdAndModifiedDate(int journalId, Date modifiedDate);
-
     JournalEntry findByJournalAndCreatedDateAfter(Journal journal, Date today);
 
     JournalEntry save(JournalEntry entry);
