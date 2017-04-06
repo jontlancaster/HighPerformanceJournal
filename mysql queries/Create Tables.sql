@@ -32,7 +32,7 @@ journal_name varchar(255) NOT NULL,
 user_id int NOT NULL,
 created_date DATETIME NOT NULL DEFAULT current_timestamp,
 modified_date DATETIME NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
-FOREIGN KEY (user_id) REFERENCES users (user_id)
+FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
 );
 
 CREATE Table journal_entries

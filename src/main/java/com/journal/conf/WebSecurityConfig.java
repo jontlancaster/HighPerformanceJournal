@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 /**
@@ -17,14 +18,14 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    DataSource dataSource;
+    @Resource
+    private DataSource dataSource;
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
-                    .antMatchers("/", "/home", "/**").permitAll()//hasRole("USER")
+                    .antMatchers("/", "/home", "/**").hasRole("USER")//.permitAll()//
                     .anyRequest().authenticated()
                     .and()
                 .formLogin().loginPage("/login").permitAll()
