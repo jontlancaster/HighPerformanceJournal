@@ -3,6 +3,7 @@ package com.journal.repositories;
 import com.journal.entities.Journal;
 import com.journal.entities.JournalEntry;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
@@ -19,7 +20,7 @@ public interface JournalEntryRepository extends JpaRepository <JournalEntry, Int
 
     List<JournalEntry> findByJournalJournalId(int journalId);
 
-    JournalEntry findByJournalAndCreatedDateAfter(Journal journal, Date today);
+    JournalEntry findByJournalAndCreatedDate(Journal journal, Date today);
 
     JournalEntry save(JournalEntry entry);
 

@@ -47,9 +47,8 @@ public class JournalEntry {
 
     @CreationTimestamp
     @Column(name="created_date")
-    private Timestamp createdDate;
+    private Date createdDate;
 
-    @UpdateTimestamp
-    @Column(name="modified_date")
+    @Column(name="modified_date", insertable = false, updatable = false)
     private Timestamp modifiedDate;
 }

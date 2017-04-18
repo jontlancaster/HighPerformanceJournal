@@ -22,9 +22,9 @@ public class JournalEntryController {
     @RequestMapping("/journalEntries/{journalId}")
     public List<JournalEntry> getJournalEntries(@PathVariable("journalId") int journalId) { return journalEntryRepository.findByJournalJournalId(journalId); }
 
-    @RequestMapping(value = "/journalEntries/create", method = RequestMethod.POST)
-    public @ResponseBody JournalEntry createEntry(@RequestBody final JournalEntry newEntry) {
-        return journalEntryRepository.save(newEntry);
+    @RequestMapping(value = "/journalEntries/save", method = RequestMethod.POST)
+    public @ResponseBody JournalEntry saveEntry(@RequestBody final JournalEntry entry) {
+        return entryManager.saveEntry(entry);
     }
 
     @RequestMapping(value = "/journalEntries/todaysEntry", method = RequestMethod.GET)

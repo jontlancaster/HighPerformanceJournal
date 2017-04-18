@@ -10,7 +10,7 @@ last_name varchar(255),
 username varchar(60) NOT NULL UNIQUE,
 password varchar(60) NOT NULL,
 enabled BOOL NOT NULL DEFAULT true,
-created_date DATETIME NOT NULL DEFAULT current_timestamp,
+created_date DATE NOT NULL DEFAULT current_timestamp,
 modified_date DATETIME NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp
 );
 
@@ -30,7 +30,7 @@ CREATE table journals
 journal_id int PRIMARY KEY AUTO_INCREMENT,
 journal_name varchar(255) NOT NULL,
 user_id int NOT NULL,
-created_date DATETIME NOT NULL DEFAULT current_timestamp,
+created_date DATE NOT NULL DEFAULT current_timestamp,
 modified_date DATETIME NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
 FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
 );
@@ -48,7 +48,7 @@ determination int NOT NULL,
 motivation int NOT NULL,
 attitude int NOT NULL,
 personal_impact int NOT NULL,
-created_date DATETIME NOT NULL DEFAULT current_timestamp,
+created_date DATE NOT NULL DEFAULT current_timestamp,
 modified_date DATETIME NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
 FOREIGN KEY (journal_id) REFERENCES journals (journal_id) ON DELETE CASCADE
 );

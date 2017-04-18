@@ -11,7 +11,6 @@ import java.util.List;
 /**
  * Created by JLancaster on 3/21/2017.
  */
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 @Service
 public class UserRoleManagerService {
 
@@ -36,7 +35,7 @@ public class UserRoleManagerService {
 
     public boolean enableAdmin(String username) {
         return enableRole(username, adminRole);
-    }
+    } //TODO: make enabling admin also enable coach
 
     public boolean enableCoach(String username) {
         return enableRole(username, coachRole);
@@ -48,7 +47,7 @@ public class UserRoleManagerService {
 
     public boolean disableCoach(String username) {
         return disableRole(username, coachRole);
-    }
+    } //TODO: make disabling the coach also disable admin
 
     private boolean enableRole(String username, String role) {
         boolean success = false;

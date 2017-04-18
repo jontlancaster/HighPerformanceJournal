@@ -8,28 +8,48 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Date;
-import java.sql.Timestamp;
 
 /**
  * Created by jonathon lancaster on 4/5/2017.
  */
 @Service
 public class JournalEntryManagerService {
-    @Autowired
+    @Resource
     private JournalEntryRepository repository;
     @Resource
     private JournalManagerService journalManager;
 
     public JournalEntry loadTodaysEntry() {
-        int msPerDay = 82300000;
         JournalEntry entry = new JournalEntry();
-        Journal journal = journalManager.getJournalForLoggedInUser();
-        Long time = System.currentTimeMillis() - msPerDay;
-        Date yesterday = new Date(time);
-        if (journal != null) {
-            entry = repository.findByJournalAndCreatedDateAfter(journal, yesterday);
+        try {
+            Journal journal = journalManager.getJournalForLoggedInUser();
+            Long time = System.currentTimeMillis();
+            Date today = new Date(time);
+            if (journal != null) {
+                entry = repository.findByJournalAndCreatedDate(journal, today);
+            }
+        } catch (Exception e) {
+            System.out.println("There was an error loading today's journal entry. " + e.getMessage());
         }
 
         return entry;
+    }
+
+    public JournalEntry saveEntry(JournalEntry entry) {
+        Journal journal = journalManager.getJournalForLoggedInUser();
+        JournalEntry todaysEntry = loadTodaysEntry();
+
+        try {
+            entry.setJournal(journal);
+            if (todaysEntry != null) {
+                entry.setJournalEntryId(todaysEntry.getJournalEntryId());
+                //entry.setCreatedDate(todaysEntry.getCreatedDate());
+            }
+            todaysEntry = repository.save(entry);
+        } catch (Exception e) {
+            System.out.println("There was an error saving the journal entry " + e.getMessage());
+        }
+
+        return todaysEntry;
     }
 }
