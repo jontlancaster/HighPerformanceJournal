@@ -18,11 +18,10 @@ public class JournalEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="journal_entry_id")
-    private int journalEntryId;
+    private long journalEntryId;
 
-    @ManyToOne
-    @JoinColumn(name="journal_id")
-    private Journal journal;
+    @Column(name="journal_id")
+    private long journalId;
 
     @Column(name="positive_review")
     private String positiveReview;

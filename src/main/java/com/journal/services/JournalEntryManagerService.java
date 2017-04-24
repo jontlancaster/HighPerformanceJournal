@@ -3,7 +3,6 @@ package com.journal.services;
 import com.journal.entities.Journal;
 import com.journal.entities.JournalEntry;
 import com.journal.repositories.JournalEntryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -26,7 +25,7 @@ public class JournalEntryManagerService {
             Long time = System.currentTimeMillis();
             Date today = new Date(time);
             if (journal != null) {
-                entry = repository.findByJournalAndCreatedDate(journal, today);
+                entry = repository.findByJournalIdAndCreatedDate(journal.getJournalId(), today);
             }
         } catch (Exception e) {
             System.out.println("There was an error loading today's journal entry. " + e.getMessage());
@@ -40,10 +39,10 @@ public class JournalEntryManagerService {
         JournalEntry todaysEntry = loadTodaysEntry();
 
         try {
-            entry.setJournal(journal);
+            entry.setJournalId(journal.getJournalId());
             if (todaysEntry != null) {
                 entry.setJournalEntryId(todaysEntry.getJournalEntryId());
-                //entry.setCreatedDate(todaysEntry.getCreatedDate());
+                entry.setCreatedDate(todaysEntry.getCreatedDate());
             }
             todaysEntry = repository.save(entry);
         } catch (Exception e) {

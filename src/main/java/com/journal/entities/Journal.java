@@ -18,7 +18,7 @@ public class Journal {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="journal_id")
-    private int journalId;
+    private long journalId;
 
     @Column(name="journal_name")
     private String journalName;
