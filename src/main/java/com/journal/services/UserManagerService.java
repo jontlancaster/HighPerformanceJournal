@@ -3,6 +3,7 @@ package com.journal.services;
 import com.journal.entities.User;
 import com.journal.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,6 +18,8 @@ public class UserManagerService {
     private UserRoleManagerService roleManager;
     @Autowired
     private JournalManagerService journalManager;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     public User findUser(String username) {
@@ -34,18 +37,25 @@ public class UserManagerService {
     }
 
     public User createNewUser(User newUser) {
+        User user = new User();
+        user.setFirstName(newUser.getFirstName());
+        user.setLastName(newUser.getLastName());
+        user.setUsername(newUser.getUsername());
+        user.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        user.setEnabled(true);
+
         try {
-            if (repository.countByUsername(newUser.getUsername()) != 0) {
+            if (repository.countByUsername(user.getUsername()) != 0) {
                 System.out.println("That username already exists! Please enter a different username.");
             } else {
-                newUser = repository.save(newUser);
-                roleManager.createDefaultRole(newUser.getUsername());
-                journalManager.createJournal(newUser);
+                user = repository.save(user);
+                roleManager.createDefaultRole(user.getUsername());
+                journalManager.createJournal(user);
             }
         } catch (Exception exception) {
             System.out.println("There was an exception saving the new user. " + exception.getMessage());
         }
-        return newUser;
+        return user;
     }
 
     public boolean updateUser(User user) {
