@@ -22,14 +22,8 @@ public class UserController {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public User createUser(@RequestBody final User newUser) {
-        User user = new User();
-        user.setFirstName(newUser.getFirstName());
-        user.setLastName(newUser.getLastName());
-        user.setUsername(newUser.getUsername());
-        user.setPassword(newUser.getPassword());
-        user.setEnabled(true);
 
-        return userManager.createNewUser(user);
+        return userManager.createNewUser(newUser);
     }
 
     @PreAuthorize("hasRole('ROLE_COACH')")

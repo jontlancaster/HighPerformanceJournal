@@ -4,7 +4,7 @@ USE clearlinkjournal;
 
 CREATE table users
 (
-user_id int PRIMARY KEY AUTO_INCREMENT,
+user_id LONG PRIMARY KEY AUTO_INCREMENT,
 first_name varchar(255) NOT NULL,
 last_name varchar(255),
 username varchar(60) NOT NULL UNIQUE,
@@ -16,7 +16,7 @@ modified_date DATETIME NOT NULL DEFAULT current_timestamp ON UPDATE current_time
 
 CREATE Table user_roles
 (
-  user_role_id int PRIMARY KEY AUTO_INCREMENT,
+  user_role_id LONG PRIMARY KEY AUTO_INCREMENT,
   username varchar(60) NOT NULL,
   role VARCHAR(60) NOT NULL,
   UNIQUE KEY uni_username_role (role, username),
@@ -27,9 +27,9 @@ CREATE Table user_roles
 
 CREATE table journals
 (
-journal_id int PRIMARY KEY AUTO_INCREMENT,
+journal_id LONG PRIMARY KEY AUTO_INCREMENT,
 journal_name varchar(255) NOT NULL,
-user_id int NOT NULL,
+user_id LONG NOT NULL,
 created_date DATE NOT NULL DEFAULT current_timestamp,
 modified_date DATETIME NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
 FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
@@ -37,8 +37,8 @@ FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
 
 CREATE Table journal_entries
 (
-journal_entry_id int PRIMARY KEY AUTO_INCREMENT,
-journal_id int NOT NULL,
+journal_entry_id LONG PRIMARY KEY AUTO_INCREMENT,
+journal_id LONG NOT NULL,
 positive_review varchar(1000),
 goal varchar(1000),
 momentum varchar(1000),

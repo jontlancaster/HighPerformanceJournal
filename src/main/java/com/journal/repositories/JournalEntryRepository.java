@@ -16,11 +16,11 @@ import java.util.List;
  */
 @Repository
 public interface JournalEntryRepository extends JpaRepository <JournalEntry, Integer> {
-    JournalEntry findByJournalEntryId(int journalEntryId);
+    JournalEntry findByJournalEntryId(long journalEntryId);
 
-    List<JournalEntry> findByJournalJournalId(int journalId);
+    List<JournalEntry> findByJournalId(long journalId);
 
-    JournalEntry findByJournalAndCreatedDate(Journal journal, Date today);
+    JournalEntry findByJournalIdAndCreatedDate(long journalId, Date createdDate);
 
     JournalEntry save(JournalEntry entry);
 

@@ -53,7 +53,7 @@ public class JournalIntegrationTests {
 
 	@Test
 	public void testFindAllJournalEntriesByJournalId() {
-		List<JournalEntry> entryList = journalEntryRepository.findByJournalJournalId(1);
+		List<JournalEntry> entryList = journalEntryRepository.findByJournalId(1);
 		assertEquals(2, entryList.size());
 	}
 }

@@ -20,7 +20,7 @@ public class JournalEntryController {
     private JournalEntryManagerService entryManager;
 
     @RequestMapping("/journalEntries/{journalId}")
-    public List<JournalEntry> getJournalEntries(@PathVariable("journalId") int journalId) { return journalEntryRepository.findByJournalJournalId(journalId); }
+    public List<JournalEntry> getJournalEntries(@PathVariable("journalId") int journalId) { return journalEntryRepository.findByJournalId(journalId); }
 
     @RequestMapping(value = "/journalEntries/save", method = RequestMethod.POST)
     public @ResponseBody JournalEntry saveEntry(@RequestBody final JournalEntry entry) {
