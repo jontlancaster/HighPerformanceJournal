@@ -12,7 +12,8 @@ import {User} from "../domain/user";
 export class MainService {
 
   private headers = new Headers({'Content-Type': 'application/json'});
-  private baseUrl = 'http://localhost:8080/';
+  // private baseUrl = 'http://localhost:8080/';
+  private baseUrl = 'http://192.168.0.2:8080/';
 
   constructor(private http: Http) {
   }
@@ -35,7 +36,7 @@ export class MainService {
   }
 
   saveEntry(entry: JournalEntry): Promise<JournalEntry> {
-    let saveUrl = this.baseUrl + "journalEntries/create";
+    let saveUrl = this.baseUrl + "journalEntries/save";
     return this.http.post(saveUrl, JSON.stringify(entry), {headers: this.headers})
       .toPromise()
       .then((savedEntry: Response) => savedEntry.json())
@@ -60,5 +61,13 @@ export class MainService {
   private handleError(error: any): Observable<any> {
     console.error("Error occurred on MainService:::", error);
     return Observable.throw(error.json().error || 'Server error');
+  }
+
+  authenticate(user: User): Observable<Journal> {
+    let authUrl = this.baseUrl + "authenticate/" + user.username + "/key/" + user.password;
+    return this.http.get(authUrl)
+        .map(journalEntry => journalEntry.json().data as JournalEntry)
+        .catch(this.handleError);
+
   }
 }

@@ -1,26 +1,68 @@
 <!--{{diagnostic}}-->
+<html>
 <div class="col-lg-6" id="content">
-  <h1>Share your thoughts</h1>
-  <form >
-    <div class="form-group">
-      <label for="positiveReview">Positive Review</label>
-      <textarea [(ngModel)]="entry.positiveReview" name="positiveReview" class="form-control" id="positiveReview"
-             required rows="12" cols="25">
-      </textarea>
-    </div>
-    <div class="form-group">
-      <label for="goal">Goal</label>
-      <textarea [(ngModel)]="entry.goal" name="goal" class="form-control" id="goal"
-             required rows="12" cols="25">
-      </textarea>
-    </div>
-    <div class="form-group">
-      <label for="momentum">Momentum</label>
-      <textarea [(ngModel)]="entry.momentum" name="momentum" class="form-control" id="momentum"
-             required rows="12" cols="25">
-      </textarea>
-    </div>
-    <button type="submit" class="btn btn-success" (click)="onSave()">Save</button>
-  </form>
+    <h1>Share your thoughts</h1>
+    <form>
+        <table>
+            <tbody>
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <label for="positiveReview">Positive Review</label>
+                        <textarea [(ngModel)]="entry.positiveReview" name="positiveReview" class="form-control"
+                                  id="positiveReview"
+                                  required rows="8" cols="65">
+                </textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="goal">Goal</label>
+                        <textarea [(ngModel)]="entry.goal" name="goal" class="form-control" id="goal"
+                                  required rows="8" cols="65">
+                </textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="momentum">Momentum</label>
+                        <textarea [(ngModel)]="entry.momentum" name="momentum" class="form-control" id="momentum"
+                                  required rows="8" cols="65">
+                </textarea>
+                    </div>
+                </td>
+                <td>
+                    <div class="emptyCellDivider"></div>
+                </td>
+                <td>
+                    <div>
+                        <label for="mentalToughness">Mental Toughness</label>
+                        <input id="mentalToughness" name="mentalToughness" type="range" min="0" max="5" value="0">
+                    </div>
+                    <div>
+                        <label for="willingness">Willingness</label>
+                        <input id="willingness" type="range" min="0" max="5" value="0">
+                    </div>
+                    <div>
+                        <label for="determination">Determination</label>
+                        <input id="determination" type="range" min="0" max="5" value="0">
+                    </div>
+                    <div>
+                        <label for="motivation">Motivation</label>
+                        <input id="motivation" type="range" min="0" max="5" value="0" [(ngModel)]="entry.motivation">
+                    </div>
+                    <div>
+                        <label for="attitude">Attitude</label>
+                        <input id="attitude" type="range" min="0" max="5" value="0" [(ngModel)]="entry.attitude">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <div>
+                    <button type="submit" class="btn btn-success" (click)="onSave()">Save</button>
+                </div>
+            </tr>
+            </tbody>
+        </table>
+
+    </form>
 </div>
+</html>
 

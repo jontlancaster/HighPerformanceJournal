@@ -12,13 +12,15 @@ import {AdminComponent} from './admin.component';
 import {MainService} from './services/main.service';
 import {JournalsComponent} from './journals.component';
 import {JournalEntriesComponent} from './journalEntries.component';
+import {LogoutComponent} from './logout.component'
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'entry/:journalId', component: EntryComponent},
-  {path: 'journals', component: JournalsComponent},
+  {path: 'journal', component: JournalsComponent},
   {path: 'admin', component: AdminComponent},
-  {path: 'journalEntries/:journalId', component: JournalEntriesComponent}
+  {path: 'journalEntries/:journalId', component: JournalEntriesComponent},
+  {path: 'logout', component: LogoutComponent}
 ];
 
 
@@ -30,7 +32,8 @@ const appRoutes: Routes = [
     ReportsComponent,
     AdminComponent,
     JournalsComponent,
-    JournalEntriesComponent
+    JournalEntriesComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

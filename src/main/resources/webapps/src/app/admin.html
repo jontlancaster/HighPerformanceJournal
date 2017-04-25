@@ -1,10 +1,67 @@
 <html>
 <div class="col-lg-6" id="content">
-  <h1>System Administration</h1>
-  <input [(ngModel)]="username" type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
-  <div class="btn-group-vertical btn-group-lg" role="group" aria-label="...">
-    <button type="submit" class="btn btn-primary" (click)="editUser()">Edit User</button>
-    <button type="submit" class="btn btn-primary" (click)="viewUserJournals()">View User Journals</button>
-  </div>
+    <div id="userEdit">
+        <table>
+            <tbody>
+            <tr>
+                <td>
+                    <div id="passwordUpdate">
+                        <label for="newPassword">Change Password</label>
+                        <input id="newPassword" [(ngModel)]="newPassword" name="newPassword" type="password"
+                               class="form-control">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword" type="password"
+                               class="form-control">
+                        <button type="submit" class="btn btn-success" (click)="updatePassword()">Update Password
+                        </button>
+                    </div>
+                </td>
+                <td>
+                    <div class="emptyCellDivider"></div>
+                </td>
+                <td>
+                    <div id="nameUpdate">
+                        <label for="firstName">First Name</label>
+                        <input id="firstName" [(ngModel)]="firstName" name="firstName" type="text" class="form-control">
+                        <label for="lastName">Last Name</label>
+                        <input id="lastName" [(ngModel)]="lastName" name="lastName" type="text" class="form-control">
+                        <button type="submit" class="btn btn-success" (click)="updateName()">Update Name</button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <ng-container *ngIf="isAdmin">
+        <h1>User Administration</h1>
+        <table>
+            <tbody>
+            <tr>
+                <td>
+                    <input [(ngModel)]="username" type="text" class="form-control" placeholder="Username"
+                           aria-describedby="basic-addon1">
+                    <div class="btn-group-vertical btn-group-lg" role="group" aria-label="...">
+                        <button type="submit" class="btn btn-primary" (click)="searchUser()">Search User</button>
+                        <!--<button type="submit" class="btn btn-primary" (click)="viewUserJournals()">View User Journals</button>-->
+                    </div>
+                </td>
+                <td>
+                    <div class="emptyCellDivider"></div>
+                </td>
+                <td>
+                    <h4>User: {{searchedUser}}</h4>
+                    <div id="userRoleEdit">
+                        <label class="radio-inline"><input type="radio">Coach</label>
+                        <label class="radio-inline"><input type="radio">Admin</label>
+                        <label class="radio-inline"><input type="radio">Disabled</label>
+                        <div>
+                            <button type="submit" class="btn btn-success" (click)="updateRole()">Update Role</button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </ng-container>
 </div>
 </html>

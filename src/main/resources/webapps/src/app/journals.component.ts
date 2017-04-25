@@ -34,7 +34,7 @@ export class JournalsComponent implements OnInit {
         this.journalSize = this.journals.length;
       },
       error => {
-        console.log("There was ane error while waiting on Journals subscription: " + error)
+        console.log("There was an error while waiting on Journals subscription: " + error)
       });
   }
 

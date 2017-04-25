@@ -9,7 +9,8 @@ import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-root',
-  templateUrl: 'journalEntries.html'
+  // templateUrl: 'journalEntries.html'
+  templateUrl: 'entry.html'
 })
 
 export class JournalEntriesComponent implements OnInit {
@@ -24,6 +25,7 @@ export class JournalEntriesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //this is how to get variable from request
     this.route.params.subscribe(params => {
       this.journalId = +params['journalId'];
     });

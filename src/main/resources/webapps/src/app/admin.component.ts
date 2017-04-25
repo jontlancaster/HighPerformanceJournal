@@ -1,24 +1,42 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {User} from "./domain/user";
-import {MainService} from "./services/main.service";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: 'admin.html'
+    selector: 'app-root',
+    templateUrl: 'admin.html'
 })
 
-export class AdminComponent {
-  private selectedUser: User;
-  private username: string;
+export class AdminComponent extends OnInit{
+    private searchedUser: string;
+    private username: string;
+    private isAdmin: boolean;
+    private newPassword: string;
+    private confirmPassword: string;
+    private firstName: string;
+    private lastName: string;
 
-  constructor(private entryService: MainService) {
-  }
+    ngOnInit(): void {
+        this.isAdmin = true;
+        this.searchedUser = 'Harcoded username'
+    }
 
-  editUser(): void {
+    updatePassword(): void {
 
-  }
+    }
 
-  viewUserJournals(): void {
+    updateName(): void {
 
-  }
+    }
+
+    searchUser(): void {
+
+    }
+
+    viewUserJournals(): void {
+
+    }
+
+    updateRole(): void {
+
+    }
 }
