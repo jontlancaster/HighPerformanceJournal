@@ -1,14 +1,14 @@
 USE clearlinkjournal;
 
-insert into users (first_name, last_name, username, password, created_date)
-values ('Jon', 'Lancaster', 'jonlan', 'pass', curdate()),
-  ('Fernando', 'Salazar', 'fersal', 'ferSal', curdate()),
-  ('Scuba', 'Steve', 'steve', 'passwd', curdate()),
-  ('Fred', 'Rogers', 'mrrogers', 'neighborhood', curdate()),
-  ('Big', 'Bird', 'bigbird', 'yellow', curdate()),
-  ('Oscar', 'Grouch', 'grouchy', 'garbage', curdate()),
-  ('The', 'Count', 'thecount', 'ILoveToCount', curdate()),
-  ('Cookie', 'Monster', 'cookies', 'cookies', curdate());
+insert into users (first_name, last_name, username, password, created_date) -- The hashed password is pass
+values ('Jon', 'Lancaster', 'jonlan', '$2a$10$7G.D7OQFyAtQ9fZD6gF1eO.3EaQbAXF6izItCm7KCUcP2xE5ElgX2', curdate()),
+  ('Fernando', 'Salazar', 'fersal', '$2a$10$7G.D7OQFyAtQ9fZD6gF1eO.3EaQbAXF6izItCm7KCUcP2xE5ElgX2', curdate()),
+  ('Scuba', 'Steve', 'steve', '$2a$10$7G.D7OQFyAtQ9fZD6gF1eO.3EaQbAXF6izItCm7KCUcP2xE5ElgX2', curdate()),
+  ('Fred', 'Rogers', 'mrrogers', '$2a$10$7G.D7OQFyAtQ9fZD6gF1eO.3EaQbAXF6izItCm7KCUcP2xE5ElgX2', curdate()),
+  ('Big', 'Bird', 'bigbird', '$2a$10$7G.D7OQFyAtQ9fZD6gF1eO.3EaQbAXF6izItCm7KCUcP2xE5ElgX2', curdate()),
+  ('Oscar', 'Grouch', 'grouchy', '$2a$10$7G.D7OQFyAtQ9fZD6gF1eO.3EaQbAXF6izItCm7KCUcP2xE5ElgX2', curdate()),
+  ('The', 'Count', 'thecount', '$2a$10$7G.D7OQFyAtQ9fZD6gF1eO.3EaQbAXF6izItCm7KCUcP2xE5ElgX2', curdate()),
+  ('Cookie', 'Monster', 'cookies', '$2a$10$7G.D7OQFyAtQ9fZD6gF1eO.3EaQbAXF6izItCm7KCUcP2xE5ElgX2', curdate());
 
 insert into user_roles (username, role)
 values ('jonlan', 'ROLE_ADMIN'),
