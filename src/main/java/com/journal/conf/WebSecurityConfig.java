@@ -29,11 +29,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
-                    .antMatchers("/", "/home", "/**").hasRole("USER")//.permitAll()//
-                    .anyRequest().authenticated()
-                    .and()
+                .antMatchers("/", "/home", "/**").hasRole("USER")//.permitAll()//
+                .anyRequest().authenticated()
+                .and()
                 .formLogin().loginPage("/login").permitAll()
-        .and().csrf().disable();
+                .and().csrf().disable();
     }
 
     @Autowired
