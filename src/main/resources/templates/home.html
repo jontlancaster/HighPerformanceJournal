@@ -1,31 +1,42 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Home</title>
+    <title>Clearlink Journal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/6.2.3/rzslider.min.css"/>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/6.2.3/rzslider.min.css"/>
 </head>
 <body ng-app="highPerformanceJournal">
 <div class="container-fluid" ng-controller="JournalEntryController">
     <div class="row">
-        <button class="btn btn-primary" ng-click="submitEntry()">Save Entry</button>
+        <ul class="nav nav-pills">
+            <li disabled="disabled">Clearlink</li>
+            <li role="presentation" class="active"><a href="/home">Home</a></li>
+            <li role="presentation"><a href="/journal">Reports</a></li>
+            <li role="presentation"><a href="/admin">Admin</a></li>
+            <li role="presentation"><a href="/logout">Logout</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        Date: <input type="text" id="datepicker" ng-model="journalSearchDate"/>
+        <button class="btn btn-info" ng-click="getJournal()">Get Journal</button>
     </div>
     <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
             <span>
                 <label for="positiveReviewsTextArea">Positive Review</label>
-                <textarea id="positiveReviewsTextArea" style="display:block;"></textarea>
+                <textarea id="positiveReviewsTextArea" style="display:block;" ng-model="positiveReview"></textarea>
             </span>
             <span>
                 <label for="goalsTextArea">Goals</label>
-                <textarea id="goalsTextArea" style="display:block;"></textarea>
+                <textarea id="goalsTextArea" style="display:block;" ng-model="goals"></textarea>
             </span>
             <span>
                 <label for="momentumsTextArea">Momentums</label>
-                <textarea id="momentumsTextArea" style="display:block;"></textarea>
+                <textarea id="momentumsTextArea" style="display:block;" ng-model="momentums"></textarea>
             </span>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -59,9 +70,16 @@
                 <rzslider id="personalImpactSlider" rz-slider-model="personalImpactSlider.value"
                           rz-slider-options="personalImpactSlider.options"></rzslider>
             </div>
+            <div>
+                <button class="btn btn-primary" ng-click="submitEntry()">Save Entry</button>
+            </div>
         </div>
     </div>
 </div>
+<script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.2/angular.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/6.2.3/rzslider.min.js"></script>
 <script>
@@ -69,7 +87,10 @@
 
     myApp.controller('JournalEntryController', ['$scope', '$timeout',
         function ($scope, $timeout) {
-            $scope.defaultSliderValue = 5;
+            $scope.defaultSliderValue = 0;
+            $scope.positiveReview = undefined;
+            $scope.goals = undefined;
+            $scope.momentums = undefined;
 
             function createSliders() {
                 $scope.mentalToughnessSlider = {
@@ -136,18 +157,32 @@
                 });
             }
 
-            $scope.submitEntry = function() {
+            $scope.submitEntry = function () {
                 console.log('mentalToughness: ' + $scope.mentalToughnessSlider.value);
                 console.log('willingness: ' + $scope.willingnessSlider.value);
                 console.log('determination: ' + $scope.determinationSlider.value);
                 console.log('motivation: ' + $scope.motivationSlider.value);
                 console.log('attitude: ' + $scope.attitudeSlider.value);
                 console.log('personalImpact: ' + $scope.personalImpactSlider.value);
+                console.log('positiveReview: ' + $scope.positiveReview);
+                console.log('goals: ' + $scope.goals);
+                console.log('momentums: ' + $scope.momentums);
+            };
+
+            $scope.getJournal = function () {
+                console.log('journalSearchDate: ' + $("#datepicker").val());
             };
 
             createSliders();
             initializeSlider();
         }]);
+</script>
+<script>
+    $(function () {
+        var $datepicker = $("#datepicker");
+        $datepicker.datepicker({dateFormat: 'mm/dd/yy'});
+        $datepicker.datepicker('setDate', new Date());
+    });
 </script>
 </body>
 </html>
