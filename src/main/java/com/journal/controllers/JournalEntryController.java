@@ -6,6 +6,7 @@ import com.journal.services.JournalEntryManagerService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public class JournalEntryController {
     @Resource
     private JournalEntryManagerService entryManager;
 
-    @RequestMapping("/journalEntries/{journalId}")
+    @RequestMapping("/journalEntries/journal/{journalId}")
     public List<JournalEntry> getJournalEntries(@PathVariable("journalId") int journalId) { return journalEntryRepository.findByJournalId(journalId); }
 
     @RequestMapping(value = "/journalEntries/save", method = RequestMethod.POST)
@@ -31,4 +32,7 @@ public class JournalEntryController {
     public JournalEntry getTodaysEntry() {
         return entryManager.loadTodaysEntry();
     }
+
+    @RequestMapping(value = "/journalEntries/date/{entryDate}")
+    public JournalEntry getEntryByDate(@PathVariable("entryDate") Date entryDate) { return entryManager.loadEntryByDate(entryDate); }
 }

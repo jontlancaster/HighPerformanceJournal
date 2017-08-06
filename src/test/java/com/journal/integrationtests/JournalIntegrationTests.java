@@ -33,18 +33,6 @@ public class JournalIntegrationTests {
 		assertEquals("my journal", journal.getJournalName());
 	}
 
-//	@Test
-//	public void testFindAllJournalsByUserId() {
-//		Journal journals = journalRepository.findByUserUserId(1);
-//		assertEquals(2, journals.size());
-//	}
-//
-//	@Test
-//	public void testFindJournalsByUsername() {
-//		List<Journal> journals = journalRepository.findByUserUsername("jonlan");
-//		assertEquals(2, journals.size());
-//	}
-
 	@Test
 	public void testFindJournalEntryByJournalEntryId() {
 		JournalEntry journalEntry = journalEntryRepository.findByJournalEntryId(1);

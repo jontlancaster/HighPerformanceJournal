@@ -34,8 +34,10 @@ public class UserRoleManagerService {
     }
 
     public boolean enableAdmin(String username) {
+        if (repository.countByUsernameAndRole(username, coachRole) == 0)
+            enableCoach(username);
         return enableRole(username, adminRole);
-    } //TODO: make enabling admin also enable coach
+    }
 
     public boolean enableCoach(String username) {
         return enableRole(username, coachRole);
@@ -46,8 +48,10 @@ public class UserRoleManagerService {
     }
 
     public boolean disableCoach(String username) {
+        if (repository.countByUsernameAndRole(username, adminRole) != 0)
+            disableAdmin(username);
         return disableRole(username, coachRole);
-    } //TODO: make disabling the coach also disable admin
+    }
 
     private boolean enableRole(String username, String role) {
         boolean success = false;

@@ -23,6 +23,4 @@ public interface JournalEntryRepository extends JpaRepository <JournalEntry, Int
     JournalEntry findByJournalIdAndCreatedDate(long journalId, Date createdDate);
 
     JournalEntry save(JournalEntry entry);
-
-    void delete(JournalEntry entry);
 }

@@ -2,10 +2,7 @@ package com.journal.entities;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by jonathon lancaster on 1/21/2017.
@@ -16,6 +13,7 @@ import javax.persistence.Table;
 public class UserRole {
     @Id
     @Column(name="user_role_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long userRoleId;
 
     @Column(name="username")

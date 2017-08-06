@@ -18,18 +18,15 @@ public class UserRoleController {
     @Autowired
     private UserRoleManagerService roleManager;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/userRoles/{username}", method = RequestMethod.GET)
     public List<UserRole> getUserRoles(@PathVariable("username") final String username) {
         return roleManager.getRolesByUsername(username);
     }
 
-
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/userRoles/enableAdmin", method = RequestMethod.POST)
-    public boolean enableAdmin(@RequestBody final String username) {
-        return roleManager.enableAdmin(username);
-    }
-
+    public boolean enableAdmin(@RequestBody final String username) { return roleManager.enableAdmin(username); }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/userRoles/enableCoach", method = RequestMethod.POST)
@@ -37,6 +34,15 @@ public class UserRoleController {
         return roleManager.enableCoach(username);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/userRoles/enableAdminAndCoach", method = RequestMethod.POST)
+    public boolean enableAdminAndCoach(@RequestBody final String username) {
+        boolean result = roleManager.enableAdmin(username);
+        if(result == true)
+            result = roleManager.enableCoach(username);
+
+        return result;
+    }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/userRoles/disableAdmin", method = RequestMethod.POST)
@@ -44,10 +50,19 @@ public class UserRoleController {
         return roleManager.disableAdmin(username);
     }
 
-
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/userRoles/disableCoach", method = RequestMethod.POST)
     public boolean disableCoach(@RequestBody final String username) {
         return roleManager.disableCoach(username);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/userRoles/disableAdminAndCoach", method = RequestMethod.POST)
+    public boolean disableAdminAndCoach(@RequestBody final String username) {
+        boolean result = roleManager.disableAdmin(username);
+        if(result == true)
+            result = roleManager.disableCoach(username);
+
+        return result;
     }
 }

@@ -73,12 +73,6 @@ public class UserIntegrationTests {
     }
 
     @Test
-    public void testFindUserById() {
-        user = userRepository.findByUserId(1);
-        assertEquals("jonlan", user.getUsername());
-    }
-
-    @Test
     public void testFindUserTypeByUserTypeId() {
         userRole = userRoleRepository.findByUserRoleId(1);
         assertEquals(1, userRole.getUserRoleId());

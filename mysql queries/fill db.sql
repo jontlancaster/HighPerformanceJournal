@@ -38,22 +38,12 @@ values ('Jons Journal', 1, curdate()),
 
 insert into journal_entries (journal_id, positive_review, goal, momentum, mental_toughness, willingness, determination, motivation, attitude, personal_impact, created_date)
 values (1, 'positive review', 'goal', 'momentum', 1, 1, 1, 1, 1, 1, curdate()),
-  (1, 'positive review', 'goal', 'momentum', 1, 1, 1, 1, 1, 1, curdate()),
-  (2, 'positive review', 'goal', 'momentum', 1, 1, 1, 1, 1, 1, curdate()),
   (2, 'positive review', 'goal', 'momentum', 1, 1, 1, 1, 1, 1, curdate()),
   (3, 'positive review', 'goal', 'momentum', 1, 1, 1, 1, 1, 1, curdate()),
-  (3, 'positive review', 'goal', 'momentum', 1, 1, 1, 1, 1, 1, curdate()),
-  (4, 'positive review', 'goal', 'momentum', 1, 1, 1, 1, 1, 1, curdate()),
   (4, 'positive review', 'goal', 'momentum', 1, 1, 1, 1, 1, 1, curdate()),
   (5, 'positive review', 'goal', 'momentum', 1, 1, 1, 1, 1, 1, curdate()),
-  (5, 'positive review', 'goal', 'momentum', 1, 1, 1, 1, 1, 1, curdate()),
-  (6, 'positive review', 'goal', 'momentum', 1, 1, 1, 1, 1, 1, curdate()),
   (6, 'positive review', 'goal', 'momentum', 1, 1, 1, 1, 1, 1, curdate()),
   (7, 'positive review', 'goal', 'momentum', 1, 1, 1, 1, 1, 1, curdate()),
-  (7, 'positive review', 'goal', 'momentum', 1, 1, 1, 1, 1, 1, curdate()),
-  (8, 'positive review', 'goal', 'momentum', 1, 1, 1, 1, 1, 1, curdate()),
-  (8, 'positive review', 'goal', 'momentum', 1, 1, 1, 1, 1, 1, curdate()),
-  (8, 'positive review', 'goal', 'momentum', 1, 1, 1, 1, 1, 1, curdate()),
   (8, 'positive review', 'goal', 'momentum', 1, 1, 1, 1, 1, 1, curdate());
 
 

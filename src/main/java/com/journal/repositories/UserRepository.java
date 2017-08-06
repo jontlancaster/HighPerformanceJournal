@@ -13,13 +13,9 @@ import java.util.Objects;
 public interface UserRepository extends JpaRepository<User, Integer> {
     User findByUsername(String username);
 
-    User findByUserId(int userId);
-
     User save(User user);
 
     void delete(User user);
 
     int countByUsername(String username);
-
-
 }

@@ -23,7 +23,7 @@ public interface UserRoleRepository extends JpaRepository <UserRole, Integer> {
     @Query(value = "delete from UserRole u where u.username = ?1 and u.role = ?2")
     void deleteUserRoleByUsernameAndRole(String username, String role);
 
-    UserRole findByUserRoleId(int userRoleId);
+    UserRole findByUserRoleId(long userRoleId);
 
     List<UserRole> findByUsername(String username);
 
