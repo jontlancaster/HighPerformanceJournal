@@ -7,6 +7,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 /**
  * Created by JLancaster on 3/13/2017.
  */
@@ -16,6 +18,12 @@ public class UserController {
 
     @Autowired
     private UserManagerService userManager;
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @RequestMapping("/user")
+    public Principal user(Principal user) {
+        return user;
+    }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value="/users/create",
