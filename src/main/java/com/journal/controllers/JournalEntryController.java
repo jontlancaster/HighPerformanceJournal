@@ -6,7 +6,6 @@ import com.journal.services.JournalEntryManagerService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.sql.Date;
 import java.util.List;
 
 /**
@@ -20,11 +19,14 @@ public class JournalEntryController {
     @Resource
     private JournalEntryManagerService entryManager;
 
-    @RequestMapping("/journalEntries/journal/{journalId}")
-    public List<JournalEntry> getJournalEntries(@PathVariable("journalId") int journalId) { return journalEntryRepository.findByJournalId(journalId); }
+    @RequestMapping("/journalEntries/{journalId}")
+    public List<JournalEntry> getJournalEntries(@PathVariable("journalId") int journalId) {
+        return journalEntryRepository.findByJournalId(journalId);
+    }
 
     @RequestMapping(value = "/journalEntries/save", method = RequestMethod.POST)
-    public @ResponseBody JournalEntry saveEntry(@RequestBody final JournalEntry entry) {
+    public @ResponseBody
+    JournalEntry saveEntry(@RequestBody final JournalEntry entry) {
         return entryManager.saveEntry(entry);
     }
 
@@ -33,6 +35,8 @@ public class JournalEntryController {
         return entryManager.loadTodaysEntry();
     }
 
-    @RequestMapping(value = "/journalEntries/date/{entryDate}")
-    public JournalEntry getEntryByDate(@PathVariable("entryDate") Date entryDate) { return entryManager.loadEntryByDate(entryDate); }
+    @RequestMapping(value = "/journalEntries/findEntryByDate", method = RequestMethod.POST)
+    public JournalEntry findEntryByDate(@RequestBody String createdDate) {
+        return entryManager.findByCreatedDate(createdDate);
+    }
 }

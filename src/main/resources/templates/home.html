@@ -32,11 +32,11 @@
             </span>
             <span>
                 <label for="goalsTextArea">Goals</label>
-                <textarea id="goalsTextArea" style="display:block;" ng-model="goals"></textarea>
+                <textarea id="goalsTextArea" style="display:block;" ng-model="goal"></textarea>
             </span>
             <span>
                 <label for="momentumsTextArea">Momentums</label>
-                <textarea id="momentumsTextArea" style="display:block;" ng-model="momentums"></textarea>
+                <textarea id="momentumsTextArea" style="display:block;" ng-model="momentum"></textarea>
             </span>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -85,16 +85,40 @@
 <script>
     var myApp = angular.module('highPerformanceJournal', ['rzModule']);
 
-    myApp.controller('JournalEntryController', ['$scope', '$timeout',
-        function ($scope, $timeout) {
+    myApp.controller('JournalEntryController', ['$scope', '$timeout', '$http',
+        function ($scope, $timeout, $http) {
             $scope.defaultSliderValue = 0;
+            $scope.attitude = $scope.defaultSliderValue;
+            $scope.determination = $scope.defaultSliderValue;
+            $scope.mentalToughness = $scope.defaultSliderValue;
+            $scope.motivation = $scope.defaultSliderValue;
+            $scope.personalImpact = $scope.defaultSliderValue;
+            $scope.willingness = $scope.defaultSliderValue;
+            $scope.goal = undefined;
             $scope.positiveReview = undefined;
-            $scope.goals = undefined;
-            $scope.momentums = undefined;
+            $scope.momentum = undefined;
+
+            function getTodaysJournalEntry() {
+                var url = '/journalEntries/todaysEntry';
+                $http.get(url).then(function (result) {
+                    var journal = result.data;
+
+                    $scope.attitude = journal.attitude;
+                    $scope.determination = journal.determination;
+                    $scope.goal = journal.goal;
+                    $scope.mentalToughness = journal.mentalToughness;
+                    $scope.momentum = journal.momentum;
+                    $scope.personalImpact = journal.personalImpact;
+                    $scope.positiveReview = journal.positiveReview;
+                    $scope.willingness = journal.willingness;
+                    createSliders();
+                    initializeSlider();
+                });
+            }
 
             function createSliders() {
                 $scope.mentalToughnessSlider = {
-                    value: $scope.defaultSliderValue,
+                    value: $scope.mentalToughness,
                     options: {
                         showSelectionBar: true,
                         floor: 0,
@@ -103,7 +127,7 @@
                     }
                 };
                 $scope.willingnessSlider = {
-                    value: $scope.defaultSliderValue,
+                    value: $scope.willingness,
                     options: {
                         showSelectionBar: true,
                         floor: 0,
@@ -112,7 +136,7 @@
                     }
                 };
                 $scope.determinationSlider = {
-                    value: $scope.defaultSliderValue,
+                    value: $scope.determination,
                     options: {
                         showSelectionBar: true,
                         floor: 0,
@@ -121,7 +145,7 @@
                     }
                 };
                 $scope.motivationSlider = {
-                    value: $scope.defaultSliderValue,
+                    value: $scope.motivation,
                     options: {
                         showSelectionBar: true,
                         floor: 0,
@@ -130,7 +154,7 @@
                     }
                 };
                 $scope.attitudeSlider = {
-                    value: $scope.defaultSliderValue,
+                    value: $scope.attitude,
                     options: {
                         showSelectionBar: true,
                         floor: 0,
@@ -139,7 +163,7 @@
                     }
                 };
                 $scope.personalImpactSlider = {
-                    value: $scope.defaultSliderValue,
+                    value: $scope.personalImpact,
                     options: {
                         showSelectionBar: true,
                         floor: 0,
@@ -158,23 +182,58 @@
             }
 
             $scope.submitEntry = function () {
-                console.log('mentalToughness: ' + $scope.mentalToughnessSlider.value);
-                console.log('willingness: ' + $scope.willingnessSlider.value);
-                console.log('determination: ' + $scope.determinationSlider.value);
-                console.log('motivation: ' + $scope.motivationSlider.value);
-                console.log('attitude: ' + $scope.attitudeSlider.value);
-                console.log('personalImpact: ' + $scope.personalImpactSlider.value);
-                console.log('positiveReview: ' + $scope.positiveReview);
-                console.log('goals: ' + $scope.goals);
-                console.log('momentums: ' + $scope.momentums);
+                var journal = {};
+                journal.mentalToughness = $scope.mentalToughnessSlider.value;
+                journal.willingness = $scope.willingnessSlider.value;
+                journal.determination = $scope.determinationSlider.value;
+                journal.motivation = $scope.motivationSlider.value;
+                journal.attitude = $scope.attitudeSlider.value;
+                journal.personalImpact = $scope.personalImpactSlider.value;
+                journal.positiveReview = $scope.positiveReview;
+                journal.goal = $scope.goal;
+                journal.momentum = $scope.momentum;
+
+                $http.post('/journalEntries/save', journal).then(function (result) {
+                    console.log(result);
+                });
             };
+
+            function searchDateIsTodaysDate() {
+                var journalSearchDate = $("#datepicker").val();
+                var searchDate = new Date(journalSearchDate);
+                var today = new Date();
+                if(searchDate.getDate() === today.getDate()) {
+                    if(searchDate.getMonth() === today.getMonth()) {
+                        if(searchDate.getFullYear() === today.getFullYear()) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
 
             $scope.getJournal = function () {
-                console.log('journalSearchDate: ' + $("#datepicker").val());
+                if (searchDateIsTodaysDate()) {
+                    return;
+                }
+                var journalSearchDate = $("#datepicker").val();
+                $http.post('/journalEntries/findEntryByDate', {createdDate: journalSearchDate}).then(function (result) {
+                    var journal = result.data;
+
+                    $scope.attitude = journal.attitude;
+                    $scope.determination = journal.determination;
+                    $scope.goal = journal.goal;
+                    $scope.mentalToughness = journal.mentalToughness;
+                    $scope.momentum = journal.momentum;
+                    $scope.personalImpact = journal.personalImpact;
+                    $scope.positiveReview = journal.positiveReview;
+                    $scope.willingness = journal.willingness;
+                    createSliders();
+                    initializeSlider();
+                })
             };
 
-            createSliders();
-            initializeSlider();
+            getTodaysJournalEntry();
         }]);
 </script>
 <script>

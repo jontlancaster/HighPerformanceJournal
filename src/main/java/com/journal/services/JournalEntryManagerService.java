@@ -7,6 +7,10 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by jonathon lancaster on 4/5/2017.
@@ -84,5 +88,18 @@ public class JournalEntryManagerService {
         entry.setPersonalImpact(1);
 
         return entry;
+    }
+
+    public JournalEntry findByCreatedDate(String createdDateString) {
+        Journal journal = journalManager.getJournalForLoggedInUser();
+        DateFormat df = new SimpleDateFormat("mm/dd/yyyy");
+        try {
+            java.util.Date createdDate = df.parse(createdDateString);
+            return repository.findByJournalIdAndCreatedDate(journal.getJournalId(), new Date(createdDate.getTime()));
+        } catch (ParseException e) {
+            System.out.println("Unable to parse date: " + createdDateString + " for user "
+                    + journal.getUser().getUsername() + " and journal id: " + journal.getJournalId());
+        }
+        return null;
     }
 }
