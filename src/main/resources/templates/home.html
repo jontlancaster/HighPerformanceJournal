@@ -111,6 +111,7 @@
                     $scope.goal = journal.goal;
                     $scope.mentalToughness = journal.mentalToughness;
                     $scope.momentum = journal.momentum;
+                    $scope.motivation = journal.motivation;
                     $scope.personalImpact = journal.personalImpact;
                     $scope.positiveReview = journal.positiveReview;
                     $scope.willingness = journal.willingness;
@@ -125,8 +126,8 @@
                     value: $scope.mentalToughness,
                     options: {
                         showSelectionBar: true,
-                        floor: 0,
-                        ceil: 10,
+                        floor: 1,
+                        ceil: 5,
                         step: 1
                     }
                 };
@@ -134,8 +135,8 @@
                     value: $scope.willingness,
                     options: {
                         showSelectionBar: true,
-                        floor: 0,
-                        ceil: 10,
+                        floor: 1,
+                        ceil: 5,
                         step: 1
                     }
                 };
@@ -143,8 +144,8 @@
                     value: $scope.determination,
                     options: {
                         showSelectionBar: true,
-                        floor: 0,
-                        ceil: 10,
+                        floor: 1,
+                        ceil: 5,
                         step: 1
                     }
                 };
@@ -152,8 +153,8 @@
                     value: $scope.motivation,
                     options: {
                         showSelectionBar: true,
-                        floor: 0,
-                        ceil: 10,
+                        floor: 1,
+                        ceil: 5,
                         step: 1
                     }
                 };
@@ -161,8 +162,8 @@
                     value: $scope.attitude,
                     options: {
                         showSelectionBar: true,
-                        floor: 0,
-                        ceil: 10,
+                        floor: 1,
+                        ceil: 5,
                         step: 1
                     }
                 };
@@ -170,8 +171,8 @@
                     value: $scope.personalImpact,
                     options: {
                         showSelectionBar: true,
-                        floor: 0,
-                        ceil: 10,
+                        floor: 1,
+                        ceil: 5,
                         step: 1
                     }
                 };
@@ -186,6 +187,8 @@
             }
 
             $scope.submitEntry = function () {
+                var journalSearchDate = $("#datepicker").val();
+                var date = new Date(journalSearchDate);
                 var journal = {};
                 journal.mentalToughness = $scope.mentalToughnessSlider.value;
                 journal.willingness = $scope.willingnessSlider.value;
@@ -196,6 +199,7 @@
                 journal.positiveReview = $scope.positiveReview;
                 journal.goal = $scope.goal;
                 journal.momentum = $scope.momentum;
+                journal.createdDate = date;
 
                 $http.post('/journalEntries/save', journal).then(function (result) {
                     console.log(result);
