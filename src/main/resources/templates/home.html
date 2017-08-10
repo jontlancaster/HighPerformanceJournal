@@ -24,15 +24,17 @@
         Date: <input type="text" id="datepicker" ng-model="journalSearchDate"/>
         <button class="btn btn-info" ng-click="getJournal()">Get Journal</button>
     </div>
-    <div class="row">
+    <div class="row" ng-show="doneRetrievingEntry">
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
             <span>
                 <label for="positiveReviewsTextArea">Positive Review</label>
-                <textarea id="positiveReviewsTextArea" style="display:block;" ng-model="positiveReview"></textarea>
+                <textarea id="positiveReviewsTextArea" style="display:block;" ng-model="positiveReview"
+                          maxlength="1000"></textarea>
             </span>
             <span>
                 <label for="goalsTextArea">Goals</label>
-                <textarea id="goalsTextArea" style="display:block;" ng-model="goal"></textarea>
+                <textarea id="goalsTextArea" style="display:block;" ng-model="goal"
+                          maxlength="1000"></textarea>
             </span>
             <span>
                 <label for="momentumsTextArea">Momentums</label>
@@ -82,6 +84,7 @@
         integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.2/angular.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/6.2.3/rzslider.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.3.1/jquery.maskedinput.min.js"></script>
 <script>
     var myApp = angular.module('highPerformanceJournal', ['rzModule']);
 
@@ -111,6 +114,7 @@
                     $scope.personalImpact = journal.personalImpact;
                     $scope.positiveReview = journal.positiveReview;
                     $scope.willingness = journal.willingness;
+                    $scope.doneRetrievingEntry = true;
                     createSliders();
                     initializeSlider();
                 });
@@ -238,9 +242,11 @@
 </script>
 <script>
     $(function () {
+        var mask = "99/99/9999";
         var $datepicker = $("#datepicker");
-        $datepicker.datepicker({dateFormat: 'mm/dd/yy'});
+        $datepicker.datepicker({autoSize: true});
         $datepicker.datepicker('setDate', new Date());
+        $datepicker.mask(mask);
     });
 </script>
 </body>
