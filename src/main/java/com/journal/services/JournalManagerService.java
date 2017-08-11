@@ -18,10 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by jonathon lancaster on 2/25/2017.
@@ -64,20 +61,43 @@ public class JournalManagerService {
         DateTime endDateTime = getStringAsDateTime(dateRangeFilter.getEndDate(), pattern);
 
         Days daysBetweenDateFromAndToDate = Days.daysBetween(startDateTime, endDateTime);
-        Map<String, Map<String, Integer>> dateValuesMap = new HashMap<>();
+        Map<String, Map<String, Integer>> fieldValuesMap = new HashMap<>();
+        Set<String> dates = new HashSet<>();
 
         for (int count = 0; count <= daysBetweenDateFromAndToDate.getDays(); count++) {
             DateTime currentDateTime = startDateTime.plusDays(count);
             String date = getDateTimeAsString(currentDateTime, pattern);
+            dates.add(date);
 
-            Map<String, Integer> entryValueMap = buildEntryValueMap();
-            dateValuesMap.put(date, entryValueMap);
+            addValueToMap("willingness", getDateWithRandomValue(date), fieldValuesMap);
+            addValueToMap("motivation", getDateWithRandomValue(date), fieldValuesMap);
+            addValueToMap("attitude", getDateWithRandomValue(date), fieldValuesMap);
+            addValueToMap("determination", getDateWithRandomValue(date), fieldValuesMap);
+            addValueToMap("mentalToughness", getDateWithRandomValue(date), fieldValuesMap);
         }
 
         return JournalValuesInDateRange.builder()
-                .dateValuesMap(dateValuesMap)
-                .dates(dateValuesMap.keySet())
+                .fields(fieldValuesMap.keySet())
+                .dates(dates)
+                .fieldValuesMap(fieldValuesMap)
                 .build();
+    }
+
+    private void addValueToMap(String fieldName,
+                               Map<String, Integer> dateValueMap,
+                               Map<String, Map<String, Integer>> dateValuesMap) {
+        Map<String, Integer> existingMap = dateValuesMap.get(fieldName);
+        if(existingMap == null) {
+            existingMap = new HashMap<>();
+        }
+        existingMap.putAll(dateValueMap);
+        dateValuesMap.put(fieldName, existingMap);
+    }
+
+    private Map<String, Integer> getDateWithRandomValue(String date) {
+        Map<String, Integer> dateValueMap = new HashMap<>();
+        dateValueMap.put(date, generateRandomValue());
+        return dateValueMap;
     }
 
     private Map<String, Integer> buildEntryValueMap() {

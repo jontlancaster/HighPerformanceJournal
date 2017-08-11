@@ -10,5 +10,6 @@ import java.util.Set;
 @Data
 public class JournalValuesInDateRange {
     private Set<String> dates;
-    private Map<String, Map<String, Integer>> dateValuesMap;
+    private Set<String> fields;
+    private Map<String, Map<String, Integer>> fieldValuesMap;
 }

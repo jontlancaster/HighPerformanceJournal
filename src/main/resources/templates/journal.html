@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.springframework.org/schema/mvc">
 <head>
     <title>Clearlink Journal</title>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
@@ -85,7 +85,8 @@
         integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
 <script type="text/javascript"
         src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.3.1/jquery.maskedinput.min.js"></script>
-<script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
     var myApp = angular.module('highPerformanceJournal', []);
 
     myApp.controller('JournalController', ['$scope', '$http',
@@ -102,37 +103,43 @@
                     });
             };
 
+
             function displayLineGraph(graphData) {
                 Chart.defaults.global.legend.display = false;
-                var dataAndLabels = buildDataAndLabels();
                 new Chart(document.getElementById("lineGraph"), {
                     "type": "line", "data": {
-                        "labels": graphData.dates, "datasets": generateDataObjectForGraph()
+                        "labels": graphData.dates, "datasets": generateDataObjectForGraph(graphData)
                     }, "options": {}
                 });
             }
 
             function generateDataObjectForGraph(graphData) {
                 var datasets = [];
+                var datesLength = graphData.dates.length;
 
-                for(var index = 0; index < graphData.dates.length; index++) {
+                for (var fieldIndex = 0; fieldIndex < graphData.fields.length; fieldIndex++) {
+                    var field = graphData.fields[fieldIndex];
+                    var data = [];
+                    for (var dateIndex = 0; dateIndex < datesLength; dateIndex++) {
+                        var date = graphData.dates[dateIndex];
+                        data.push(getData(field, date, graphData));
+                    }
                     datasets.push({
-                        "data": getData, "fill": false,//todo I think I formatted the data wrong...but I left off here
+                        "data": data, "fill": false,
                         "borderColor": "rgb(75, 192, 192)", "lineTension": 0.1
                     });
+
                 }
                 return datasets;
             }
 
-            function buildDataAndLabels() {
-                var buildDataAndLabels = {};
-                buildDataAndLabels.labels = ["January", "February", "March", "April", "May", "June", "July"];
-                buildDataAndLabels.data = [65, 59, 80, 81, 56, 55, 40];
-                return buildDataAndLabels;
+            function getData(field, date, graphData) {
+                return graphData.fieldValuesMap[field][date];
             }
 
-            displayLineGraph();
+
         }]);
+    /*]]>*/
 </script>
 <script>
     $(function () {
