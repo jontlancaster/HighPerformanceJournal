@@ -1,12 +1,17 @@
 package com.journal.controllers;
 
+import com.journal.dto.DateRangeFilter;
+import com.journal.dto.JournalValuesInDateRange;
 import com.journal.entities.Journal;
 import com.journal.repositories.JournalRepository;
 import com.journal.services.JournalManagerService;
+import org.joda.time.DateTime;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.sql.Date;
+import java.util.Map;
 
 /**
  * Created by JLancaster on 3/15/2017.
@@ -44,6 +49,11 @@ public class JournalController {
     @RequestMapping(value = "/journals/findByLoggedInUser", method = RequestMethod.GET)
     public @ResponseBody Journal getJournalByLoggedInUser() {
         return journalManager.getJournalForLoggedInUser();
+    }
+
+    @RequestMapping(value = "/journals/getJournalValuesInDateRange", method = RequestMethod.POST)
+    public JournalValuesInDateRange getJournalValuesInDateRange(@RequestBody DateRangeFilter dateRangeFilter) {
+        return journalManager.getJournalValuesInDateRange(dateRangeFilter);
     }
 }
 
