@@ -62,7 +62,7 @@ public class JournalManagerService {
 
         Days daysBetweenDateFromAndToDate = Days.daysBetween(startDateTime, endDateTime);
         Map<String, Map<String, Integer>> fieldValuesMap = new HashMap<>();
-        Set<String> dates = new HashSet<>();
+        Set<String> dates = new TreeSet<>();
 
         for (int count = 0; count <= daysBetweenDateFromAndToDate.getDays(); count++) {
             DateTime currentDateTime = startDateTime.plusDays(count);

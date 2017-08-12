@@ -68,6 +68,38 @@
         <span class="badge" style="background-color:lightgreen">8.5</span>
         <span style="color:cadetblue; padding-left:15px;">Attitude&nbsp;</span>
         <span class="badge" style="background-color:cadetblue;">7.7</span>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default btn-info displayOptions active">
+                Graph Options
+            </button>
+            <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Hide or show lines in the line graph">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+                <li class="filterOptions">Hide/Show Lines</li>
+                <li role="separator" class="divider"></li>
+                <li class="filterOptions" ng-click="keepDropDownOpen($event)">
+                    <div class="checkbox-group">
+                        <div class="checkbox">
+                            <label><input ng-model="showMentalToughnessInGraph" id="showMentalToughnessInGraph" type="checkbox" name="filterOptions"/>Mental Toughness</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input ng-model="showWillingnessInGraph" id="showWillingnessInGraph" type="checkbox" name="filterOptions"/>Willingness</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input ng-model="showDeterminationInGraph" id="showDeterminationInGraph" type="checkbox" name="filterOptions"/>Determination</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input ng-model="showMotivationInGraph" id="showMotivationInGraph" type="checkbox" name="filterOptions"/>Motivation</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input ng-model="showAttitudeInGraph" id="showAttitudeInGraph" type="checkbox" name="filterOptions"/>Attitude</label>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
     <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -85,13 +117,29 @@
         integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
 <script type="text/javascript"
         src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.3.1/jquery.maskedinput.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
 <script th:inline="javascript">
+
     /*<![CDATA[*/
     var myApp = angular.module('highPerformanceJournal', []);
 
     myApp.controller('JournalController', ['$scope', '$http',
         function ($scope, $http) {
             $scope.userIsAnAdmin = true;
+            $scope.showMentalToughnessInGraph = true;
+            $scope.showWillingnessInGraph = true;
+            $scope.showDeterminationInGraph = true;
+            $scope.showMotivationInGraph = true;
+            $scope.showAttitudeInGraph = true;
+
+            $scope.keepDropDownOpen = function(e) {
+                e.stopPropagation();
+                if($scope.graphData !== undefined) {
+                    displayLineGraph($scope.graphData);
+                }
+            };
 
             $scope.generateReport = function () {
                 console.log('usernameToSearchFor: ' + $scope.usernameToSearchFor);
@@ -99,6 +147,7 @@
                 $http.post('/journals/getJournalValuesInDateRange',
                     {startDate: $("#startDatePicker").val(), endDate: $("#endDatePicker").val()})
                     .then(function (result) {
+                        $scope.graphData = result.data;
                         displayLineGraph(result.data);
                     });
             };
@@ -119,6 +168,9 @@
 
                 for (var fieldIndex = 0; fieldIndex < graphData.fields.length; fieldIndex++) {
                     var field = graphData.fields[fieldIndex];
+                    if(shouldNotShowLineInGraphForField(field)) {
+                        continue;
+                    }
                     var data = [];
                     for (var dateIndex = 0; dateIndex < datesLength; dateIndex++) {
                         var date = graphData.dates[dateIndex];
@@ -131,6 +183,25 @@
 
                 }
                 return datasets;
+            }
+
+            function shouldNotShowLineInGraphForField(field) {
+                switch(field.toLowerCase()) {
+                    case "mentaltoughness":
+                        return !$scope.showMentalToughnessInGraph;
+                    case "willingness":
+                        return !$scope.showWillingnessInGraph;
+                    case "determination":
+                        return !$scope.showDeterminationInGraph;
+                    case "motivation":
+                        return !$scope.showMotivationInGraph;
+                    case "attitude":
+                        return !$scope.showAttitudeInGraph;
+                    default:
+                        console.log('Unknown case: ' + field.toLowerCase());
+                }
+
+                return false;
             }
 
             function getData(field, date, graphData) {
