@@ -57,16 +57,17 @@
         </div>
         <div class="row" ng-show="loggedInUserIsAnAdmin">
             <h4>Admin Actions</h4>
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <label for="coachRadioButton">Coach</label><br/>
-                        <input ng-model="coachCheckboxIsChecked" id="coachRadioButton" type="checkbox" value="Coach"/>
-                    </div>
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <label for="adminRadioButton">Admin</label><br/>
-                        <input ng-model="adminCheckboxIsChecked" ng-disabled="!coachCheckboxIsChecked" id="adminRadioButton" type="checkbox" value="Admin"/>
-                    </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <label for="coachRadioButton">Coach</label><br/>
+                    <input ng-model="coachCheckboxIsChecked" id="coachRadioButton" type="checkbox" value="Coach"/>
                 </div>
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <label for="adminRadioButton">Admin</label><br/>
+                    <input ng-model="adminCheckboxIsChecked" ng-disabled="!coachCheckboxIsChecked" id="adminRadioButton"
+                           type="checkbox" value="Admin"/>
+                </div>
+            </div>
         </div>
         <div class="row">
             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -90,9 +91,25 @@
 <script>
     var myApp = angular.module('highPerformanceJournal', []);
 
-    myApp.controller('AdminController', ['$scope',
-        function ($scope) {
+    myApp.controller('AdminController', ['$scope', '$http',
+        function ($scope, $http) {
             $scope.loggedInUserIsAnAdmin = true;
+
+            function saveUserRoles(username) {
+                $http.post('/userRoles/saveUserRoles', {
+                    userIsAnAdmin: !!$scope.adminCheckboxIsChecked,
+                    userIsACoach: !!$scope.coachCheckboxIsChecked,
+                    username: username
+                }).then(function (result) {
+                    console.log('saveUser result: ', result.data);//todo test this
+                });
+            }
+
+            function saveUser(user) {
+                $http.post('/users/saveUser', {user: user}).then(function (result) {
+                    console.log('saveUser result: ', result.data);//todo test this
+                });
+            }
 
             $scope.saveUser = function () {
                 console.log('newPassword: ' + $scope.newPassword);
@@ -102,10 +119,25 @@
                 console.log('username: ' + $scope.username);
                 console.log('isCoach: ' + !!$scope.coachCheckboxIsChecked);
                 console.log('isAdmin: ' + !!$scope.adminCheckboxIsChecked);
+                var user = {};
+                user.firstName = $scope.firstName;
+                user.lastName = $scope.lastName;
+                user.username = $scope.username;
+                user.password = $scope.newPasswordConfirm;
+                user.enabled = true;
+
+                saveUser(user);
+
+                if ($scope.loggedInUserIsAnAdmin === true) {
+                    saveUserRoles(user);
+                }
             };
 
             $scope.searchForUser = function () {
                 console.log('usernameForSearch: ' + $scope.usernameForSearch);
+                $http.get('/users/find', {username: $scope.usernameForSearch}).then(function (result) {
+                    console.log('searchForUser result: ', result.data);//todo test this
+                });
             };
         }]);
 </script>

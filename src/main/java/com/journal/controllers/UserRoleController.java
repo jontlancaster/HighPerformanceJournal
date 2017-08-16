@@ -1,5 +1,6 @@
 package com.journal.controllers;
 
+import com.journal.dto.SaveUserRolesRequest;
 import com.journal.entities.UserRole;
 import com.journal.services.UserRoleManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,5 +65,11 @@ public class UserRoleController {
             result = roleManager.disableCoach(username);
 
         return result;
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/userRoles/saveUserRoles", method = RequestMethod.POST)
+    public boolean saveUserRoles(@RequestBody SaveUserRolesRequest saveUserRolesRequest) {
+        return roleManager.saveRolesForUser(saveUserRolesRequest);
     }
 }

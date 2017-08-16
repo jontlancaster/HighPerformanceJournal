@@ -1,10 +1,12 @@
 package com.journal.controllers;
 
+import com.journal.dto.SaveUserRequest;
 import com.journal.entities.User;
 import com.journal.services.UserManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -30,8 +32,13 @@ public class UserController {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public User createUser(@RequestBody final User newUser) {
-
         return userManager.createNewUser(newUser);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value="/users/saveUser", method = RequestMethod.POST)
+    public User saveUser(@RequestBody SaveUserRequest saveUserRequest) {
+        return userManager.saveUser(saveUserRequest);
     }
 
     @PreAuthorize("hasRole('ROLE_COACH')")

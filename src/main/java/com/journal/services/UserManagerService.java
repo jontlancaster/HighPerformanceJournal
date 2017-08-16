@@ -1,5 +1,6 @@
 package com.journal.services;
 
+import com.journal.dto.SaveUserRequest;
 import com.journal.entities.User;
 import com.journal.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,5 +92,38 @@ public class UserManagerService {
             System.out.println("There was an exception enabling the user. " + exception.getMessage());
         }
         return success;
+    }
+
+    public User saveUser(SaveUserRequest saveUserRequest) {
+        User user = repository.findByUsername(saveUserRequest.getUsername());
+        if (user == null) {
+            user = new User();
+            System.out.println("Creating new user: " + saveUserRequest.getUsername());
+        }
+        user.setEnabled(saveUserRequest.isEnabled());
+        user.setFirstName(saveUserRequest.getFirstName());
+        user.setLastName(saveUserRequest.getLastName());
+        user.setUsername(saveUserRequest.getUsername());
+        user.setPassword(passwordEncoder.encode(saveUserRequest.getPassword()));
+        User savedUser = saveUser(user);
+
+        if(savedUser == null) {
+            return null;
+        }
+
+         if(saveUserRequest.isEnabled()) {
+             roleManager.createDefaultRole(user.getUsername());
+         }
+
+         return savedUser;
+    }
+
+    private User saveUser(User user) {
+        try {
+            return repository.save(user);
+        } catch (Exception ex) {
+            System.out.println("There was a problem saving user: " + user + "\n" + ex);
+        }
+        return null;
     }
 }
