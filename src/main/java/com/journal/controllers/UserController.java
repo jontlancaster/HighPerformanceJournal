@@ -1,6 +1,7 @@
 package com.journal.controllers;
 
 import com.journal.dto.SaveUserRequest;
+import com.journal.dto.UserWithRoles;
 import com.journal.entities.User;
 import com.journal.services.UserManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_COACH')")
     @RequestMapping(value = "/users/find", method = RequestMethod.GET)
-    public User findUser(@RequestParam("username") String username) { return userManager.findUser(username); }
+    public UserWithRoles findUser(@RequestParam("username") String username) { return userManager.getUserWithRoles(username); }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/users/disable", method = RequestMethod.POST)

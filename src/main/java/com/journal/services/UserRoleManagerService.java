@@ -24,12 +24,16 @@ public class UserRoleManagerService {
     private static final String coachRole = "ROLE_COACH";
     private static final String adminRole = "ROLE_ADMIN";
 
-    public void createDefaultRole(String username) {
+    public boolean createDefaultRole(String username) {
+        if (repository.countByUsernameAndRole(username, standardRole) > 0) {
+            System.out.println("User: " + username + " already has role: " + standardRole);
+            return true;
+        }
         UserRole role = new UserRole();
         role.setUsername(username);
         role.setRole(standardRole);
 
-        repository.save(role);
+        return repository.save(role) != null;
     }
 
     private boolean saveNewRole(String username, String role) {
@@ -69,6 +73,7 @@ public class UserRoleManagerService {
         try {
             if (repository.countByUsernameAndRole(username, role) != 0) {
                 System.out.println("The user already has that right.");
+                success = true;
             } else {
                 UserRole newRole = new UserRole();
                 newRole.setUsername(username);
@@ -88,7 +93,8 @@ public class UserRoleManagerService {
         boolean success = false;
         try {
             if (repository.countByUsernameAndRole(username, role) == 0) {
-                System.out.println("The user does not have that right.");
+                System.out.println("The user: " + username + " does not have that role: " + role);
+                success = true;
             } else {
                 repository.deleteUserRoleByUsernameAndRole(username, role);
                 success = true;
@@ -101,8 +107,10 @@ public class UserRoleManagerService {
 
     @Transactional
     public boolean saveRolesForUser(SaveUserRolesRequest saveUserRolesRequest) {
-        return modifyRole(saveUserRolesRequest.isUserIsACoach(), coachRole, saveUserRolesRequest.getUsername()) &&
-                modifyRole(saveUserRolesRequest.isUserIsAnAdmin(), adminRole, saveUserRolesRequest.getUsername());
+        boolean savedCoach = modifyRole(saveUserRolesRequest.isUserIsACoach(), coachRole, saveUserRolesRequest.getUsername());
+        boolean savedAdmin = modifyRole(saveUserRolesRequest.isUserIsAnAdmin(), adminRole, saveUserRolesRequest.getUsername());
+
+        return savedAdmin && savedCoach;
     }
 
     private boolean modifyRole(boolean userShouldHaveRole,

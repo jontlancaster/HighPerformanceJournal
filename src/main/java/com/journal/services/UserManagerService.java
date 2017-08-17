@@ -1,11 +1,16 @@
 package com.journal.services;
 
 import com.journal.dto.SaveUserRequest;
+import com.journal.dto.UserWithRoles;
 import com.journal.entities.User;
+import com.journal.entities.UserRole;
 import com.journal.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Created by jonathon lancaster on 2/13/2017.
@@ -35,6 +40,24 @@ public class UserManagerService {
         }
 
         return user;
+    }
+
+    public UserWithRoles getUserWithRoles(String username) {
+        User user = findUser(username);
+        if(user == null) {
+            return null;
+        }
+
+        List<UserRole> roles = roleManager.getRolesByUsername(username);
+
+        UserWithRoles userWithRoles = new UserWithRoles();
+        userWithRoles.setFirstName(user.getFirstName());
+        userWithRoles.setLastName(user.getLastName());
+        userWithRoles.setEnabled(user.isEnabled());
+        userWithRoles.setUsername(user.getUsername());
+//        userWithRoles.setUserIsACoach(roles.stream().anyMatch(role -> role.getRole().equals()));//todo I left off here
+
+        return userWithRoles;
     }
 
     public User createNewUser(User newUser) {
@@ -112,7 +135,10 @@ public class UserManagerService {
         }
 
          if(saveUserRequest.isEnabled()) {
-             roleManager.createDefaultRole(user.getUsername());
+             boolean savedDefaultRole = roleManager.createDefaultRole(user.getUsername());
+             if(!savedDefaultRole) {
+                 System.err.println("Unable to save default role for user: " + user);
+             }
          }
 
          return savedUser;

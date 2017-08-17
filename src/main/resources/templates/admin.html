@@ -80,9 +80,11 @@
         <div>
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                 <label for="userNameSearchInput">Search User</label>
-                <input ng-model="userNameForSearch" id="userNameSearchInput" style="display:block;"
+                <input ng-model="usernameForSearch" id="userNameSearchInput" style="display:block;"
                        maxlength="60"/>
-                <button class="btn button" ng-click="searchForUser()" style="margin-top:10px;">Search</button>
+                <button ng-disabled="usernameForSearchIsInvalid()" class="btn button" ng-click="searchForUser()"
+                        style="margin-top:10px;">Search
+                </button>
             </div>
         </div>
     </div>
@@ -95,19 +97,25 @@
         function ($scope, $http) {
             $scope.loggedInUserIsAnAdmin = true;
 
-            function saveUserRoles(username) {
+            function saveUserRoles() {
                 $http.post('/userRoles/saveUserRoles', {
                     userIsAnAdmin: !!$scope.adminCheckboxIsChecked,
                     userIsACoach: !!$scope.coachCheckboxIsChecked,
-                    username: username
+                    username: $scope.username
                 }).then(function (result) {
-                    console.log('saveUser result: ', result.data);//todo test this
+                    console.log('saveUser result: ', result.data);//todo display success/failed to save message
                 });
             }
 
-            function saveUser(user) {
-                $http.post('/users/saveUser', {user: user}).then(function (result) {
-                    console.log('saveUser result: ', result.data);//todo test this
+            function saveUser() {
+                $http.post('/users/saveUser', {
+                    firstName: $scope.firstName,
+                    lastName: $scope.lastName,
+                    enabled: true,
+                    password: $scope.newPasswordConfirm,
+                    username: $scope.username
+                }).then(function (result) {
+                    console.log('saveUser result: ', result.data);//todo display success/failed to save message
                 });
             }
 
@@ -119,24 +127,29 @@
                 console.log('username: ' + $scope.username);
                 console.log('isCoach: ' + !!$scope.coachCheckboxIsChecked);
                 console.log('isAdmin: ' + !!$scope.adminCheckboxIsChecked);
-                var user = {};
-                user.firstName = $scope.firstName;
-                user.lastName = $scope.lastName;
-                user.username = $scope.username;
-                user.password = $scope.newPasswordConfirm;
-                user.enabled = true;
 
-                saveUser(user);
+                saveUser();
 
                 if ($scope.loggedInUserIsAnAdmin === true) {
-                    saveUserRoles(user);
+                    saveUserRoles();
                 }
             };
 
+            $scope.usernameForSearchIsInvalid = function () {
+                return !$scope.usernameForSearch || $scope.usernameForSearch.trim().length === 0;
+            };
+
             $scope.searchForUser = function () {
-                console.log('usernameForSearch: ' + $scope.usernameForSearch);
-                $http.get('/users/find', {username: $scope.usernameForSearch}).then(function (result) {
-                    console.log('searchForUser result: ', result.data);//todo test this
+                if ($scope.usernameForSearchIsInvalid()) {
+                    console.log('username is invalid: ' + $scope.usernameForSearch);
+                    return;
+                }
+                $http.get('/users/find', {params: {username: $scope.usernameForSearch.trim()}}).then(function (result) {
+                    var user = result.data;
+                    console.log('searchForUser result: ', user);
+                    $scope.firstName = user.firstName;
+                    $scope.lastName = user.lastName;
+                    $scope.username = user.username;
                 });
             };
         }]);
