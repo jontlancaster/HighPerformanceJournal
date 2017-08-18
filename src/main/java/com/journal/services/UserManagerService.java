@@ -53,9 +53,10 @@ public class UserManagerService {
         UserWithRoles userWithRoles = new UserWithRoles();
         userWithRoles.setFirstName(user.getFirstName());
         userWithRoles.setLastName(user.getLastName());
-        userWithRoles.setEnabled(user.isEnabled());
+        userWithRoles.setUserIsEnabled(user.isEnabled());
         userWithRoles.setUsername(user.getUsername());
-//        userWithRoles.setUserIsACoach(roles.stream().anyMatch(role -> role.getRole().equals()));//todo I left off here
+        userWithRoles.setUserIsACoach(roleManager.userIsACoach(roles));
+        userWithRoles.setUserIsAnAdmin(roleManager.userIsAnAdmin(roles));
 
         return userWithRoles;
     }

@@ -6,7 +6,7 @@ import lombok.Data;
 public class UserWithRoles {
     private String firstName;
     private String lastName;
-    private boolean enabled;
+    private boolean userIsEnabled;
     private boolean userIsAnAdmin;
     private boolean userIsACoach;
     private String username;

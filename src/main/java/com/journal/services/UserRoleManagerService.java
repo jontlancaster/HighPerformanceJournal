@@ -48,6 +48,19 @@ public class UserRoleManagerService {
         return repository.findByUsername(username);
     }
 
+    public boolean userIsACoach(List<UserRole> roles) {
+        return userHasARole(roles, coachRole);
+    }
+
+    public boolean userIsAnAdmin(List<UserRole> roles) {
+        return userHasARole(roles, adminRole);
+    }
+
+    private boolean userHasARole(List<UserRole> roles, String role) {
+        return !CollectionUtils.isEmpty(roles) &&
+                roles.stream().anyMatch(userRole -> userRole.getRole().equals(role));
+    }
+
     public boolean enableAdmin(String username) {
         if (repository.countByUsernameAndRole(username, coachRole) == 0)
             enableCoach(username);

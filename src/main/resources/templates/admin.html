@@ -55,28 +55,32 @@
                        type="password" style="display:block;" maxlength="40"/>
             </div>
         </div>
-        <div class="row" ng-show="loggedInUserIsAnAdmin">
-            <h4>Admin Actions</h4>
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                    <label for="coachRadioButton">Coach</label><br/>
-                    <input ng-model="coachCheckboxIsChecked" id="coachRadioButton" type="checkbox" value="Coach"/>
-                </div>
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                    <label for="adminRadioButton">Admin</label><br/>
-                    <input ng-model="adminCheckboxIsChecked" ng-disabled="!coachCheckboxIsChecked" id="adminRadioButton"
-                           type="checkbox" value="Admin"/>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                <button class="btn button" ng-click="saveUser()">Save</button>
-            </div>
-        </div>
     </div>
     <div class="row" ng-show="loggedInUserIsAnAdmin">
         <h4>Admin Actions</h4>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <label for="userIsACoachCheckbox">Coach</label>
+                <input type="checkbox" ng-model="userIsACoach" id="userIsACoachCheckbox"
+                       ng-change="handleCoachCheckboxChange()"/>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <label for="userIsAnAdminCheckbox">Admin</label>
+                <input type="checkbox" ng-model="userIsAnAdmin" id="userIsAnAdminCheckbox"
+                       ng-change="handleAdminCheckboxChange()"/>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <label for="userIsEnabledCheckbox">Enable User</label>
+        <input type="checkbox" ng-model="userIsEnabled" id="userIsEnabledCheckbox"/>
+    </div>
+    <div class="row">
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <button class="btn button" ng-click="saveUser()">Save</button>
+        </div>
+    </div>
+    <div class="row" ng-show="loggedInUserIsAnAdmin">
         <div>
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                 <label for="userNameSearchInput">Search User</label>
@@ -99,8 +103,8 @@
 
             function saveUserRoles() {
                 $http.post('/userRoles/saveUserRoles', {
-                    userIsAnAdmin: !!$scope.adminCheckboxIsChecked,
-                    userIsACoach: !!$scope.coachCheckboxIsChecked,
+                    userIsAnAdmin: !!$scope.userIsAnAdmin,
+                    userIsACoach: !!$scope.userIsACoach,
                     username: $scope.username
                 }).then(function (result) {
                     console.log('saveUser result: ', result.data);//todo display success/failed to save message
@@ -111,7 +115,7 @@
                 $http.post('/users/saveUser', {
                     firstName: $scope.firstName,
                     lastName: $scope.lastName,
-                    enabled: true,
+                    enabled: $scope.userIsEnabled,
                     password: $scope.newPasswordConfirm,
                     username: $scope.username
                 }).then(function (result) {
@@ -125,13 +129,26 @@
                 console.log('firstName: ' + $scope.firstName);
                 console.log('lastName: ' + $scope.lastName);
                 console.log('username: ' + $scope.username);
-                console.log('isCoach: ' + !!$scope.coachCheckboxIsChecked);
-                console.log('isAdmin: ' + !!$scope.adminCheckboxIsChecked);
+                console.log('isCoach: ' + !!$scope.userIsACoach);
+                console.log('isAdmin: ' + !!$scope.userIsAnAdmin);
+                console.log('userIsEnabled: ' + !!$scope.userIsEnabled);
 
                 saveUser();
 
                 if ($scope.loggedInUserIsAnAdmin === true) {
                     saveUserRoles();
+                }
+            };
+
+            $scope.handleCoachCheckboxChange = function () {
+                if ($scope.userIsACoach === false) {
+                    $scope.userIsAnAdmin = false;
+                }
+            };
+
+            $scope.handleAdminCheckboxChange = function () {
+                if ($scope.userIsAnAdmin === true) {
+                    $scope.userIsACoach = true;
                 }
             };
 
@@ -150,6 +167,9 @@
                     $scope.firstName = user.firstName;
                     $scope.lastName = user.lastName;
                     $scope.username = user.username;
+                    $scope.userIsACoach = user.userIsACoach;
+                    $scope.userIsAnAdmin = user.userIsAnAdmin;
+                    $scope.userIsEnabled = user.userIsEnabled;
                 });
             };
         }]);
