@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -29,22 +30,20 @@ public class UserManagerService {
 
 
     public User findUser(String username) {
-        User user = new User();
-
         try {
             if (repository.countByUsername(username) != 0) {
-                user = repository.findByUsername(username);
+                return repository.findByUsername(username);
             }
         } catch (Exception exception) {
             System.out.println("Exception while finding user." + exception.getMessage());
         }
 
-        return user;
+        return null;
     }
 
     public UserWithRoles getUserWithRoles(String username) {
         User user = findUser(username);
-        if(user == null) {
+        if (user == null) {
             return null;
         }
 
@@ -128,21 +127,24 @@ public class UserManagerService {
         user.setFirstName(saveUserRequest.getFirstName());
         user.setLastName(saveUserRequest.getLastName());
         user.setUsername(saveUserRequest.getUsername());
-        user.setPassword(passwordEncoder.encode(saveUserRequest.getPassword()));
+        if (StringUtils.hasText(saveUserRequest.getPassword())) {
+            user.setPassword(passwordEncoder.encode(saveUserRequest.getPassword()));
+        }
+
         User savedUser = saveUser(user);
 
-        if(savedUser == null) {
+        if (savedUser == null) {
             return null;
         }
 
-         if(saveUserRequest.isEnabled()) {
-             boolean savedDefaultRole = roleManager.createDefaultRole(user.getUsername());
-             if(!savedDefaultRole) {
-                 System.err.println("Unable to save default role for user: " + user);
-             }
-         }
+        if (saveUserRequest.isEnabled()) {
+            boolean savedDefaultRole = roleManager.createDefaultRole(user.getUsername());
+            if (!savedDefaultRole) {
+                System.err.println("Unable to save default role for user: " + user);
+            }
+        }
 
-         return savedUser;
+        return savedUser;
     }
 
     private User saveUser(User user) {
