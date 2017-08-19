@@ -1,5 +1,8 @@
 package com.journal.controllers;
 
+import com.journal.dto.DateRangeFilter;
+import com.journal.dto.JournalValuesInDateRange;
+import com.journal.entities.Journal;
 import com.journal.entities.JournalEntry;
 import com.journal.repositories.JournalEntryRepository;
 import com.journal.services.JournalEntryManagerService;
@@ -38,5 +41,10 @@ public class JournalEntryController {
     @RequestMapping(value = "/journalEntries/findEntryByDate", method = RequestMethod.POST)
     public JournalEntry findEntryByDate(@RequestBody String createdDate) {
         return entryManager.findByCreatedDate(createdDate);
+    }
+
+    @RequestMapping(value = "/journalEntries/getJournalValuesInDateRange", method = RequestMethod.POST)
+    public JournalValuesInDateRange getJournalValuesInDateRange(@RequestBody DateRangeFilter dateRangeFilter) {
+        return entryManager.getJournalValuesInDateRange(dateRangeFilter);
     }
 }

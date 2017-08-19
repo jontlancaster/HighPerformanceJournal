@@ -50,11 +50,6 @@ public class JournalController {
     public @ResponseBody Journal getJournalByLoggedInUser() {
         return journalManager.getJournalForLoggedInUser();
     }
-
-    @RequestMapping(value = "/journals/getJournalValuesInDateRange", method = RequestMethod.POST)
-    public JournalValuesInDateRange getJournalValuesInDateRange(@RequestBody DateRangeFilter dateRangeFilter) {
-        return journalManager.getJournalValuesInDateRange(dateRangeFilter);
-    }
 }
 
 
