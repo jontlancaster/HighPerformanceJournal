@@ -24,6 +24,12 @@ import java.util.*;
  */
 @Service
 public class JournalEntryManagerService {
+    public static final String WILLINGNESS = "willingness";
+    public static final String MOTIVATION = "motivation";
+    public static final String ATTITUDE = "attitude";
+    public static final String DETERMINATION = "determination";
+    public static final String MENTAL_TOUGHNESS = "mentalToughness";
+    public static final String MM_DD_YYYY = "MM/dd/yyyy";
     @Resource
     private JournalEntryRepository repository;
     @Resource
@@ -111,33 +117,29 @@ public class JournalEntryManagerService {
     }
 
     public JournalValuesInDateRange getJournalValuesInDateRange(DateRangeFilter dateRangeFilter) {
-        String pattern = "MM/dd/yyyy";
-        DateTime startDateTime = getStringAsDateTime(dateRangeFilter.getStartDate(), pattern);
-        DateTime endDateTime = getStringAsDateTime(dateRangeFilter.getEndDate(), pattern);
-
-        Journal journal = journalManager.getJournalForLoggedInUser();
-        //todo build the data from this list of entries
-        List<JournalEntry> journalEntryList = repository.findByJournalIdWhereCreatedDateInRange(
-                journal.getJournalId(), getSqlDateFromString(dateRangeFilter.getStartDate()),
-                getSqlDateFromString(dateRangeFilter.getEndDate()));
-
-        Days daysBetweenDateFromAndToDate = Days.daysBetween(startDateTime, endDateTime);
         //the key in this map is a category like willingness
         //the key in the value map is a date and the value is the rating
-        Map<String, Map<String, Integer>> fieldValuesMap = new HashMap<>();
+        Map<String, Map<String, Integer>> fieldValuesMap = new TreeMap<>();
         Set<String> dates = new TreeSet<>();
 
-        for (int count = 0; count <= daysBetweenDateFromAndToDate.getDays(); count++) {
-            DateTime currentDateTime = startDateTime.plusDays(count);
-            String date = getDateTimeAsString(currentDateTime, pattern);
-            dates.add(date);
+        Journal journal = journalManager.getJournalForLoggedInUser();
+        List<JournalEntry> journalEntryList = repository.findByJournalIdWhereCreatedDateInRange(
+                68L, getSqlDateFromString(dateRangeFilter.getStartDate()),
+                getSqlDateFromString(dateRangeFilter.getEndDate()));
 
-            addValueToMap("willingness", getDateWithRandomValue(date), fieldValuesMap);
-            addValueToMap("motivation", getDateWithRandomValue(date), fieldValuesMap);
-            addValueToMap("attitude", getDateWithRandomValue(date), fieldValuesMap);
-            addValueToMap("determination", getDateWithRandomValue(date), fieldValuesMap);
-            addValueToMap("mentalToughness", getDateWithRandomValue(date), fieldValuesMap);
-        }
+
+        journalEntryList
+                .forEach(journalEntry -> {
+                    String date = getDateTimeAsString(new DateTime(journalEntry.getCreatedDate()), MM_DD_YYYY);
+                    dates.add(date);
+
+                    addValueToMap(WILLINGNESS, date, journalEntry.getWillingness(), fieldValuesMap);
+                    addValueToMap(MOTIVATION, date, journalEntry.getMotivation(), fieldValuesMap);
+                    addValueToMap(ATTITUDE, date, journalEntry.getAttitude(), fieldValuesMap);
+                    addValueToMap(DETERMINATION, date, journalEntry.getDetermination(), fieldValuesMap);
+                    addValueToMap(MENTAL_TOUGHNESS, date, journalEntry.getMentalToughness(), fieldValuesMap);
+                });
+
 
         return JournalValuesInDateRange.builder()
                 .fields(fieldValuesMap.keySet())
@@ -147,19 +149,26 @@ public class JournalEntryManagerService {
     }
 
     private void addValueToMap(String fieldName,
-                               Map<String, Integer> dateValueMap,
+                               String date,
+                               Integer value,
                                Map<String, Map<String, Integer>> dateValuesMap) {
         Map<String, Integer> existingMap = dateValuesMap.get(fieldName);
         if (existingMap == null) {
             existingMap = new HashMap<>();
         }
-        existingMap.putAll(dateValueMap);
+        existingMap.put(date, value);
         dateValuesMap.put(fieldName, existingMap);
     }
 
     private Map<String, Integer> getDateWithRandomValue(String date) {
         Map<String, Integer> dateValueMap = new HashMap<>();
         dateValueMap.put(date, generateRandomValue());
+        return dateValueMap;
+    }
+
+    private Map<String, Integer> getDateValueMap(String date, Integer value) {
+        Map<String, Integer> dateValueMap = new HashMap<>();
+        dateValueMap.put(date, value);
         return dateValueMap;
     }
 
@@ -189,6 +198,6 @@ public class JournalEntryManagerService {
     }
 
     private Date getSqlDateFromString(String dateString) {
-        return new Date(new DateTime(dateString).getMillis());
+        return new Date(getStringAsDateTime(dateString, MM_DD_YYYY).getMillis());
     }
 }
