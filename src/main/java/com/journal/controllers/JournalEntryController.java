@@ -1,6 +1,7 @@
 package com.journal.controllers;
 
 import com.journal.dto.DateRangeFilter;
+import com.journal.dto.JournalAveragesInDateRange;
 import com.journal.dto.JournalValuesInDateRange;
 import com.journal.entities.Journal;
 import com.journal.entities.JournalEntry;
@@ -46,5 +47,10 @@ public class JournalEntryController {
     @RequestMapping(value = "/journalEntries/getJournalValuesInDateRange", method = RequestMethod.POST)
     public JournalValuesInDateRange getJournalValuesInDateRange(@RequestBody DateRangeFilter dateRangeFilter) {
         return entryManager.getJournalValuesInDateRange(dateRangeFilter);
+    }
+
+    @RequestMapping(value = "/journalEntries/getJournalAveragesInDateRange", method = RequestMethod.POST)
+    public JournalAveragesInDateRange getJournalAveragesInDateRange(@RequestBody DateRangeFilter dateRangeFilter) {
+        return entryManager.getJournalAveragesInDateRange(dateRangeFilter);
     }
 }

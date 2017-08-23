@@ -1,6 +1,7 @@
 package com.journal.services;
 
 import com.journal.dto.DateRangeFilter;
+import com.journal.dto.JournalAveragesInDateRange;
 import com.journal.dto.JournalValuesInDateRange;
 import com.journal.entities.Journal;
 import com.journal.entities.JournalEntry;
@@ -18,6 +19,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by jonathon lancaster on 4/5/2017.
@@ -145,6 +147,34 @@ public class JournalEntryManagerService {
                 .fields(fieldValuesMap.keySet())
                 .dates(dates)
                 .fieldValuesMap(fieldValuesMap)
+                .build();
+    }
+
+    public JournalAveragesInDateRange getJournalAveragesInDateRange(DateRangeFilter dateRangeFilter) {
+        Journal journal = journalManager.getJournalForLoggedInUser();
+        List<JournalEntry> journalEntryList = repository.findByJournalIdWhereCreatedDateInRange(
+                68L, getSqlDateFromString(dateRangeFilter.getStartDate()),
+                getSqlDateFromString(dateRangeFilter.getEndDate()));
+
+        return JournalAveragesInDateRange.builder()
+                .attitude(journalEntryList.stream()
+                        .mapToInt(JournalEntry::getAttitude)
+                        .sum() / journalEntryList.size())
+                .determination(journalEntryList.stream()
+                        .mapToInt(JournalEntry::getDetermination)
+                        .sum() / journalEntryList.size())
+                .mentalToughness(journalEntryList.stream()
+                        .mapToInt(JournalEntry::getMentalToughness)
+                        .sum() / journalEntryList.size())
+                .motivation(journalEntryList.stream()
+                        .mapToInt(JournalEntry::getMotivation)
+                        .sum() / journalEntryList.size())
+                .personalImpact(journalEntryList.stream()
+                        .mapToInt(JournalEntry::getPersonalImpact)
+                        .sum() / journalEntryList.size())
+                .willingness(journalEntryList.stream()
+                        .mapToInt(JournalEntry::getWillingness)
+                        .sum() / journalEntryList.size())
                 .build();
     }
 
