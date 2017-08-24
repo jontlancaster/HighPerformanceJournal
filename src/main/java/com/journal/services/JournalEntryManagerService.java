@@ -124,9 +124,9 @@ public class JournalEntryManagerService {
         Map<String, Map<String, Integer>> fieldValuesMap = new TreeMap<>();
         Set<String> dates = new TreeSet<>();
 
-        Journal journal = journalManager.getJournalForLoggedInUser();
+        Journal journal = journalManager.getJournalByUsername(dateRangeFilter.getUsername());
         List<JournalEntry> journalEntryList = repository.findByJournalIdWhereCreatedDateInRange(
-                68L, getSqlDateFromString(dateRangeFilter.getStartDate()),
+                journal.getJournalId(), getSqlDateFromString(dateRangeFilter.getStartDate()),
                 getSqlDateFromString(dateRangeFilter.getEndDate()));
 
 

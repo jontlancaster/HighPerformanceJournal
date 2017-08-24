@@ -43,15 +43,16 @@ public class JournalManagerService {
     }
 
     public Journal getJournalForLoggedInUser() {
-        Journal journal = new Journal();
         String username = security.getLoggedInUser();
+        return getJournalByUsername(username);
+    }
 
+    public Journal getJournalByUsername(String username) {
         try {
-            journal = repository.findByUserUsername(username);
+            return repository.findByUserUsername(username);
         } catch (Exception e) {
-            System.out.println("There was an error finding the logged in user's journal." + e.getMessage());
+            System.out.println("There was an error finding journal for username: " + username + " " + e.getMessage());
         }
-
-        return journal;
+        return null;
     }
 }
