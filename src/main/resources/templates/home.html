@@ -10,18 +10,19 @@
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
 </head>
 <body ng-app="highPerformanceJournal">
-<div class="container-fluid" ng-controller="JournalEntryController">
+<div class="container-fluid ng-cloak" ng-controller="JournalEntryController">
     <div class="row">
         <ul class="nav nav-pills">
             <li disabled="disabled">Clearlink</li>
             <li role="presentation" class="active"><a href="/home">Home</a></li>
             <li role="presentation"><a href="/journal">Reports</a></li>
             <li role="presentation"><a href="/admin">Admin</a></li>
-            <li role="presentation"><a href="/logout">Logout</a></li>
+            <li role="presentation" style="float:right;"><a href="/logout">Logout</a></li>
+            <li disabled="disabled" class="glyphicon glyphicon-user" style="float:right; font-size:20px;"><p style="padding-left:10px; font-size:30px; display:inline;">{{usernameOfLoggedInUser}}</p></li>
         </ul>
     </div>
     <div class="row">
-        Date: <input type="text" id="datepicker" ng-model="journalSearchDate"/>
+        Date: <input type="text" id="datepicker" ng-model="journalSearchDate" style="max-width: 100px;"/>
         <button class="btn btn-info" ng-click="getJournal()">Get Journal</button>
     </div>
     <div class="row" ng-show="doneRetrievingEntry">
@@ -78,18 +79,27 @@
         </div>
     </div>
 </div>
-<script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-        crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
-        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.2/angular.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/6.2.3/rzslider.min.js"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.3.1/jquery.maskedinput.min.js"></script>
 <script>
     var myApp = angular.module('highPerformanceJournal', ['rzModule']);
 
     myApp.controller('JournalEntryController', ['$scope', '$timeout', '$http',
         function ($scope, $timeout, $http) {
+            function getUsernameOfLoggedInUser() {
+                if(!sessionStorage.getItem('usernameOfLoggedInUser')) {
+                    $http.post('/users/getUsernameOfLoggedInUser').then(function(result) {
+                        if(!result.data || !result.data.username) {
+                            window.location.href = '/logout';
+                        } else {
+                            sessionStorage.setItem('usernameOfLoggedInUser', result.data.username);
+                        }
+                    });
+                }
+                $scope.usernameOfLoggedInUser = sessionStorage.getItem('usernameOfLoggedInUser');
+            }
+            getUsernameOfLoggedInUser();
+
             $scope.defaultSliderValue = 0;
             $scope.attitude = $scope.defaultSliderValue;
             $scope.determination = $scope.defaultSliderValue;
@@ -244,6 +254,13 @@
             getTodaysJournalEntry();
         }]);
 </script>
+<script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.2/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/6.2.3/rzslider.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.3.1/jquery.maskedinput.min.js"></script>
 <script>
     $(function () {
         var mask = "99/99/9999";

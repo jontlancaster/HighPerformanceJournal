@@ -5,12 +5,16 @@ import com.journal.dto.UserWithRoles;
 import com.journal.entities.User;
 import com.journal.services.UserManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by JLancaster on 3/13/2017.
@@ -58,5 +62,12 @@ public class UserController {
     public boolean enableUser(@RequestParam("username") String username) {
         User user = userManager.findUser(username);
         return userManager.enableUser(user);
+    }
+
+    @RequestMapping(value="/users/getUsernameOfLoggedInUser", method = RequestMethod.POST)
+    public Map<String, String> getUsernameOfLoggedInUser() {
+        Map<String, String> mapWithUsername = new HashMap<>();
+        mapWithUsername.put("username", userManager.getUsernameOfLoggedInUser());
+        return mapWithUsername;
     }
 }

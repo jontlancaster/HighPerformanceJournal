@@ -27,7 +27,8 @@ public class UserManagerService {
     private JournalManagerService journalManager;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
+    @Autowired
+    private SecurityService securityService;
 
     public User findUser(String username) {
         try {
@@ -154,5 +155,10 @@ public class UserManagerService {
             System.out.println("There was a problem saving user: " + user + "\n" + ex);
         }
         return null;
+    }
+
+    public String getUsernameOfLoggedInUser() {
+//        return repository.findByUsername("jonlan").getUsername();
+        return securityService.getLoggedInUser();
     }
 }

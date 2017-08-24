@@ -22,14 +22,15 @@
     }
 </style>
 <body ng-app="highPerformanceJournal">
-<div class="container-fluid" ng-controller="JournalController">
+<div class="container-fluid ng-cloak" ng-controller="JournalController">
     <div class="row">
         <ul class="nav nav-pills">
             <li disabled="disabled">Clearlink</li>
             <li role="presentation"><a href="/home">Home</a></li>
             <li role="presentation" class="active"><a href="/journal">Reports</a></li>
             <li role="presentation"><a href="/admin">Admin</a></li>
-            <li role="presentation"><a href="/logout">Logout</a></li>
+            <li role="presentation" style="float:right;"><a href="/logout">Logout</a></li>
+            <li disabled="disabled" class="glyphicon glyphicon-user" style="float:right; font-size:20px;"><p style="padding-left:10px; font-size:30px; display:inline;">{{usernameOfLoggedInUser}}</p></li>
         </ul>
     </div>
     <div class="row">
@@ -145,9 +146,23 @@
     /*<![CDATA[*/
     var myApp = angular.module('highPerformanceJournal', []);
 
-    myApp.controller('JournalController', ['$scope', '$http', '$rootScope',
-        function ($scope, $http, $rootScope) {
-            $scope.userToShowReportsFor = 'jonlan';//todo need a notion of a logged in user
+    myApp.controller('JournalController', ['$scope', '$http',
+        function ($scope, $http) {
+            function getUsernameOfLoggedInUser() {
+                if(!sessionStorage.getItem('usernameOfLoggedInUser')) {
+                    $http.post('/users/getUsernameOfLoggedInUser').then(function(result) {
+                        if(!result.data || !result.data.username) {
+                            window.location.href = '/logout';
+                        } else {
+                            sessionStorage.setItem('usernameOfLoggedInUser', result.data.username);
+                        }
+                    });
+                }
+                $scope.usernameOfLoggedInUser = sessionStorage.getItem('usernameOfLoggedInUser');
+            }
+            getUsernameOfLoggedInUser();
+
+            $scope.userToShowReportsFor = $scope.usernameOfLoggedInUser;
             $scope.userIsAnAdmin = true;
             $scope.showMentalToughnessInGraph = true;
             $scope.showWillingnessInGraph = true;
