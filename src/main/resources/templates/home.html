@@ -209,7 +209,7 @@
                 journal.positiveReview = $scope.positiveReview;
                 journal.goal = $scope.goal;
                 journal.momentum = $scope.momentum;
-                journal.createdDate = date;
+                journal.entryDate = date;
 
                 $http.post('/journalEntries/save', journal).then(function (result) {
                     console.log(result);
@@ -235,7 +235,8 @@
                     return;
                 }
                 var journalSearchDate = $("#datepicker").val();
-                $http.post('/journalEntries/findEntryByDate', {createdDate: journalSearchDate}).then(function (result) {
+                var searchDate = new Date(journalSearchDate);
+                $http.post('/journalEntries/findEntryByDate', searchDate).then(function (result) {
                     var journal = result.data;
 
                     $scope.attitude = journal.attitude;

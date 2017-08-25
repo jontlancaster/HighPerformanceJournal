@@ -44,6 +44,9 @@ public class JournalEntry {
     @Column(name="personal_impact")
     private int personalImpact;
 
+    @Column(name="entry_date")
+    private Date entryDate;
+
     @CreationTimestamp
     @Column(name="created_date")
     private Date createdDate;

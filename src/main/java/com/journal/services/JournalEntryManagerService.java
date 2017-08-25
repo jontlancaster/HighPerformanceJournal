@@ -58,13 +58,13 @@ public class JournalEntryManagerService {
 
     public JournalEntry saveEntry(JournalEntry entry) {
         Journal journal = journalManager.getJournalForLoggedInUser();
-        JournalEntry updatedEntry = getJournalEntryByDate(entry.getCreatedDate());
+        JournalEntry updatedEntry = getJournalEntryByDate(entry.getEntryDate());
 
         try {
             entry.setJournalId(journal.getJournalId());
             if (updatedEntry != null) {
                 entry.setJournalEntryId(updatedEntry.getJournalEntryId());
-                entry.setCreatedDate(updatedEntry.getCreatedDate());
+                entry.setEntryDate(updatedEntry.getEntryDate());
             }
             updatedEntry = repository.save(entry);
         } catch (Exception e) {
@@ -74,22 +74,22 @@ public class JournalEntryManagerService {
         return updatedEntry;
     }
 
-    private JournalEntry getJournalEntryByDate(Date date) {
+    public JournalEntry getJournalEntryByDate(Date entryDate) {
         JournalEntry entry = new JournalEntry();
         Journal journal = journalManager.getJournalForLoggedInUser();
 
         if (journal != null) {
-            entry = repository.findByJournalIdAndCreatedDate(journal.getJournalId(), date);
+            entry = repository.findByJournalIdAndEntryDate(journal.getJournalId(), entryDate);
 
             if (entry == null) {
-                entry = createEmptyEntry(journal);
+                entry = createEmptyEntry(journal, entryDate);
                 entry = repository.save(entry);
             }
         }
         return entry;
     }
 
-    private JournalEntry createEmptyEntry(Journal journal) {
+    private JournalEntry createEmptyEntry(Journal journal, Date entryDate) {
         JournalEntry entry = new JournalEntry();
         entry.setJournalId(journal.getJournalId());
         entry.setPositiveReview("");
@@ -101,21 +101,9 @@ public class JournalEntryManagerService {
         entry.setMotivation(1);
         entry.setAttitude(1);
         entry.setPersonalImpact(1);
+        entry.setEntryDate(entryDate);
 
         return entry;
-    }
-
-    public JournalEntry findByCreatedDate(String createdDateString) {
-        Journal journal = journalManager.getJournalForLoggedInUser();
-        DateFormat df = new SimpleDateFormat("mm/dd/yyyy");
-        try {
-            java.util.Date createdDate = df.parse(createdDateString);
-            return repository.findByJournalIdAndCreatedDate(journal.getJournalId(), new Date(createdDate.getTime()));
-        } catch (ParseException e) {
-            System.out.println("Unable to parse date: " + createdDateString + " for user "
-                    + journal.getUser().getUsername() + " and journal id: " + journal.getJournalId());
-        }
-        return null;
     }
 
     public JournalValuesInDateRange getJournalValuesInDateRange(DateRangeFilter dateRangeFilter) {

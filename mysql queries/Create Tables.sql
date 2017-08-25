@@ -48,6 +48,7 @@ determination int NOT NULL,
 motivation int NOT NULL,
 attitude int NOT NULL,
 personal_impact int NOT NULL,
+entry_date DATE NOT NULL,
 created_date DATE NOT NULL,
 modified_date DATETIME NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
 FOREIGN KEY (journal_id) REFERENCES journals (journal_id) ON DELETE CASCADE

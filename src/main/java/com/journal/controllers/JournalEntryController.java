@@ -10,6 +10,7 @@ import com.journal.services.JournalEntryManagerService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -40,8 +41,8 @@ public class JournalEntryController {
     }
 
     @RequestMapping(value = "/journalEntries/findEntryByDate", method = RequestMethod.POST)
-    public JournalEntry findEntryByDate(@RequestBody String createdDate) {
-        return entryManager.findByCreatedDate(createdDate);
+    public JournalEntry findEntryByDate(@RequestBody Date entryDate) {
+        return entryManager.getJournalEntryByDate(entryDate);
     }
 
     @RequestMapping(value = "/journalEntries/getJournalValuesInDateRange", method = RequestMethod.POST)
