@@ -7,19 +7,13 @@ import com.journal.entities.Journal;
 import com.journal.entities.JournalEntry;
 import com.journal.repositories.JournalEntryRepository;
 import org.joda.time.DateTime;
-import org.joda.time.Days;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Date;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by jonathon lancaster on 4/5/2017.
@@ -113,14 +107,14 @@ public class JournalEntryManagerService {
         Set<String> dates = new TreeSet<>();
 
         Journal journal = journalManager.getJournalByUsername(dateRangeFilter.getUsername());
-        List<JournalEntry> journalEntryList = repository.findByJournalIdWhereCreatedDateInRange(
+        List<JournalEntry> journalEntryList = repository.findByJournalIdWhereEntryDateInRange(
                 journal.getJournalId(), getSqlDateFromString(dateRangeFilter.getStartDate()),
                 getSqlDateFromString(dateRangeFilter.getEndDate()));
 
 
         journalEntryList
                 .forEach(journalEntry -> {
-                    String date = getDateTimeAsString(new DateTime(journalEntry.getCreatedDate()), MM_DD_YYYY);
+                    String date = getDateTimeAsString(new DateTime(journalEntry.getEntryDate()), MM_DD_YYYY);
                     dates.add(date);
 
                     addValueToMap(WILLINGNESS, date, journalEntry.getWillingness(), fieldValuesMap);
@@ -140,8 +134,8 @@ public class JournalEntryManagerService {
 
     public JournalAveragesInDateRange getJournalAveragesInDateRange(DateRangeFilter dateRangeFilter) {
         Journal journal = journalManager.getJournalForLoggedInUser();
-        List<JournalEntry> journalEntryList = repository.findByJournalIdWhereCreatedDateInRange(
-                68L, getSqlDateFromString(dateRangeFilter.getStartDate()),
+        List<JournalEntry> journalEntryList = repository.findByJournalIdWhereEntryDateInRange(
+                journal.getJournalId(), getSqlDateFromString(dateRangeFilter.getStartDate()),
                 getSqlDateFromString(dateRangeFilter.getEndDate()));
 
         return JournalAveragesInDateRange.builder()

@@ -27,9 +27,9 @@ public interface JournalEntryRepository extends JpaRepository <JournalEntry, Int
 
     @Query("select journalEntry from JournalEntry journalEntry " +
             "where journalEntry.journalId = :journalId " +
-            "and journalEntry.createdDate >= :fromDate " +
-            "and journalEntry.createdDate <= :toDate")
-    List<JournalEntry> findByJournalIdWhereCreatedDateInRange(@Param("journalId") long journalId,
-                                                              @Param("fromDate") Date fromDate,
-                                                              @Param("toDate") Date toDate);
+            "and journalEntry.entryDate >= :fromDate " +
+            "and journalEntry.entryDate <= :toDate")
+    List<JournalEntry> findByJournalIdWhereEntryDateInRange(@Param("journalId") long journalId,
+                                                            @Param("fromDate") Date fromDate,
+                                                            @Param("toDate") Date toDate);
 }
