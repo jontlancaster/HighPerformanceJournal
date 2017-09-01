@@ -70,6 +70,14 @@ public class JournalEntryManagerService {
 
     public JournalEntry getJournalEntryByDate(Date entryDate) {
         JournalEntry entry = new JournalEntry();
+
+        Long time = System.currentTimeMillis();
+        Date today = new Date(time);
+
+        if (entryDate.after(today)) {
+            System.out.print("The entry date is after today, returning today's journal.");
+            entryDate = today;
+        }
         Journal journal = journalManager.getJournalForLoggedInUser();
 
         if (journal != null) {
