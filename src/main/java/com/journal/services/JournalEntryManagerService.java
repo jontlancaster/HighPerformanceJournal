@@ -59,6 +59,7 @@ public class JournalEntryManagerService {
             if (updatedEntry != null) {
                 entry.setJournalEntryId(updatedEntry.getJournalEntryId());
                 entry.setEntryDate(updatedEntry.getEntryDate());
+                entry.setCreatedDate(updatedEntry.getCreatedDate());
             }
             updatedEntry = repository.save(entry);
         } catch (Exception e) {

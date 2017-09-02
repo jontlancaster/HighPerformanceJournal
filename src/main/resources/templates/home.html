@@ -100,7 +100,7 @@
             }
             getUsernameOfLoggedInUser();
 
-            $scope.defaultSliderValue = 0;
+            $scope.defaultSliderValue = 1;
             $scope.attitude = $scope.defaultSliderValue;
             $scope.determination = $scope.defaultSliderValue;
             $scope.mentalToughness = $scope.defaultSliderValue;
@@ -244,6 +244,7 @@
                     $scope.goal = journal.goal;
                     $scope.mentalToughness = journal.mentalToughness;
                     $scope.momentum = journal.momentum;
+                    $scope.motivation = journal.motivation;
                     $scope.personalImpact = journal.personalImpact;
                     $scope.positiveReview = journal.positiveReview;
                     $scope.willingness = journal.willingness;
@@ -269,6 +270,7 @@
         $datepicker.datepicker({autoSize: true});
         $datepicker.datepicker('setDate', new Date());
         $datepicker.mask(mask);
+        $datepicker.datepicker({maxDate: 0});
     });
 </script>
 </body>

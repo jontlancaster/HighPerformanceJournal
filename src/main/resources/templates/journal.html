@@ -117,6 +117,10 @@
                             <label><input ng-model="showAttitudeInGraph" id="showAttitudeInGraph" type="checkbox"
                                           name="filterOptions"/>Attitude</label>
                         </div>
+                        <div class="checkbox">
+                            <label><input ng-model="showPersonalImpactInGraph" id="showPersonalImpactInGraph" type="checkbox"
+                                        name="filerOptions"/>Personal Impact</label>
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -169,6 +173,7 @@
             $scope.showDeterminationInGraph = true;
             $scope.showMotivationInGraph = true;
             $scope.showAttitudeInGraph = true;
+            $scope.showPersonalImpactInGraph = true;
 
             $scope.keepDropDownOpen = function (e) {
                 e.stopPropagation();
@@ -250,6 +255,8 @@
                         return !$scope.showMotivationInGraph;
                     case "attitude":
                         return !$scope.showAttitudeInGraph;
+                    case "personalimpact":
+                        return !$scope.showPersonalImpactInGraph;
                     default:
                         console.log('Unknown case: ' + field.toLowerCase());
                 }
