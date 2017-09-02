@@ -266,11 +266,21 @@
 <script>
     $(function () {
         var mask = "99/99/9999";
+        var date = new Date();
+
+        var currentMonth = date.getMonth();
+        var currentDate = date.getDate();
+        var currentYear = date.getFullYear();
+        var maxDate = new Date(currentYear, currentMonth, currentDate);
+
         var $datepicker = $("#datepicker");
-        $datepicker.datepicker({autoSize: true});
+        $datepicker.datepicker({
+            autoSize: true,
+            maxDate: maxDate
+        });
+
         $datepicker.datepicker('setDate', new Date());
         $datepicker.mask(mask);
-        $datepicker.datepicker({maxDate: 0});
     });
 </script>
 </body>
