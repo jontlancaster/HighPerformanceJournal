@@ -8,6 +8,9 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import java.io.InputStream;
+import java.util.Properties;
+
 /**
  * Created by JLancaster on 3/23/2017.
  */
@@ -18,12 +21,27 @@ public class AppConfig {
 
     @Bean(name="dataSource")
     public DriverManagerDataSource dataSource() {
+        Properties props = getDataSourceProperties();
         DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
-        driverManagerDataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        driverManagerDataSource.setUrl("jdbc:mysql://localhost:3306/ClearlinkJournal?autReconnect=true&useSSL=false");
-        driverManagerDataSource.setUsername("dev");
-        driverManagerDataSource.setPassword("admin");
+        driverManagerDataSource.setDriverClassName(props.getProperty("spring.datasource.driver-class-name"));
+        driverManagerDataSource.setUrl(props.getProperty("spring.datasource.url"));
+        driverManagerDataSource.setUsername(props.getProperty("spring.datasource.username"));
+        driverManagerDataSource.setPassword(props.getProperty("spring.datasource.password"));
+
         return driverManagerDataSource;
+    }
+
+    private Properties getDataSourceProperties() {
+        Properties properties = new Properties();
+        try {
+            ClassLoader loader = Thread.currentThread().getContextClassLoader();
+            InputStream stream = loader.getResourceAsStream("application.properties");
+            properties.load(stream);
+        } catch (Exception e) {
+            System.out.println("Error while loading database properties.");
+        }
+
+        return properties;
     }
 
     @Bean
