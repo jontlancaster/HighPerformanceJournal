@@ -19,6 +19,8 @@ public class UserRoleManagerService {
 
     @Autowired
     private UserRoleRepository repository;
+    @Autowired
+    private SecurityService securityService;
 
     private static final String standardRole = "ROLE_USER";
     private static final String coachRole = "ROLE_COACH";
@@ -42,6 +44,27 @@ public class UserRoleManagerService {
         userRole.setRole(role);
 
         return repository.save(userRole) != null;
+    }
+
+    public String getUserRoleForLoggedInUser() {
+        List<UserRole> userRoles = repository.findByUsername(securityService.getLoggedInUser());
+
+        if(CollectionUtils.isEmpty(userRoles)) {
+            return null;
+        }
+
+        if(userRoles.stream()
+                .anyMatch(userRole -> userRole.getRole().equals(adminRole))) {
+            return "admin";
+        } else if(userRoles.stream()
+                .anyMatch(userRole -> userRole.getRole().equals(coachRole))) {
+            return "coach";
+        } else if(userRoles.stream()
+                .anyMatch(userRole -> userRole.getRole().equals(standardRole))) {
+            return "user";
+        }
+
+        return null;
     }
 
     public List<UserRole> getRolesByUsername(String username) {

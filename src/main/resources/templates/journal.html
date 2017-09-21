@@ -29,7 +29,7 @@
             <li role="presentation"><a href="/home">Home</a></li>
             <li role="presentation" class="active"><a href="/journal">Reports</a></li>
             <li role="presentation"><a href="/admin">Admin</a></li>
-            <li role="presentation" style="float:right;"><a href="/logout">Logout</a></li>
+            <li role="presentation" style="float:right;"><a href="/login?logout">Logout</a></li>
             <li disabled="disabled" class="glyphicon glyphicon-user" style="float:right; font-size:20px;"><p style="padding-left:10px; font-size:30px; display:inline;">{{usernameOfLoggedInUser}}</p></li>
         </ul>
     </div>
@@ -38,7 +38,7 @@
             <h2>Report for: {{userToShowReportsFor}}</h2>
         </div>
     </div>
-    <div class="row" ng-show="userIsAnAdmin">
+    <div class="row" ng-show="userIsAnAdminOrCoach">
         <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                 <label for="usernameSearchInput">Username</label><br/>
@@ -156,7 +156,7 @@
                 if(!sessionStorage.getItem('usernameOfLoggedInUser')) {
                     $http.post('/users/getUsernameOfLoggedInUser').then(function(result) {
                         if(!result.data || !result.data.username) {
-                            window.location.href = '/logout';
+                            window.location.href = '/login?logout';
                         } else {
                             sessionStorage.setItem('usernameOfLoggedInUser', result.data.username);
                         }
@@ -167,7 +167,23 @@
             getUsernameOfLoggedInUser();
 
             $scope.userToShowReportsFor = $scope.usernameOfLoggedInUser;
-            $scope.userIsAnAdmin = true;
+            $scope.userIsAnAdminOrCoach = false;
+
+            function getUserRole() {
+                if (!sessionStorage.getItem('userRole')) {
+                    $http.post('/userRole').then(function (result) {
+                        if (!result.data || !result.data.userRole) {
+                            window.location.href = '/login?logout';
+                        } else {
+                            sessionStorage.setItem('userRole', result.data.userRole);
+                        }
+                    });
+                }
+                $scope.userRole = sessionStorage.getItem('userRole');
+                $scope.userIsAnAdminOrCoach = $scope.userRole === 'admin' || $scope.userRole === 'coach';
+            }
+            getUserRole();
+
             $scope.showMentalToughnessInGraph = true;
             $scope.showWillingnessInGraph = true;
             $scope.showDeterminationInGraph = true;

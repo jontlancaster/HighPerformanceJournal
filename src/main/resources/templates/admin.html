@@ -28,7 +28,7 @@
             <li role="presentation"><a href="/home">Home</a></li>
             <li role="presentation"><a href="/journal">Reports</a></li>
             <li role="presentation" class="active"><a href="/admin">Admin</a></li>
-            <li role="presentation" style="float:right;"><a href="/logout">Logout</a></li>
+            <li role="presentation" style="float:right;"><a href="/login?logout">Logout</a></li>
             <li disabled="disabled" class="glyphicon glyphicon-user" style="float:right; font-size:20px;"><p style="padding-left:10px; font-size:30px; display:inline;">{{usernameOfLoggedInUser}}</p></li>
         </ul>
     </div>
@@ -156,18 +156,34 @@
                 if(!sessionStorage.getItem('usernameOfLoggedInUser')) {
                     $http.post('/users/getUsernameOfLoggedInUser').then(function(result) {
                         if(!result.data || !result.data.username) {
-                            window.location.href = '/logout';
+                            window.location.href = '/login?logout';
                         } else {
                             sessionStorage.setItem('usernameOfLoggedInUser', result.data.username);
                         }
                     });
                 }
                 $scope.usernameOfLoggedInUser = sessionStorage.getItem('usernameOfLoggedInUser');
+                searchForUser($scope.usernameOfLoggedInUser);
             }
             getUsernameOfLoggedInUser();
 
-            $scope.loggedInUserIsAnAdmin = true;
+            $scope.loggedInUserIsAnAdmin = false;
             $scope.userIsNew = true;
+
+            function getUserRole() {
+                if (!sessionStorage.getItem('userRole')) {
+                    $http.post('/userRole').then(function (result) {
+                        if (!result.data || !result.data.userRole) {
+                            window.location.href = '/login?logout';
+                        } else {
+                            sessionStorage.setItem('userRole', result.data.userRole);
+                        }
+                    });
+                }
+                $scope.userRole = sessionStorage.getItem('userRole');
+                $scope.loggedInUserIsAnAdmin = $scope.userRole === 'admin';
+            }
+            getUserRole();
 
             $scope.validateFirstName = function () {
                 $scope.firstNameIsInvalid = !$scope.firstName || $scope.firstName.trim().length === 0;
@@ -311,7 +327,11 @@
                     console.log('username is invalid: ' + $scope.usernameForSearch);
                     return;
                 }
-                $http.get('/users/find', {params: {username: $scope.usernameForSearch.trim()}}).then(function (result) {
+                searchForUser($scope.usernameForSearch);
+            };
+
+            function searchForUser(username) {
+                $http.get('/users/find', {params: {username: username.trim()}}).then(function (result) {
                     var user = result.data;
                     if(!user) {
                         $scope.userNotFound = true;
@@ -327,7 +347,7 @@
                     $scope.userIsAnAdmin = user.userIsAnAdmin;
                     $scope.userIsEnabled = user.userIsEnabled;
                 });
-            };
+            }
         }]);
     /*]]>*/
 </script>

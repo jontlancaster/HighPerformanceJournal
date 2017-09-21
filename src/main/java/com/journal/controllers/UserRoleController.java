@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by JLancaster on 3/15/2017.
@@ -65,6 +67,14 @@ public class UserRoleController {
             result = roleManager.disableCoach(username);
 
         return result;
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @RequestMapping(value = "/userRole", method = RequestMethod.POST)
+    public Map<String, String> getUserRoleForLoggedInUser() {
+        Map<String, String> role = new HashMap<>();
+        role.put("userRole", roleManager.getUserRoleForLoggedInUser());
+        return role;
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

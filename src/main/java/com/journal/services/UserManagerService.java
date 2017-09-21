@@ -158,7 +158,6 @@ public class UserManagerService {
     }
 
     public String getUsernameOfLoggedInUser() {
-//        return repository.findByUsername("jonlan").getUsername();
         return securityService.getLoggedInUser();
     }
 }

@@ -6,6 +6,7 @@ import com.journal.dto.JournalValuesInDateRange;
 import com.journal.entities.Journal;
 import com.journal.entities.JournalEntry;
 import com.journal.repositories.JournalEntryRepository;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -63,7 +64,7 @@ public class JournalEntryManagerService {
             }
             updatedEntry = repository.save(entry);
         } catch (Exception e) {
-            System.out.println("There was an error saving the journal entry " + e.getMessage());
+            System.err.println("There was an error saving the journal entry " + ExceptionUtils.getMessage(e));
         }
 
         return updatedEntry;
