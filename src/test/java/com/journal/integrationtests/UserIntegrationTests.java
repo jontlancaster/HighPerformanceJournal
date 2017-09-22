@@ -1,5 +1,6 @@
 package com.journal.integrationtests;
 
+import com.journal.dto.SaveUserRequest;
 import com.journal.entities.User;
 import com.journal.entities.UserRole;
 import com.journal.repositories.UserRepository;
@@ -62,14 +63,14 @@ public class UserIntegrationTests {
             userRepository.delete(user);
             assertEquals(userRepository.findByUsername("steve"), null);
         }
-        user = new User();
-        user.setFirstName("Steve");
-        user.setLastName("Scuba");
-        user.setUsername("steve");
-        user.setPassword("passwd");
-        userManager.createNewUser(user);
+        SaveUserRequest saveUserRequest = new SaveUserRequest();
+        saveUserRequest.setFirstName("Steve");
+        saveUserRequest.setLastName("Scuba");
+        saveUserRequest.setUsername("steve");
+        saveUserRequest.setPassword("passwd");
+        userManager.createNewUser(saveUserRequest);
         userRepository.findByUsername("steve");
-        assertEquals("Steve", user.getFirstName());
+        assertEquals("Steve", saveUserRequest.getFirstName());
     }
 
     @Test

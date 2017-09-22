@@ -30,17 +30,14 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value="/users/create",
-            method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public User createUser(@RequestBody final User newUser) {
-        return userManager.createNewUser(newUser);
-    }
-
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value="/users/saveUser", method = RequestMethod.POST)
     public User saveUser(@RequestBody SaveUserRequest saveUserRequest) {
         return userManager.saveUser(saveUserRequest);
+    }
+
+    @RequestMapping(value="/users/createNewUser", method = RequestMethod.POST)
+    public User createNewUser(@RequestBody SaveUserRequest saveUserRequest) {
+        return userManager.createNewUser(saveUserRequest);
     }
 
     @PreAuthorize("hasRole('ROLE_COACH')")

@@ -29,6 +29,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
+                .antMatchers("/signUp")
+                .permitAll()
+                .antMatchers("/users/createNewUser")
+                .permitAll()
                 .antMatchers("/", "/home", "/**").hasRole("USER")//.permitAll()//
                 .anyRequest().authenticated()
                 .and()

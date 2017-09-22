@@ -61,12 +61,12 @@ public class UserManagerService {
         return userWithRoles;
     }
 
-    public User createNewUser(User newUser) {
+    public User createNewUser(SaveUserRequest saveUserRequest) {
         User user = new User();
-        user.setFirstName(newUser.getFirstName());
-        user.setLastName(newUser.getLastName());
-        user.setUsername(newUser.getUsername());
-        user.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        user.setFirstName(saveUserRequest.getFirstName());
+        user.setLastName(saveUserRequest.getLastName());
+        user.setUsername(saveUserRequest.getUsername());
+        user.setPassword(passwordEncoder.encode(saveUserRequest.getPassword()));
         user.setEnabled(true);
 
         try {

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.springframework.org/schema/mvc">
+<head>
+    <title>Clearlink Journal</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+</head>
+<style>
+    .button {
+        color: #fff;
+        background-color: #337ab7;
+        border-color: #2e6da4;
+    }
+
+    .buttonInfo {
+        color: #fff;
+        background-color: #5bc0de;
+        border-color: #46b8da;
+    }
+</style>
+<body ng-app="highPerformanceJournal">
+<div class="container-fluid ng-cloak" ng-controller="NewUserController">
+    <div class="row">
+        <ul class="nav nav-pills">
+            <li disabled="disabled">Clearlink</li>
+            <li role="presentation" class="active"><a href="#">Sign Up</a></li>
+            <li role="presentation"><a href="/login">Login</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div>
+                <label for="firstNameInput">First Name</label>
+                <input ng-model="firstName" id="firstNameInput" style="display:block"
+                       maxlength="40" ng-blur="validateFirstName()" ng-change="validateFirstName()"/>
+                <div ng-show="firstNameIsInvalid" class="alert alert-danger" role="alert"
+                     style="max-width: 180px; padding: 10px;">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    First Name is required
+                </div>
+            </div>
+            <div>
+                <label for="lastNameInput">Last Name</label>
+                <input ng-model="lastName" id="lastNameInput" style="display:block;"
+                       maxlength="40" ng-blur="validateLastName()" ng-change="validateLastName()"/>
+                <div ng-show="lastNameIsInvalid" class="alert alert-danger" role="alert"
+                     style="max-width: 180px; padding: 10px;">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    Last Name is required
+                </div>
+            </div>
+            <div>
+                <label for="userNameInput">Email <i>This will used as the username</i></label>
+                <input ng-model="username" id="userNameInput" style="display:block;"
+                       maxlength="40" ng-blur="validateUsername()" ng-change="validateUsername()"/>
+                <div ng-show="usernameIsInvalid" class="alert alert-danger" role="alert"
+                     style="max-width: 180px; padding: 10px;">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    Username is required
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div>
+                <label for="newPasswordInput">Password</label>
+                <input ng-model="newPassword" id="newPasswordInput" type="password"
+                       style="display:block" maxlength="40" ng-blur="validatePasswordForExistingUser()"
+                       ng-change="validatePasswordForExistingUser()"/>
+            </div>
+            <div>
+                <label for="newPasswordConfirmInput">Confirm Password</label>
+                <input ng-model="newPasswordConfirm" id="newPasswordConfirmInput"
+                       type="password" style="display:block;" maxlength="40" ng-blur="validatePasswordForExistingUser()"
+                       ng-change="validatePasswordForExistingUser()"/>
+            </div>
+            <div ng-show="passwordIsInvalid" class="alert alert-danger" role="alert"
+                 style="max-width: 180px; padding: 10px;">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                {{passwordValidationMessage}}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <button class="btn button" ng-click="saveUser()">Save</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div ng-show="showFailedToSaveMessage" class="alert alert-danger" role="alert"
+                 style="max-width: 180px; padding: 10px;">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                There was an error saving.
+            </div>
+            <div ng-show="showSuccessfulSaveMessage" class="alert alert-success" role="alert"
+                 style="max-width: 180px; padding: 10px;">
+                Successfully saved
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.2/angular.min.js"></script>
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+    var myApp = angular.module('highPerformanceJournal', []);
+
+    myApp.controller('NewUserController', ['$scope', '$http',
+        function ($scope, $http) {
+
+            $scope.validateFirstName = function () {
+                $scope.firstNameIsInvalid = !$scope.firstName || $scope.firstName.trim().length === 0;
+            };
+
+            $scope.validateLastName = function () {
+                $scope.lastNameIsInvalid = !$scope.lastName || $scope.lastName.trim().length === 0;
+            };
+
+            $scope.validateUsername = function () {
+                $scope.usernameIsInvalid = !$scope.username || $scope.username.trim().length === 0;
+            };
+
+            $scope.validatePasswordForExistingUser = function () {
+                $scope.passwordIsInvalid = ($scope.newPassword && $scope.newPasswordConfirm)
+                    && ($scope.newPassword !== $scope.newPasswordConfirm);
+                $scope.passwordValidationMessage = "Passwords don't match";
+            };
+
+            $scope.validatePasswordForNewUser = function () {
+                if(!$scope.newPassword || !$scope.newPasswordConfirm) {
+                    $scope.passwordIsInvalid = true;
+                    $scope.passwordValidationMessage = "Password is required";
+                    return;
+                }
+                $scope.passwordIsInvalid = $scope.newPassword !== $scope.newPasswordConfirm;
+                $scope.passwordValidationMessage = "Passwords don't match";
+            };
+
+            $scope.hideAllValidationMessages = function () {
+                $scope.lastNameIsInvalid = false;
+                $scope.firstNameIsInvalid = false;
+                $scope.usernameIsInvalid = false;
+                $scope.passwordIsInvalid = false;
+            };
+
+            function showSuccessfulSaveMessage() {
+                $scope.showFailedToSaveMessage = false;
+                $scope.showSuccessfulSaveMessage = true;
+            }
+
+            function showFailureToSaveMessage() {
+                $scope.showFailedToSaveMessage = true;
+                $scope.showSuccessfulSaveMessage = false;
+            }
+
+            function saveUser() {
+                $http.post('/users/createNewUser', {
+                    firstName: $scope.firstName,
+                    lastName: $scope.lastName,
+                    enabled: $scope.userIsEnabled,
+                    password: $scope.newPasswordConfirm,
+                    username: $scope.username
+                }).then(function (result) {
+                    console.log('saveUser result: ', result.data);
+                    showSuccessfulSaveMessage();
+                }, function (result) {
+                    console.error('Failed to save user: ', result);
+                    showFailureToSaveMessage();
+                });
+            }
+
+            $scope.saveUser = function () {
+                $scope.validateFirstName();
+                $scope.validateLastName();
+                $scope.validateUsername();
+                if($scope.userIsNew) {
+                    $scope.validatePasswordForNewUser();
+                } else {
+                    $scope.validatePasswordForExistingUser();
+                }
+
+                if ($scope.usernameIsInvalid || $scope.firstNameIsInvalid || $scope.lastNameIsInvalid
+                    || $scope.passwordIsInvalid) {
+                    return;
+                }
+
+                console.log('newPassword: ' + $scope.newPassword);
+                console.log('newPasswordConfirm: ' + $scope.newPasswordConfirm);
+                console.log('firstName: ' + $scope.firstName);
+                console.log('lastName: ' + $scope.lastName);
+                console.log('username: ' + $scope.username);
+                console.log('isCoach: ' + !!$scope.userIsACoach);
+                console.log('isAdmin: ' + !!$scope.userIsAnAdmin);
+                console.log('userIsEnabled: ' + !!$scope.userIsEnabled);
+
+                saveUser();
+            };
+        }]);
+    /*]]>*/
+</script>
+</body>
+</html>

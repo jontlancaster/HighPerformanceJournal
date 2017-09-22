@@ -19,7 +19,10 @@
         <form th:action="@{/login}" method="post">
             <div><label>Username: <input type="text" name="username" /></label></div>
             <div><label>Password: <input type="text" name="password" /></label></div>
-            <div><input type="submit" value="Sign In" /></div>
+            <div>
+                <input type="submit" value="Sign In" />
+                <a href="/signUp">Sign up</a>
+            </div>
         </form>
     </div>
 </div>
