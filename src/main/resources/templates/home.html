@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <title>Clearlink Journal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/6.2.3/rzslider.min.css"/>
@@ -9,71 +9,130 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
 </head>
+<style>
+    .nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+        background-color: darkturquoise;
+    }
+
+    .nav > li > a {
+        color: white;
+    }
+
+    .clearLinkText {
+        font-size: 30px;
+        color: white;
+        padding-right: 20px;
+        padding-left: 15px;
+    }
+
+    .topNav {
+        background-color: #3a4df9;
+        color: white !important;
+        font-family: 'Sofia', 'Droid Sans', Helvetica, Arial, sans-serif;
+        height: 50px;
+    }
+
+    .nav-pills > li {
+        padding-top: 5px;
+    }
+
+    .saveButtonArea {
+        padding-left: 10px;
+    }
+
+    .getJournalButton {
+        margin-left: 15px;
+    }
+
+    .sliderLabel {
+        font-weight: 700;
+    }
+
+    .sliderDiv {
+        padding-bottom: 10px;
+    }
+
+    .textareaDiv {
+        padding-bottom: 25px;
+    }
+
+    body {
+        font-family: 'Sofia', 'Droid Sans', Helvetica, Arial, sans-serif;
+    }
+</style>
 <body ng-app="highPerformanceJournal">
 <div class="container-fluid ng-cloak" ng-controller="JournalEntryController">
-    <div class="row">
+    <div class="row topNav">
         <ul class="nav nav-pills">
-            <li disabled="disabled">Clearlink</li>
-            <li role="presentation" class="active"><a href="/home">Home</a></li>
+            <li disabled="disabled" class="clearLinkText">Clearlink</li>
+            <li role="presentation" class="active"><a href="#">Home</a></li>
             <li role="presentation"><a href="/journal">Reports</a></li>
             <li role="presentation"><a href="/admin">Admin</a></li>
             <li role="presentation" style="float:right;"><a href="/login?logout">Logout</a></li>
-            <li disabled="disabled" class="glyphicon glyphicon-user" style="float:right; font-size:20px;"><p
-                    style="padding-left:10px; font-size:30px; display:inline;">{{usernameOfLoggedInUser}}</p></li>
+            <li disabled="disabled" id="usernameOfLoggedInUser"
+                style="float:right; font-size:20px; padding-right:15px;">
+                <span class="glyphicon glyphicon-user"></span>
+                <span style="padding-left:10px; font-size:30px; display:inline;">
+                {{usernameOfLoggedInUser}}</span>
+            </li>
         </ul>
     </div>
-    <div class="row">
+    <div class="row" style="margin-top:15px; margin-left: 0px;">
         Date: <input type="text" id="datepicker" ng-model="journalSearchDate" style="max-width: 100px;"/>
-        <button class="btn btn-info" ng-click="getJournal()">Get Journal</button>
+        <button class="btn btn-info getJournalButton" ng-click="getJournal()">Get Journal</button>
     </div>
-    <div class="row" ng-show="doneRetrievingEntry">
+    <div class="row" ng-show="doneRetrievingEntry" style="margin-top:10px;">
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <span>
+            <div class="textareaDiv">
                 <label for="positiveReviewsTextArea">Positive Review</label>
-                <textarea id="positiveReviewsTextArea" style="display:block;" ng-model="positiveReview"
+                <textarea id="positiveReviewsTextArea" style="display:block; width: 100%; min-height: 100px;"
+                          ng-model="positiveReview"
                           maxlength="1000"></textarea>
-            </span>
-            <span>
+            </div>
+            <div class="textareaDiv">
                 <label for="goalsTextArea">Goals</label>
-                <textarea id="goalsTextArea" style="display:block;" ng-model="goal"
+                <textarea id="goalsTextArea" style="display:block; width: 100%; min-height: 100px;" ng-model="goal"
                           maxlength="1000"></textarea>
-            </span>
-            <span>
+            </div>
+            <div class="textareaDiv">
                 <label for="momentumsTextArea">Momentums</label>
-                <textarea id="momentumsTextArea" style="display:block;" ng-model="momentum"></textarea>
-            </span>
+                <textarea id="momentumsTextArea" style="display:block; width: 100%; min-height: 100px;"
+                          ng-model="momentum"></textarea>
+            </div>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <div>
-                <p>Mental Toughness</p>
+            <div class="sliderDiv">
+                <p class="sliderLabel">Mental Toughness</p>
                 <rzslider id="mentalToughnessSlider" rz-slider-model="mentalToughnessSlider.value"
                           rz-slider-options="mentalToughnessSlider.options"></rzslider>
             </div>
-            <div>
-                <p>Willingness</p>
+            <div class="sliderDiv">
+                <p class="sliderLabel">Willingness</p>
                 <rzslider id="willingnessSlider" rz-slider-model="willingnessSlider.value"
                           rz-slider-options="willingnessSlider.options"></rzslider>
             </div>
-            <div>
-                <p>Determination</p>
+            <div class="sliderDiv">
+                <p class="sliderLabel">Determination</p>
                 <rzslider id="determinationSlider" rz-slider-model="determinationSlider.value"
                           rz-slider-options="determinationSlider.options"></rzslider>
             </div>
-            <div>
-                <p>Motivation</p>
+            <div class="sliderDiv">
+                <p class="sliderLabel">Motivation</p>
                 <rzslider id="motivationSlider" rz-slider-model="motivationSlider.value"
                           rz-slider-options="motivationSlider.options"></rzslider>
             </div>
-            <div>
-                <p>Attitude</p>
+            <div class="sliderDiv">
+                <p class="sliderLabel">Attitude</p>
                 <rzslider id="attitudeSlider" rz-slider-model="attitudeSlider.value"
                           rz-slider-options="attitudeSlider.options"></rzslider>
             </div>
-            <div>
-                <p>Personal Impact</p>
+            <div class="sliderDiv">
+                <p class="sliderLabel">Personal Impact</p>
                 <rzslider id="personalImpactSlider" rz-slider-model="personalImpactSlider.value"
                           rz-slider-options="personalImpactSlider.options"></rzslider>
             </div>
+        </div>
+        <div class="saveButtonArea">
             <div>
                 <button class="btn btn-primary" ng-click="submitEntry()">Save Entry</button>
             </div>
@@ -103,6 +162,7 @@
                             window.location.href = '/login?logout';
                         } else {
                             sessionStorage.setItem('usernameOfLoggedInUser', result.data.username);
+                            $scope.usernameOfLoggedInUser = sessionStorage.getItem('usernameOfLoggedInUser');
                         }
                     });
                 }

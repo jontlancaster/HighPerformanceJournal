@@ -159,6 +159,7 @@
                             window.location.href = '/login?logout';
                         } else {
                             sessionStorage.setItem('usernameOfLoggedInUser', result.data.username);
+                            $scope.usernameOfLoggedInUser = sessionStorage.getItem('usernameOfLoggedInUser');
                         }
                     });
                 }
