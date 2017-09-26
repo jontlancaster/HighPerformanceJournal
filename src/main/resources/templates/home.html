@@ -32,8 +32,31 @@
         height: 50px;
     }
 
+    .nav>li>a:focus, .nav>li>a:hover {
+        background-color: cornflowerblue;
+    }
+
+    .logoutLink {
+        float:right !important;
+        margin-right: 5px;
+    }
+
     .nav-pills > li {
         padding-top: 5px;
+    }
+
+    body {
+        font-family: 'Sofia', 'Droid Sans', Helvetica, Arial, sans-serif;
+    }
+
+    .button-info {
+        color: #fff;
+        background-color: #5bc0de;
+    }
+
+    .button-primary {
+        color: #fff;
+        background-color: #337ab7;
     }
 
     .saveButtonArea {
@@ -55,10 +78,6 @@
     .textareaDiv {
         padding-bottom: 25px;
     }
-
-    body {
-        font-family: 'Sofia', 'Droid Sans', Helvetica, Arial, sans-serif;
-    }
 </style>
 <body ng-app="highPerformanceJournal">
 <div class="container-fluid ng-cloak" ng-controller="JournalEntryController">
@@ -68,7 +87,7 @@
             <li role="presentation" class="active"><a href="#">Home</a></li>
             <li role="presentation"><a href="/journal">Reports</a></li>
             <li role="presentation"><a href="/admin">Admin</a></li>
-            <li role="presentation" style="float:right;"><a href="/login?logout">Logout</a></li>
+            <li role="presentation" class="logoutLink"><a href="/login?logout">Logout</a></li>
             <li disabled="disabled" id="usernameOfLoggedInUser"
                 style="float:right; font-size:20px; padding-right:15px;">
                 <span class="glyphicon glyphicon-user"></span>
@@ -79,7 +98,7 @@
     </div>
     <div class="row" style="margin-top:15px; margin-left: 0px;">
         Date: <input type="text" id="datepicker" ng-model="journalSearchDate" style="max-width: 100px;"/>
-        <button class="btn btn-info getJournalButton" ng-click="getJournal()">Get Journal</button>
+        <button class="btn button-info getJournalButton" ng-click="getJournal()">Get Journal</button>
     </div>
     <div class="row" ng-show="doneRetrievingEntry" style="margin-top:10px;">
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -134,7 +153,7 @@
         </div>
         <div class="saveButtonArea">
             <div>
-                <button class="btn btn-primary" ng-click="submitEntry()">Save Entry</button>
+                <button class="btn button-primary" ng-click="submitEntry()">Save Entry</button>
             </div>
             <div ng-show="showFailedToSaveMessage" class="alert alert-danger" role="alert"
                  style="max-width: 180px; padding: 10px;">

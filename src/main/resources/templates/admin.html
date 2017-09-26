@@ -8,31 +8,77 @@
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
 </head>
 <style>
-    .button {
-        color: #fff;
-        background-color: #337ab7;
-        border-color: #2e6da4;
+    .nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+        background-color: darkturquoise;
     }
 
-    .buttonInfo {
+    .nav > li > a {
+        color: white;
+    }
+
+    .clearLinkText {
+        font-size: 30px;
+        color: white;
+        padding-right: 20px;
+        padding-left: 15px;
+    }
+
+    .topNav {
+        background-color: #3a4df9;
+        color: white !important;
+        font-family: 'Sofia', 'Droid Sans', Helvetica, Arial, sans-serif;
+        height: 50px;
+    }
+
+    .nav>li>a:focus, .nav>li>a:hover {
+        background-color: cornflowerblue;
+    }
+
+    .logoutLink {
+        float:right !important;
+        margin-right: 5px;
+    }
+
+    .nav-pills > li {
+        padding-top: 5px;
+    }
+
+    body {
+        font-family: 'Sofia', 'Droid Sans', Helvetica, Arial, sans-serif;
+    }
+
+    .button-info {
         color: #fff;
         background-color: #5bc0de;
-        border-color: #46b8da;
+    }
+
+    .button-primary {
+        color: #fff;
+        background-color: #337ab7;
+    }
+
+    .firstRow {
+        margin-top: 15px;
     }
 </style>
 <body ng-app="highPerformanceJournal">
 <div class="container-fluid ng-cloak" ng-controller="AdminController">
-    <div class="row">
+    <div class="row topNav">
         <ul class="nav nav-pills">
-            <li disabled="disabled">Clearlink</li>
+            <li disabled="disabled" class="clearLinkText">Clearlink</li>
             <li role="presentation"><a href="/home">Home</a></li>
             <li role="presentation"><a href="/journal">Reports</a></li>
-            <li role="presentation" class="active"><a href="/admin">Admin</a></li>
-            <li role="presentation" style="float:right;"><a href="/login?logout">Logout</a></li>
-            <li disabled="disabled" class="glyphicon glyphicon-user" style="float:right; font-size:20px;"><p style="padding-left:10px; font-size:30px; display:inline;">{{usernameOfLoggedInUser}}</p></li>
+            <li role="presentation" class="active"><a href="#">Admin</a></li>
+            <li role="presentation" class="logoutLink"><a href="/login?logout">Logout</a></li>
+            <li disabled="disabled" id="usernameOfLoggedInUser"
+                style="float:right; font-size:20px; padding-right:15px;">
+                <span class="glyphicon glyphicon-user"></span>
+                <span style="padding-left:10px; font-size:30px; display:inline;">
+                {{usernameOfLoggedInUser}}</span>
+            </li>
         </ul>
     </div>
-    <div class="row">
+    <div class="row firstRow">
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
             <div>
                 <label for="firstNameInput">First Name</label>
@@ -106,8 +152,8 @@
     </div>
     <div class="row">
         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-            <button class="btn button" ng-click="saveUser()">Save</button>
-            <button class="btn buttonInfo" ng-click="clearFormForNewUserInput()">New User</button>
+            <button class="btn button-primary" ng-click="saveUser()">Save</button>
+            <button class="btn button-info" ng-click="clearFormForNewUserInput()">New User</button>
         </div>
     </div>
     <div class="row">
@@ -130,7 +176,7 @@
                     <label for="userNameSearchInput">Search User</label>
                     <input ng-model="usernameForSearch" id="userNameSearchInput" style="display:block;"
                            maxlength="60" ng-focus="hideAllValidationMessages()"/>
-                    <button ng-disabled="usernameForSearchIsInvalid()" class="btn button" ng-click="searchForUser()"
+                    <button ng-disabled="usernameForSearchIsInvalid()" class="btn button-primary" ng-click="searchForUser()"
                             style="margin-top:10px;">Search
                     </button>
                 </form>
@@ -153,9 +199,9 @@
     myApp.controller('AdminController', ['$scope', '$http',
         function ($scope, $http) {
             function getUsernameOfLoggedInUser() {
-                if(!sessionStorage.getItem('usernameOfLoggedInUser')) {
-                    $http.post('/users/getUsernameOfLoggedInUser').then(function(result) {
-                        if(!result.data || !result.data.username) {
+                if (!sessionStorage.getItem('usernameOfLoggedInUser')) {
+                    $http.post('/users/getUsernameOfLoggedInUser').then(function (result) {
+                        if (!result.data || !result.data.username) {
                             window.location.href = '/login?logout';
                         } else {
                             sessionStorage.setItem('usernameOfLoggedInUser', result.data.username);
@@ -164,8 +210,8 @@
                     });
                 }
                 $scope.usernameOfLoggedInUser = sessionStorage.getItem('usernameOfLoggedInUser');
-                searchForUser($scope.usernameOfLoggedInUser);
             }
+
             getUsernameOfLoggedInUser();
 
             $scope.loggedInUserIsAnAdmin = false;
@@ -178,11 +224,14 @@
                             window.location.href = '/login?logout';
                         } else {
                             sessionStorage.setItem('userRole', result.data.userRole);
+                            $scope.userRole = sessionStorage.getItem('userRole');
+                            $scope.loggedInUserIsAnAdmin = $scope.userRole === 'admin';
+                            console.log('loggedInUserIsAnAdmin: ' + $scope.loggedInUserIsAnAdmin);
                         }
                     });
+                } else {
+                    $scope.loggedInUserIsAnAdmin = $scope.userRole === 'admin';
                 }
-                $scope.userRole = sessionStorage.getItem('userRole');
-                $scope.loggedInUserIsAnAdmin = $scope.userRole === 'admin';
             }
             getUserRole();
 
