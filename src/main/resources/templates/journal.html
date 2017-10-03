@@ -9,6 +9,55 @@
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
 </head>
 <style>
+    .nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+        background-color: darkturquoise;
+    }
+
+    .nav > li > a {
+        color: white;
+    }
+
+    .clearLinkText {
+        font-size: 30px;
+        color: white;
+        padding-right: 20px;
+        padding-left: 15px;
+    }
+
+    .topNav {
+        background-color: #3a4df9;
+        color: white !important;
+        font-family: 'Sofia', 'Droid Sans', Helvetica, Arial, sans-serif;
+        height: 50px;
+    }
+
+    .nav > li > a:focus, .nav > li > a:hover {
+        background-color: cornflowerblue;
+    }
+
+    .logoutLink {
+        float: right !important;
+        margin-right: 5px;
+    }
+
+    .nav-pills > li {
+        padding-top: 5px;
+    }
+
+    body {
+        font-family: 'Sofia', 'Droid Sans', Helvetica, Arial, sans-serif;
+    }
+
+    .button-info {
+        color: #fff;
+        background-color: #5bc0de;
+    }
+
+    .button-primary {
+        color: #fff;
+        background-color: #337ab7;
+    }
+
     .button {
         color: #fff;
         background-color: #337ab7;
@@ -20,39 +69,64 @@
         background-color: #5bc0de;
         border-color: #46b8da;
     }
+
+    .datePickerRow {
+        margin-top: 20px;
+        margin-left: 2px;
+    }
+
+    .journalValuesRow {
+        font-size: 17px;
+        margin-top: 20px;
+        margin-left: 2px;
+        margin-bottom: 10px;
+    }
+
+    .graphOptionsText {
+        padding-left: 5px;
+    }
+
+    .graphOptionsButtonGroup {
+        margin-left: 25px;
+    }
+
+    .usernameSearchRow {
+        margin-top: 20px;
+        margin-left: 2px;
+    }
 </style>
 <body ng-app="highPerformanceJournal">
 <div class="container-fluid ng-cloak" ng-controller="JournalController">
-    <div class="row">
+    <div class="row topNav">
         <ul class="nav nav-pills">
-            <li disabled="disabled">Clearlink</li>
+            <li disabled="disabled" class="clearLinkText">Clearlink</li>
             <li role="presentation"><a href="/home">Home</a></li>
-            <li role="presentation" class="active"><a href="/journal">Reports</a></li>
+            <li role="presentation" class="active"><a href="#">Reports</a></li>
             <li role="presentation"><a href="/admin">Admin</a></li>
-            <li role="presentation" style="float:right;"><a href="/login?logout">Logout</a></li>
-            <li disabled="disabled" class="glyphicon glyphicon-user" style="float:right; font-size:20px;"><p style="padding-left:10px; font-size:30px; display:inline;">{{usernameOfLoggedInUser}}</p></li>
+            <li role="presentation" class="logoutLink"><a href="/login?logout">Logout</a></li>
+            <li disabled="disabled" id="usernameOfLoggedInUser"
+                style="float:right; font-size:20px; padding-right:15px;">
+                <span class="glyphicon glyphicon-user"></span>
+                <span style="padding-left:10px; font-size:30px; display:inline;">
+                {{usernameOfLoggedInUser}}</span>
+            </li>
         </ul>
     </div>
-    <div class="row">
-        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-            <h2>Report for: {{userToShowReportsFor}}</h2>
-        </div>
-    </div>
-    <div class="row" ng-show="userIsAnAdminOrCoach">
-        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+    <div class="row usernameSearchRow" ng-show="userIsAnAdminOrCoach">
+        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 reportInputFields">
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                 <label for="usernameSearchInput">Username</label><br/>
                 <input id="usernameSearchInput" ng-model="userToShowReportsFor" maxlength="100"/>
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row datePickerRow">
         <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
                 <label for="startDatePicker">Start Date</label><br/>
                 <input id="startDatePicker"/>
             </div>
-            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
                 <label for="endDatePicker">End Date</label><br/>
                 <input id="endDatePicker"/>
             </div>
@@ -69,65 +143,67 @@
             Date range is invalid
         </div>
     </div>
-    <div class="row" style="font-size:17px; padding-top: 20px;" ng-show="averageJournalValues">
-        <span style="color:lightblue; padding-left:15px;">Mental Toughness&nbsp;</span>
-        <span class="badge" style="background-color:lightblue;">{{averageMentalToughness}}</span>
-        <span style="color:#1b6d85; padding-left:15px;">Willingness&nbsp;</span>
-        <span class="badge" style="background-color:#1b6d85;">{{averageWillingness}}</span>
-        <span style="color:teal; padding-left:15px;">Determination&nbsp;</span>
-        <span class="badge" style="background-color:teal;">{{averageDetermination}}</span>
-        <span style="color:lightgreen; padding-left:15px;">Motivation&nbsp;</span>
-        <span class="badge" style="background-color:lightgreen">{{averageMotivation}}</span>
-        <span style="color:cadetblue; padding-left:15px;">Attitude&nbsp;</span>
-        <span class="badge" style="background-color:cadetblue;">{{averageAttitude}}</span>
-        <span style="color:darkturquoise; padding-left:15px;">Personal Impact&nbsp;</span>
-        <span class="badge" style="background-color:darkturquoise;">{{averagePersonalImpact}}</span>
-        <div class="btn-group">
-            <button type="button" class="btn buttonInfo" ng-click="showDropDown(); $event.stopPropagation();">
-                Graph Options
-            </button>
-            <button id="graphOptionsDropDown" class="btn buttonInfo dropdown-toggle" type="button"
-                    data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="true" title="Hide or show lines in the line graph">
-                <span class="caret"></span>
+    <div class="row journalValuesRow" ng-show="averageJournalValues">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <span style="color:lightblue; padding-left:15px;">Mental Toughness&nbsp;</span>
+            <span class="badge" style="background-color:lightblue;">{{averageMentalToughness}}</span>
+            <span style="color:#1b6d85; padding-left:15px;">Willingness&nbsp;</span>
+            <span class="badge" style="background-color:#1b6d85;">{{averageWillingness}}</span>
+            <span style="color:teal; padding-left:15px;">Determination&nbsp;</span>
+            <span class="badge" style="background-color:teal;">{{averageDetermination}}</span>
+            <span style="color:lightgreen; padding-left:15px;">Motivation&nbsp;</span>
+            <span class="badge" style="background-color:lightgreen">{{averageMotivation}}</span>
+            <span style="color:cadetblue; padding-left:15px;">Attitude&nbsp;</span>
+            <span class="badge" style="background-color:cadetblue;">{{averageAttitude}}</span>
+            <span style="color:darkturquoise; padding-left:15px;">Personal Impact&nbsp;</span>
+            <span class="badge" style="background-color:darkturquoise;">{{averagePersonalImpact}}</span>
+            <div class="btn-group graphOptionsButtonGroup">
+            <span id="graphOptionsDropDown" class="btn buttonInfo dropdown-toggle" type="button"
+                  data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="true" title="Hide or show lines in the line graph">
+                <span class="glyphicon glyphicon-cog"></span>
                 <span class="sr-only">Toggle Dropdown</span>
-            </button>
-            <ul class="dropdown-menu">
-                <li class="filterOptions">Hide/Show Lines</li>
-                <li role="separator" class="divider"></li>
-                <li class="filterOptions" ng-click="keepDropDownOpen($event)">
-                    <div class="checkbox-group">
-                        <div class="checkbox">
-                            <label><input ng-model="showMentalToughnessInGraph" id="showMentalToughnessInGraph"
-                                          type="checkbox" name="filterOptions"/>Mental Toughness</label>
+            </span>
+                <ul class="dropdown-menu">
+                    <li class="filterOptions graphOptionsText">Hide/Show Lines</li>
+                    <li role="separator" class="divider"></li>
+                    <li class="filterOptions" ng-click="keepDropDownOpen($event)">
+                        <div class="checkbox-group">
+                            <div class="checkbox graphOptionsText">
+                                <label><input ng-model="showMentalToughnessInGraph" id="showMentalToughnessInGraph"
+                                              type="checkbox" name="filterOptions"/>Mental Toughness</label>
+                            </div>
+                            <div class="checkbox graphOptionsText">
+                                <label><input ng-model="showWillingnessInGraph" id="showWillingnessInGraph"
+                                              type="checkbox"
+                                              name="filterOptions"/>Willingness</label>
+                            </div>
+                            <div class="checkbox graphOptionsText">
+                                <label><input ng-model="showDeterminationInGraph" id="showDeterminationInGraph"
+                                              type="checkbox" name="filterOptions"/>Determination</label>
+                            </div>
+                            <div class="checkbox graphOptionsText">
+                                <label><input ng-model="showMotivationInGraph" id="showMotivationInGraph"
+                                              type="checkbox"
+                                              name="filterOptions"/>Motivation</label>
+                            </div>
+                            <div class="checkbox graphOptionsText">
+                                <label><input ng-model="showAttitudeInGraph" id="showAttitudeInGraph" type="checkbox"
+                                              name="filterOptions"/>Attitude</label>
+                            </div>
+                            <div class="checkbox graphOptionsText">
+                                <label><input ng-model="showPersonalImpactInGraph" id="showPersonalImpactInGraph"
+                                              type="checkbox"
+                                              name="filerOptions"/>Personal Impact</label>
+                            </div>
                         </div>
-                        <div class="checkbox">
-                            <label><input ng-model="showWillingnessInGraph" id="showWillingnessInGraph" type="checkbox"
-                                          name="filterOptions"/>Willingness</label>
-                        </div>
-                        <div class="checkbox">
-                            <label><input ng-model="showDeterminationInGraph" id="showDeterminationInGraph"
-                                          type="checkbox" name="filterOptions"/>Determination</label>
-                        </div>
-                        <div class="checkbox">
-                            <label><input ng-model="showMotivationInGraph" id="showMotivationInGraph" type="checkbox"
-                                          name="filterOptions"/>Motivation</label>
-                        </div>
-                        <div class="checkbox">
-                            <label><input ng-model="showAttitudeInGraph" id="showAttitudeInGraph" type="checkbox"
-                                          name="filterOptions"/>Attitude</label>
-                        </div>
-                        <div class="checkbox">
-                            <label><input ng-model="showPersonalImpactInGraph" id="showPersonalImpactInGraph" type="checkbox"
-                                        name="filerOptions"/>Personal Impact</label>
-                        </div>
-                    </div>
-                </li>
-            </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="chart-container" style="position: relative; height:30vh; width:60vw">
                 <canvas id="lineGraph"></canvas>
             </div>
@@ -153,21 +229,23 @@
     myApp.controller('JournalController', ['$scope', '$http',
         function ($scope, $http) {
             function getUsernameOfLoggedInUser() {
-                if(!sessionStorage.getItem('usernameOfLoggedInUser')) {
-                    $http.post('/users/getUsernameOfLoggedInUser').then(function(result) {
-                        if(!result.data || !result.data.username) {
+                if (!sessionStorage.getItem('usernameOfLoggedInUser')) {
+                    $http.post('/users/getUsernameOfLoggedInUser').then(function (result) {
+                        if (!result.data || !result.data.username) {
                             window.location.href = '/login?logout';
                         } else {
                             sessionStorage.setItem('usernameOfLoggedInUser', result.data.username);
                             $scope.usernameOfLoggedInUser = sessionStorage.getItem('usernameOfLoggedInUser');
+                            $scope.userToShowReportsFor = $scope.usernameOfLoggedInUser;
                         }
                     });
                 }
                 $scope.usernameOfLoggedInUser = sessionStorage.getItem('usernameOfLoggedInUser');
+                $scope.userToShowReportsFor = $scope.usernameOfLoggedInUser;
             }
+
             getUsernameOfLoggedInUser();
 
-            $scope.userToShowReportsFor = $scope.usernameOfLoggedInUser;
             $scope.userIsAnAdminOrCoach = false;
 
             function getUserRole() {
@@ -177,12 +255,16 @@
                             window.location.href = '/login?logout';
                         } else {
                             sessionStorage.setItem('userRole', result.data.userRole);
+                            $scope.userRole = sessionStorage.getItem('userRole');
+                            $scope.userIsAnAdminOrCoach = $scope.userRole === 'admin' || $scope.userRole === 'coach';
                         }
                     });
+                } else {
+                    $scope.userRole = sessionStorage.getItem('userRole');
+                    $scope.userIsAnAdminOrCoach = $scope.userRole === 'admin' || $scope.userRole === 'coach';
                 }
-                $scope.userRole = sessionStorage.getItem('userRole');
-                $scope.userIsAnAdminOrCoach = $scope.userRole === 'admin' || $scope.userRole === 'coach';
             }
+
             getUserRole();
 
             $scope.showMentalToughnessInGraph = true;
@@ -200,22 +282,61 @@
             };
 
             $scope.generateReport = function () {
-                var filter = {
-                    startDate: $("#startDatePicker").val(), endDate: $("#endDatePicker").val(),
-                    username: $scope.userToShowReportsFor
-                };
+                if (datesHaveNoValues()) {
+                    waitForDatesThenGenerateReport();
+                } else {
+                    generateReportFromDates();
+                }
 
+                function datesHaveNoValues() {
+                    return !$("#startDatePicker").val() || !$("#endDatePicker").val();
+                }
 
-                $http.post('/journalEntries/getJournalValuesInDateRange', filter)
-                    .then(function (result) {
-                        $scope.graphData = result.data;
-                        displayLineGraph(result.data);
-                    });
+                function waitForDatesThenGenerateReport() {
+                    setTimeout(function () {
+                        console.log('First delayed check for dates', new Date());
 
-                $http.post('/journalEntries/getJournalAveragesInDateRange', filter)
-                    .then(function (result) {
-                        displayAverageJournalValues(result.data);
-                    });
+                        if (datesHaveNoValues()) {
+                            setTimeout(function () {
+                                console.log('Second delayed check for dates', new Date());
+
+                                if (datesHaveNoValues()) {
+                                    setTimeout(function () {
+                                        console.log('Third delayed check for dates', new Date());
+
+                                        if (datesHaveNoValues()) {
+                                            console.error('Unable to generate report due to no date values');
+                                        } else {
+                                            generateReportFromDates();
+                                        }
+                                    }, 500);
+                                } else {
+                                    generateReportFromDates();
+                                }
+                            }, 200);
+                        } else {
+                            generateReportFromDates();
+                        }
+                    }, 100);
+                }
+
+                function generateReportFromDates() {
+                    var filter = {
+                        startDate: $("#startDatePicker").val(), endDate: $("#endDatePicker").val(),
+                        username: $scope.userToShowReportsFor
+                    };
+
+                    $http.post('/journalEntries/getJournalValuesInDateRange', filter)
+                        .then(function (result) {
+                            $scope.graphData = result.data;
+                            displayLineGraph(result.data);
+                        });
+
+                    $http.post('/journalEntries/getJournalAveragesInDateRange', filter)
+                        .then(function (result) {
+                            displayAverageJournalValues(result.data);
+                        });
+                }
             };
 
             function displayAverageJournalValues(averageJournalValues) {
@@ -285,7 +406,7 @@
                 return graphData.fieldValuesMap[field][date];
             }
 
-            $scope.showDropDown = function() {
+            $scope.showDropDown = function () {
                 document.querySelector('#graphOptionsDropDown').click();
             };
 
@@ -332,8 +453,13 @@
                     }
                 }
 
-                $scope.generateReport();
             });
+
+            if (!$scope.userToShowReportsFor) {
+                setTimeout($scope.generateReport, 200);
+            } else {
+                $scope.generateReport();
+            }
         }]);
     /*]]>*/
 </script>
