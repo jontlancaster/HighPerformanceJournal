@@ -26,6 +26,7 @@ public class JournalEntryManagerService {
     public static final String ATTITUDE = "attitude";
     public static final String DETERMINATION = "determination";
     public static final String MENTAL_TOUGHNESS = "mentalToughness";
+    public static final String PERSONAL_IMPACT = "personalImpact";
     public static final String MM_DD_YYYY = "MM/dd/yyyy";
     @Resource
     private JournalEntryRepository repository;
@@ -132,6 +133,7 @@ public class JournalEntryManagerService {
                     addValueToMap(ATTITUDE, date, journalEntry.getAttitude(), fieldValuesMap);
                     addValueToMap(DETERMINATION, date, journalEntry.getDetermination(), fieldValuesMap);
                     addValueToMap(MENTAL_TOUGHNESS, date, journalEntry.getMentalToughness(), fieldValuesMap);
+                    addValueToMap(PERSONAL_IMPACT, date, journalEntry.getPersonalImpact(), fieldValuesMap);
                 });
 
 
