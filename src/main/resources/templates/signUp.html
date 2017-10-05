@@ -8,28 +8,63 @@
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
 </head>
 <style>
-    .button {
-        color: #fff;
-        background-color: #337ab7;
-        border-color: #2e6da4;
+    .nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+        background-color: darkturquoise;
     }
 
-    .buttonInfo {
+    .nav > li > a {
+        color: white;
+    }
+
+    .clearLinkText {
+        font-size: 30px;
+        color: white;
+        padding-right: 20px;
+        padding-left: 15px;
+    }
+
+    .topNav {
+        background-color: #3498DB;
+        color: white !important;
+        font-family: 'Sofia', 'Droid Sans', Helvetica, Arial, sans-serif;
+        height: 50px;
+    }
+
+    .nav>li>a:focus, .nav>li>a:hover {
+        background-color: cornflowerblue;
+    }
+
+    .nav-pills > li {
+        padding-top: 5px;
+    }
+
+    body {
+        font-family: 'Sofia', 'Droid Sans', Helvetica, Arial, sans-serif;
+    }
+
+    .button-primary {
         color: #fff;
-        background-color: #5bc0de;
-        border-color: #46b8da;
+        background-color: #337ab7;
+    }
+
+    .firstRow {
+        margin-top: 15px;
+    }
+
+    .saveButtonRow {
+        margin-top: 15px;
     }
 </style>
 <body ng-app="highPerformanceJournal">
 <div class="container-fluid ng-cloak" ng-controller="NewUserController">
-    <div class="row">
+    <div class="row topNav">
         <ul class="nav nav-pills">
-            <li disabled="disabled">Clearlink</li>
+            <li disabled="disabled" class="clearLinkText">Clearlink</li>
             <li role="presentation" class="active"><a href="#">Sign Up</a></li>
             <li role="presentation"><a href="/login">Login</a></li>
         </ul>
     </div>
-    <div class="row">
+    <div class="row firstRow">
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
             <div>
                 <label for="firstNameInput">First Name</label>
@@ -82,9 +117,9 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row saveButtonRow">
         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-            <button class="btn button" ng-click="saveUser()">Save</button>
+            <button class="btn button-primary" ng-click="saveUser()">Save</button>
         </div>
     </div>
     <div class="row">
