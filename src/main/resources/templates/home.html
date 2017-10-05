@@ -205,7 +205,7 @@
 
             getUserRole();
 
-            $scope.defaultSliderValue = 1;
+            $scope.defaultSliderValue = 0;
             $scope.attitude = $scope.defaultSliderValue;
             $scope.determination = $scope.defaultSliderValue;
             $scope.mentalToughness = $scope.defaultSliderValue;
@@ -241,7 +241,7 @@
                     value: $scope.mentalToughness,
                     options: {
                         showSelectionBar: true,
-                        floor: 1,
+                        floor: 0,
                         ceil: 5,
                         step: 1
                     }
