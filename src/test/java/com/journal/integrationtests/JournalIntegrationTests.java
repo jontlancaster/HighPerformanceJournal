@@ -4,6 +4,7 @@ import com.journal.entities.Journal;
 import com.journal.entities.JournalEntry;
 import com.journal.repositories.JournalEntryRepository;
 import com.journal.repositories.JournalRepository;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class JournalIntegrationTests {
 	public void contextLoads() {
 	}
 
+	@Ignore
 	@Test
 	public void testFindJournalByJournalId() {
 		Journal journal = journalRepository.findByJournalId(1);
@@ -39,6 +41,7 @@ public class JournalIntegrationTests {
 		assertEquals(1, journalEntry.getJournalEntryId());
 	}
 
+	@Ignore
 	@Test
 	public void testFindAllJournalEntriesByJournalId() {
 		List<JournalEntry> entryList = journalEntryRepository.findByJournalId(1);

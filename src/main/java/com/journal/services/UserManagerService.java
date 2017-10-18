@@ -5,6 +5,7 @@ import com.journal.dto.UserWithRoles;
 import com.journal.entities.User;
 import com.journal.entities.UserRole;
 import com.journal.repositories.UserRepository;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -67,7 +68,7 @@ public class UserManagerService {
         user.setLastName(saveUserRequest.getLastName());
         user.setUsername(saveUserRequest.getUsername());
         user.setPassword(passwordEncoder.encode(saveUserRequest.getPassword()));
-        user.setEnabled(true);
+        user.setEnabled(saveUserRequest.isEnabled());
 
         try {
             if (repository.countByUsername(user.getUsername()) != 0) {
@@ -120,32 +121,36 @@ public class UserManagerService {
 
     public User saveUser(SaveUserRequest saveUserRequest) {
         User user = repository.findByUsername(saveUserRequest.getUsername());
+        User savedUser = new User();
         if (user == null) {
-            user = new User();
-            System.out.println("Creating new user: " + saveUserRequest.getUsername());
+//            user = new User();
+            logger.info("Creating new user: " + saveUserRequest.getUsername());
+            createNewUser(saveUserRequest);
         }
-        user.setEnabled(saveUserRequest.isEnabled());
-        user.setFirstName(saveUserRequest.getFirstName());
-        user.setLastName(saveUserRequest.getLastName());
-        user.setUsername(saveUserRequest.getUsername());
-        if (StringUtils.hasText(saveUserRequest.getPassword())) {
-            user.setPassword(passwordEncoder.encode(saveUserRequest.getPassword()));
-        }
+        else {
+            user.setEnabled(saveUserRequest.isEnabled());
+            user.setFirstName(saveUserRequest.getFirstName());
+            user.setLastName(saveUserRequest.getLastName());
+            user.setUsername(saveUserRequest.getUsername());
+            if (StringUtils.hasText(saveUserRequest.getPassword())) {
+                user.setPassword(passwordEncoder.encode(saveUserRequest.getPassword()));
+            }
 
-        User savedUser = saveUser(user);
+            savedUser = saveUser(user);
 
-        if (savedUser == null) {
-            return null;
-        }
+            if (savedUser == null) {
+                return null;
+            }
 
-        if (saveUserRequest.isEnabled()) {
-            boolean savedDefaultRole = roleManager.createDefaultRole(user.getUsername());
-            if (!savedDefaultRole) {
-                System.err.println("Unable to save default role for user: " + user);
+            if (saveUserRequest.isEnabled()) {
+                boolean savedDefaultRole = roleManager.createDefaultRole(user.getUsername());
+                if (!savedDefaultRole) {
+                    logger.error("Unable to save default role for user: " + user);
+                }
             }
         }
+            return savedUser;
 
-        return savedUser;
     }
 
     private User saveUser(User user) {
