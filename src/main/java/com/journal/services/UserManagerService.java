@@ -31,13 +31,15 @@ public class UserManagerService {
     @Autowired
     private SecurityService securityService;
 
+    private static final Logger logger = Logger.getLogger(UserManagerService.class);
+
     public User findUser(String username) {
         try {
             if (repository.countByUsername(username) != 0) {
                 return repository.findByUsername(username);
             }
         } catch (Exception exception) {
-            System.out.println("Exception while finding user." + exception.getMessage());
+            logger.error("Exception while finding user." + exception.getMessage());
         }
 
         return null;
@@ -72,14 +74,21 @@ public class UserManagerService {
 
         try {
             if (repository.countByUsername(user.getUsername()) != 0) {
-                System.out.println("That username already exists! Please enter a different username.");
+                logger.error("That username already exists! Please enter a different username.");
             } else {
                 user = repository.save(user);
                 roleManager.createDefaultRole(user.getUsername());
                 journalManager.createJournal(user);
+
+                if (saveUserRequest.isCoach()) {
+                    roleManager.enableCoach(saveUserRequest.getUsername());
+                }
+                if (saveUserRequest.isAdmin()) {
+                    roleManager.enableAdmin(saveUserRequest.getUsername());
+                }
             }
         } catch (Exception exception) {
-            System.out.println("There was an exception saving the new user. " + exception.getMessage());
+            logger.error("There was an exception saving the new user. " + exception.getMessage());
         }
         return user;
     }
@@ -90,7 +99,7 @@ public class UserManagerService {
             repository.save(user);
             success = true;
         } catch (Exception exception) {
-            System.out.println("There was an exception updating the user. " + exception.getMessage());
+            logger.error("There was an exception updating the user. " + exception.getMessage());
         }
         return success;
     }
@@ -102,7 +111,7 @@ public class UserManagerService {
             user.setEnabled(false);
             success = updateUser(user);
         } catch (Exception exception) {
-            System.out.println("There was an exception disabling the user. " + exception.getMessage());
+            logger.error("There was an exception disabling the user. " + exception.getMessage());
         }
         return success;
     }
@@ -114,7 +123,7 @@ public class UserManagerService {
             user.setEnabled(true);
             success = updateUser(user);
         } catch (Exception exception) {
-            System.out.println("There was an exception enabling the user. " + exception.getMessage());
+            logger.error("There was an exception enabling the user. " + exception.getMessage());
         }
         return success;
     }
@@ -157,7 +166,7 @@ public class UserManagerService {
         try {
             return repository.save(user);
         } catch (Exception ex) {
-            System.out.println("There was a problem saving user: " + user + "\n" + ex);
+            logger.error("There was a problem saving user: " + user + "\n" + ex);
         }
         return null;
     }

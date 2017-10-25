@@ -7,6 +7,7 @@ import com.journal.entities.Journal;
 import com.journal.entities.JournalEntry;
 import com.journal.repositories.JournalEntryRepository;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -32,6 +33,7 @@ public class JournalEntryManagerService {
     private JournalEntryRepository repository;
     @Resource
     private JournalManagerService journalManager;
+    private static final Logger logger = Logger.getLogger(JournalEntryManagerService.class);
 
     public JournalEntry loadTodaysEntry() {
         Long time = System.currentTimeMillis();
@@ -46,7 +48,7 @@ public class JournalEntryManagerService {
         try {
             entry = getJournalEntryByDate(journalDate);
         } catch (Exception e) {
-            System.out.println("There was an error loading the entry for the date provided. " + e.getMessage());
+            logger.error("There was an error loading the entry for the date provided. " + e.getMessage());
         }
 
         return entry;
@@ -65,7 +67,7 @@ public class JournalEntryManagerService {
             }
             updatedEntry = repository.save(entry);
         } catch (Exception e) {
-            System.err.println("There was an error saving the journal entry " + ExceptionUtils.getMessage(e));
+            logger.error("There was an error saving the journal entry " + ExceptionUtils.getMessage(e));
         }
 
         return updatedEntry;
@@ -76,9 +78,9 @@ public class JournalEntryManagerService {
 
         Long time = System.currentTimeMillis();
         Date today = new Date(time);
-
+        logger.info("Loading journal entry for " + entryDate);
         if (entryDate.after(today)) {
-            System.out.print("The entry date is after today, returning today's journal.");
+            logger.error("The entry date is after today, returning today's journal.");
             entryDate = today;
         }
         Journal journal = journalManager.getJournalForLoggedInUser();
